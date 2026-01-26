@@ -36,10 +36,10 @@ const GalleryPage = lazy(() => import('@/pages/GalleryPage'))
 // Module 6: 虚拟课题
 // 开放研究 × 课题实践
 const LabPage = lazy(() => import('@/pages/LabPage'))
-
 // ============================================================
-// Loading fallback component
-// 加载中的占位组件
+
+// About Page - 关于页面
+const AboutPage = lazy(() => import('@/pages/AboutPage'))
 
 function PageLoader() {
   return (
@@ -75,14 +75,14 @@ export function App() {
             {/* 6 Core Modules - 六大核心模块（一级页面）首页六个模块直接链接到这些页面 */}
 
             {/* Module 1: 课程历史 */}
-            <Route path="/Couses" element={<CousesPage />} />
+            <Route path="/courses" element={<CousesPage />} />
 
             {/* Module 2: 光学器件 */}
-            <Route path="/Devices" element={<DevicesPage />} />
+            <Route path="/devices" element={<DevicesPage />} />
 
             {/* Module 3: 理论模拟 */}
             <Route path="/demos" element={<DemosPage />} />
-            < Route path="/demos/:demoId" element={<DemosPage />} />
+            <Route path="/demos/:demoId" element={<DemosPage />} />
 
             {/* Module 4: 游戏挑战 */}
             <Route path="/games" element={<GamesPage />} />
@@ -95,6 +95,8 @@ export function App() {
 
             {/* Module 6: 虚拟课题 */}
             <Route path="/lab" element={<LabPage />} />
+
+            <Route path="/about" element={<AboutPage />} />
                             
             </Routes>
         </Suspense>

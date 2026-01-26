@@ -4,6 +4,7 @@ import { App } from './App'  //导入App组件
 import { ThemeProvider } from './contexts/ThemeContext'   //导入主题提供者组件
 import 'katex/dist/katex.min.css'   // 导入 KaTeX 样式表
 import './index.css'   //导入全局样式表
+import './i18n'   //导入国际化配置
 
 // 渲染应用程序到根元素
 

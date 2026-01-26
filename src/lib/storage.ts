@@ -5,7 +5,7 @@
  * Provides get, set, remove functions with JSON support 提供带有 JSON 支持的获取、设置、删除功能
  */
 
-import { logger } from './logger'
+import { logger } from '../lib/logger'
 
 // In-memory fallback when localStorage is unavailable
 const memoryStorage: Map<string, string> = new Map()
