@@ -34,6 +34,7 @@ const MinecraftPage = lazy(() => import("@/pages/MinecraftPage"));
 // Module 5: 成果展示
 // 课程成果 × 文创作品
 const GalleryPage = lazy(() => import("@/pages/GalleryPage"));
+const WorkDetailPage = lazy(() => import("@/components/gallery/detail").then(m => ({ default: m.WorkDetailPage })));
 
 // Module 6: 虚拟课题
 // 开放研究 × 课题实践
@@ -122,6 +123,10 @@ export function App() {
               path="/gallery/:tabId"
               element={<GalleryPage />}
             />
+            <Route
+              path="/gallery/work/:workId"
+              element={<WorkDetailPage />}
+            />
 
             {/* Module 6: 虚拟课题 */}
             <Route
@@ -135,7 +140,7 @@ export function App() {
             />
           </Routes>
         </Suspense>
-      <Footer />
+        <Footer />
       </BrowserRouter>
     </ErrorBoundary>
   );
