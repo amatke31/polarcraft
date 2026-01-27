@@ -12,6 +12,7 @@ import {
   Toggle,
   InfoCard,
 } from "@/feature/demos/DemoControls";
+import MathText from "@/components/shared/MathText";
 
 export function LightWaveDemo() {
   const { t } = useTranslation();
@@ -268,14 +269,11 @@ export function LightWaveDemo() {
               </g>
 
               {/* 光速标注 */}
-              <text
-                x="600"
-                y="30"
-                fill="#6b7280"
-                fontSize="11"
-              >
-                c = 3×10⁸ m/s
-              </text>
+              <foreignObject x="580" y="18" width="120" height="24">
+                <div {...({ xmlns: "http://www.w3.org/1999/xhtml", style: { fontSize: "11px", color: "#6b7280", display: "flex", alignItems: "center" } } as any)}>
+                  {MathText({ text: "$c = 3 \\times 10^8 \\text{ m/s}$" })}
+                </div>
+              </foreignObject>
 
               {/* 颜色指示 */}
               <rect
@@ -386,7 +384,7 @@ export function LightWaveDemo() {
             />
             <ValueDisplay
               label={t("demoUi.common.frequency")}
-              value={`${(3e8 / (wavelength * 1e-9) / 1e14).toFixed(2)} × 10¹⁴ Hz`}
+              value={MathText({text:`$ ${(3e8 / (wavelength * 1e-9) / 1e14).toFixed(2)} \\times 10^{14} \\text{ Hz}$`})}
             />
           </div>
         </ControlPanel>
@@ -401,7 +399,7 @@ export function LightWaveDemo() {
           <ul className="text-xs text-gray-300 space-y-1.5">
             {(t("demoUi.lightWave.emWaveDetails", { returnObjects: true }) as string[]).map(
               (item, i) => (
-                <li key={i}>• {item}</li>
+                <li key={i}>• {MathText({text : item})}</li>
               ),
             )}
           </ul>
@@ -413,7 +411,7 @@ export function LightWaveDemo() {
           <ul className="text-xs text-gray-300 space-y-1.5">
             {(t("demoUi.lightWave.transverseDetails", { returnObjects: true }) as string[]).map(
               (item, i) => (
-                <li key={i}>• {item}</li>
+                <li key={i}>• {MathText({text : item})}</li>
               ),
             )}
           </ul>

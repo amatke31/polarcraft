@@ -43,6 +43,7 @@ import {
   FileCode,
   Eye,
 } from "lucide-react";
+import MathText from "@/components/shared/MathText";
 
 // Types
 export type DifficultyLevel = "foundation" | "application" | "research";
@@ -1123,7 +1124,7 @@ export function JonesVectorControl({
           </div>
           <div>
             <label className={cn("text-xs", theme === "dark" ? "text-gray-400" : "text-gray-600")}>
-              相位差 φ (度)
+              <MathText text = "$相位差 \\Phi (度)$"></MathText>
             </label>
             <input
               type="range"

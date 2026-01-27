@@ -1,6 +1,6 @@
 /**
  * PolarizationTypesUnifiedDemo - 偏振类型统一演示
- * 合并原有的 PolarizationTypesDemo（偏振类型）和 ThreePolarizersDemo（三偏振片悖论）
+ * 合并原有的 PolarizationTypesDemo（偏振类型）和 MalusLawDemo（马吕斯定律）
  *
  * Features:
  * - Tab-based navigation between Polarization Types and Three-Polarizer Paradox
@@ -23,6 +23,7 @@ import {
   PresetButtons,
   AnimatedValue,
 } from "../DemoControls";
+import MathText from "@/components/shared/MathText";
 import {
   DifficultyLevel,
   useDifficultyConfig,
@@ -450,7 +451,7 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
           }`}
         >
           <FlaskConical className="w-4 h-4" />
-          <span>三偏振片悖论</span>
+          <span>马吕斯定律展示</span>
         </button>
       </div>
 
@@ -752,7 +753,7 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
                   whileHover={{ scale: 1.02 }}
                   onClick={() => setViewMode("paradox")}
                 >
-                  探索三偏振片悖论 →
+                  探索马吕斯定律 →
                 </motion.button>
               </ControlPanel>
             </div>
@@ -1037,7 +1038,7 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
                     max={100}
                   />
                   <AnimatedValue
-                    label="P₁后"
+                    label={MathText({ text: "$P_2后$" })}
                     value={calculations.I1 * 100}
                     unit="%"
                     decimals={1}
@@ -1047,7 +1048,7 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
                   />
                   {showMiddlePolarizer && calculations.I2 !== null && (
                     <AnimatedValue
-                      label="P₂后"
+                      label={MathText({ text: "$P_2后$" })}
                       value={calculations.I2 * 100}
                       unit="%"
                       decimals={1}
@@ -1094,7 +1095,7 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
                   />
 
                   <Toggle
-                    label="启用中间片 P₂"
+                    label={MathText({ text: "$P_2\\text{后}$" })}
                     checked={showMiddlePolarizer}
                     onChange={(v) => {
                       setShowMiddlePolarizer(v);
@@ -1120,7 +1121,7 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
                   )}
 
                   <SliderControl
-                    label="P₃"
+                    label={MathText({ text: "$P_3$" })}
                     value={polarizer3Angle}
                     min={0}
                     max={180}
@@ -1170,26 +1171,23 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
                     title="马吕斯定律"
                     color="cyan"
                   >
-                    <Formula highlight>I = I₀ × cos²(θ)</Formula>
+                    <Formula highlight>$I = I_0 \\times \\cos^2(\\theta)$</Formula>
                     <div className="mt-3 space-y-2 text-xs text-slate-400">
                       {showMiddlePolarizer ? (
                         <>
-                          <p className="font-mono text-cyan-400">I₁ = I₀ × 0.5 = 50%</p>
+                          <p className="font-mono text-cyan-400"><MathText text={`$I_1 = I_0 \\times 0.5 = 50\\%$`} /></p>
                           <p className="font-mono text-orange-400">
-                            I₂ = I₁ × cos²({calculations.theta1}°) ={" "}
-                            {((calculations.I2 || 0) * 100).toFixed(1)}%
+                            <MathText text={`$I_2 = I_1 \\times \\cos^2(${calculations.theta1}^\\circ) = ${((calculations.I2 || 0) * 100).toFixed(1)}\\%$`} />
                           </p>
                           <p className="font-mono text-green-400">
-                            I₃ = I₂ × cos²({calculations.theta2}°) ={" "}
-                            {(calculations.I3 * 100).toFixed(1)}%
+                            <MathText text={`$I_3 = I_2 \\times \\cos^2(${calculations.theta2}^\\circ) = ${(calculations.I3 * 100).toFixed(1)}\\%$`} />
                           </p>
                         </>
                       ) : (
                         <>
-                          <p className="font-mono text-cyan-400">I₁ = I₀ × 0.5 = 50%</p>
+                          <p className="font-mono text-cyan-400"><MathText text={`$I_1 = I_0 \\times 0.5 = 50\\%$`} /></p>
                           <p className="font-mono text-green-400">
-                            I₃ = I₁ × cos²({calculations.theta2}°) ={" "}
-                            {(calculations.I3 * 100).toFixed(1)}%
+                            <MathText text={`$I_3 = I_1 \\times \\cos^2(${calculations.theta2}^\\circ) = ${(calculations.I3 * 100).toFixed(1)}\\%$`} />
                           </p>
                         </>
                       )}
@@ -1217,13 +1215,13 @@ export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props
             {/* Knowledge cards */}
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoCard
-                title="三偏振片悖论"
+                title="实验现象"
                 color="purple"
               >
                 <ul className="text-xs text-gray-300 space-y-1.5">
                   <li>• 两个正交偏振片完全阻挡光</li>
                   <li>• 加入45°偏振片，反而有光通过！</li>
-                  <li>• 最大透射率：0°→45°→90° = 12.5%</li>
+                  <li>• <MathText text="$最大透射率：0^\\circ \\rightarrow 45^\\circ \\rightarrow 90^\\circ = 12.5\\%$" /></li>
                 </ul>
               </InfoCard>
               <InfoCard

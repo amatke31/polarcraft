@@ -698,192 +698,48 @@
     "calcite": "方解石（双折射）",
     "duplicate": "复制"
   },
-  "game": {
-    "level": "关卡",
-    "sandbox": "沙盒",
-    "sandboxMode": "自由沙盒模式",
-    "goal": "目标",
-    "levelGoal": "关卡目标",
-    "sensors": "传感器",
-    "sensor": "感应器",
-    "activated": "已激活",
-    "progress": "进度",
-    "levelComplete": "关卡完成！",
-    "nextLevel": "下一关",
-    "controls": "控制说明",
-    "help": "帮助",
-    "gameGuide": "游戏指南",
-    "visionMode": "视觉模式",
-    "normal": "普通",
-    "normalVision": "普通视角",
-    "polarized": "偏振",
-    "polarizedVision": "偏振视角",
-    "cameraMode": "相机模式",
-    "firstPerson": "第一人称",
-    "isometric": "等轴测",
-    "topDown": "俯视图",
-    "toggleVisionMode": "切换偏振视觉模式",
-    "pressCToChange": "按C键切换",
-    "showBasicBlocks": "显示基础方块",
-    "showAdvancedBlocks": "显示高级方块",
-    "blocks": {
-      "emitter": "光源",
-      "polarizer": "偏振片",
-      "rotator": "波片",
-      "splitter": "方解石",
-      "sensor": "感应器",
-      "mirror": "反射镜",
-      "solid": "实体块",
-      "prism": "棱镜",
-      "lens": "透镜",
-      "beamSplitter": "分束器",
-      "quarterWave": "λ/4波片",
-      "halfWave": "λ/2波片",
-      "absorber": "吸收器",
-      "phaseShifter": "相位器",
-      "portal": "传送门"
-    },
-    "hints": {
-      "rotate": "按 R 旋转方块",
-      "place": "左键放置方块",
-      "delete": "右键删除方块",
-      "vision": "按 V 切换偏振视觉",
-      "camera": "按 C 切换相机模式"
-    },
-    "defaultControls": "WASD 移动 | 空格 跳跃 | 左键 放置 | 右键 删除",
-    "shortControls": "R 旋转方块 | V 切换视角模式 | H 帮助",
-    "showRealWorld": "显示现实应用",
-    "hideRealWorld": "隐藏现实应用",
-    "realWorldApp": "现实应用",
-    "helpPanel": {
-      "basicControls": "基本操作",
-      "wasd": "移动（第一人称）/ 平移视角（其他模式）",
-      "space": "跳跃（第一人称模式）",
-      "mouse": "视角控制（第一人称）/ 选择方块（其他模式）",
-      "leftClick": "放置方块",
-      "rightClick": "删除方块",
-      "rKey": "旋转方块（改变朝向/角度）",
-      "vKey": "切换偏振视角模式",
-      "hKey": "显示/隐藏帮助面板",
-      "escKey": "退出第一人称模式 / 取消选择",
-      "numberKeys": "选择方块类型",
-      "cameraControls": "视角控制",
-      "cKey": "切换相机模式（第一人称/等轴测/俯视）",
-      "gKey": "显示/隐藏网格",
-      "qeKeys": "旋转视角（等轴测模式）",
-      "scroll": "缩放（等轴测/俯视模式）",
-      "fourAxioms": "偏振光四大公理",
-      "orthogonal": "正交不干涉：0°和90°的光可以共存互不影响",
-      "malus": "马吕斯定律：光通过偏振片时，强度 = 原强度 × $\\cos^2(\\theta)$",
-      "birefringence": "双折射：方解石将光分裂成两束垂直的光",
-      "interference": "干涉叠加：同相叠加变亮，反相抵消变暗",
-      "blockGuide": "方块说明",
-      "emitterDesc": "发射偏振光束（强度15，可调角度）",
-      "polarizerDesc": "只允许特定角度的光通过",
-      "rotatorDesc": "旋转通过的光的偏振角度",
-      "splitterDesc": "将光分裂为两束垂直光",
-      "sensorDesc": "检测光线，可设置所需角度阈值",
-      "mirrorDesc": "反射光线方向",
-      "advancedBlockGuide": "高级方块",
-      "quarterWaveDesc": "旋转偏振方向45°（简化模型）",
-      "halfWaveDesc": "旋转偏振方向90°（简化模型）",
-      "beamSplitterDesc": "50/50分束，不考虑偏振",
-      "absorberDesc": "部分吸收光强",
-      "phaseShifterDesc": "改变光的相位（简化二值模型）",
-      "portalDesc": "将光传送到配对的传送门",
-      "simplifiedModelWarning": "简化物理模型说明",
-      "simplifiedModelNote": "本游戏采用简化物理模型进行教学。真实情况中：",
-      "realQuarterWave": "λ/4波片通过相位延迟将线偏振转换为圆偏振，而非简单旋转",
-      "realHalfWave": "λ/2波片使偏振方向关于快轴对称反射，而非简单90°旋转",
-      "realSplitter": "方解石分离角约为6°，而非90°（游戏采用PBS模型）",
-      "realPhase": "相位是连续的（0-2π），而非二值（±1）",
-      "seeAccurateDemos": "要了解精确物理，请探索演示和光学工作室模块！",
-      "polarizationColors": "偏振视角模式下的颜色",
-      "horizontal": "水平",
-      "diagonal": "斜向",
-      "vertical": "垂直"
-    },
-    "realWorld": {
-      "0": {
-        "title": "偏振太阳镜",
-        "description": "减少水面、路面反射的眩光",
-        "caption": "偏振镜阻挡水平偏振眩光"
-      },
-      "1": {
-        "title": "LCD显示器",
-        "description": "液晶屏利用偏振片控制亮度",
-        "backlight": "背光",
-        "liquidCrystal": "液晶",
-        "screen": "屏幕"
-      },
-      "2": {
-        "title": "摄影偏振滤镜",
-        "description": "消除反光、增强对比度",
-        "blueSky": "蓝天更蓝",
-        "noReflection": "无反光"
-      },
-      "3": {
-        "title": "3D电影眼镜",
-        "description": "圆偏振光实现立体视觉",
-        "screen3d": "3D屏幕",
-        "caption": "左右眼接收不同偏振"
-      },
-      "4": {
-        "title": "应力检测仪",
-        "description": "检测透明材料内部应力",
-        "stressZone": "应力区",
-        "caption": "应力双折射彩色图案"
-      }
-    },
-    "tutorials": {
-      "0": {
-        "name": "光与门",
-        "description": "将发射器的偏振角度与传感器匹配以激活它",
-        "hints": [
-          "按 R 旋转发射器的偏振角度",
-          "将发射器的偏振与传感器匹配（都是 0°）",
-          "当匹配偏振的光到达传感器时，传感器会激活"
-        ]
-      },
-      "1": {
-        "name": "偏振片",
-        "description": "使用偏振片过滤光线并激活传感器",
-        "hints": [
-          "在发射器和传感器之间放置偏振片",
-          "马吕斯定律：$I = I_0 \\times \\cos^2(\\theta)$",
-          "尝试不同角度观察强度变化"
-        ]
-      },
-      "2": {
-        "name": "马吕斯定律",
-        "description": "使用两个偏振片控制光强度",
-        "hints": [
-          "两个垂直的偏振片会阻挡所有光线",
-          "在中间添加一个45°的偏振片让部分光通过",
-          "这展示了偏振旋转原理"
-        ]
-      },
-      "3": {
-        "name": "波片",
-        "description": "使用旋转器改变偏振方向而不损失强度",
-        "hints": [
-          "旋转器可将偏振角度改变45°或90°",
-          "按 R 切换旋转量",
-          "与偏振片不同，旋转器保持光强度"
-        ]
-      },
-      "4": {
-        "name": "双折射",
-        "description": "使用分束器创建两束不同偏振的光",
-        "hints": [
-          "分束器（方解石）产生o光（0°）和e光（90°）",
-          "需要激活两个传感器才能完成关卡",
-          "双折射用于许多光学仪器"
-        ]
-      }
-    }
-  },
   "demos": {
+    "theorySimulation": {
+      "title": "理论模拟",
+      "description": "光学基础、偏振、旋光与散射的交互演示",
+      "comingSoon": "即将推出",
+      "selectDemo": "选择一个演示开始探索",
+      "browseHint": "点击左侧目录中的演示项目，开始你的光学探索之旅",
+      "units": {
+        "unit0": {
+          "title": "光学基础",
+          "description": "双折射和布儒斯特角",
+          "demos": {
+            "lightWave": {
+              "title": "光的本质",
+              "description": "理解光作为横向电磁波的特性"
+            },
+            "polarizationTypes": {
+              "title": "偏振类型与表示",
+              "description": "线偏振、圆偏振、椭圆偏振详解"
+            }
+          }
+        },
+        "unit1": {
+          "title": "偏振态",
+          "description": "旋光和色偏振现象",
+          "demos": {
+            "polarizationState": {
+              "title": "偏振态与波合成",
+              "description": "光波合成产生不同偏振态：线偏振、圆偏振、椭圆偏振"
+            }
+          }
+        },
+        "unit2": {
+          "title": "散射光谱和散射偏振",
+          "description": "透明介质的旋光现象"
+        },
+        "unit3": {
+          "title": "穆勒显微镜和偏振成像",
+          "description": "光学偏振成像技术"
+        }
+      }
+    },
     "polarizationState": {
       "title": "偏振态与波合成",
       "description": "光波合成产生不同偏振态：线偏振、圆偏振、椭圆偏振",
@@ -920,10 +776,10 @@
         "principle": "偏振态由两个正交电场分量的振幅比和相位差决定",
         "principle_foundation": "想象光是在跳绳——可以上下跳（线偏振）、转圈跳（圆偏振）、或者画椭圆跳（椭圆偏振）。怎么跳取决于两条绳子配合的节奏！",
         "principle_research": "任意完全偏振态可由Jones矢量 $J = [E_x e^{i\\delta_x}, E_y e^{i\\delta_y}]^T$ 精确描述。偏振态在Poincaré球面上的位置由Stokes参数 $(S_1, S_2, S_3)$ 唯一确定，满足 $S_0^2 = S_1^2 + S_2^2 + S_3^2$。",
-        "formula": "E = E_x·cos(ωt) x̂ + E_y·cos(\\omega t+\\delta) ŷ",
+        "formula": "$E = E_x \\cos(\\omega t) \\mathbf{\\hat{x}} + E_y \\cos(\\omega t + \\delta) \\mathbf{\\hat{y}}$",
         "details": [
-          "当 δ=0° 或 180° 时为线偏振",
-          "当 δ=90° 且 E_x=E_y 时为圆偏振",
+          "当 $\\delta=0^\\circ$ 或 $180^\\circ$ 时为线偏振",
+          "当 $\\delta=90^\\circ$ 且 $E_x=E_y$ 时为圆偏振",
           "其他情况为椭圆偏振"
         ],
         "details_foundation": [
@@ -1444,7 +1300,7 @@
     },
     "brewster": {
       "title": "布儒斯特角",
-      "description": "反射光为完全s偏振的特殊入射角：tan(θB) = n₂/n₁",
+      "description": "反射光为完全s偏振的特殊入射角：$tan(\\theta_B) = \\dfrac{n_2}{n_1}$",
       "questions": {
         "leading": "是否存在一个「神奇角度」，让某种偏振完全拒绝反射？",
         "leading_foundation": "有没有一个特殊角度，能让窗户反光完全消失？",
@@ -1458,7 +1314,7 @@
           "为什么偏光太阳镜能帮助渔民透过水面眩光看到鱼？"
         ],
         "guided_research": [
-          "证明$ \\theta_{Brewster} + \\theta_{refracted} = 90° 并解释其物理意义。",
+          "证明$ \\theta_{Brewster} + \\theta_{refracted} = 90^\\circ $ 并解释其物理意义。",
           "对于复折射率（吸收介质），布儒斯特角如何变化？"
         ],
         "openEnded": [
@@ -1502,7 +1358,7 @@
         "principle": "布儒斯特角是p偏振反射率为零的入射角",
         "principle_foundation": "存在一个神奇角度，叫布儒斯特角——在这个角度，「前后振动」的光全部穿过去，一点反射都没有！只有「左右振动」的光才会被弹回来。",
         "principle_research": "布儒斯特角源于p偏振的特殊边界条件：当反射光与折射光垂直（$\\theta_i + \\theta_t = 90^\\circ$）时，界面偶极子辐射方向与反射方向重合，导致 $r_p = 0$。结合Snell定律得 $\\tan(\\theta_B) = n_2 / n_1$。此时反射光偏振度 $P = (R_s - R_p)/(R_s + R_p) = 1$，为完全s偏振。",
-        "formula": "$\\tan(\\theta_B) = n_2 / n_1$",
+        "formula": "$\\tan(\\theta_B) = \\dfrac{n_2}{n_1}$",
         "details": [
           "此角度下反射光为完全s偏振",
           "折射光和反射光垂直",
@@ -1726,7 +1582,7 @@
         "principle": "手性分子使线偏振光的偏振面旋转",
         "principle_foundation": "有些分子就像螺旋楼梯——它们有「左手」和「右手」之分。当偏振光穿过这样的分子，就像沿着螺旋楼梯走，偏振方向会跟着转！糖水就有这种神奇的能力。",
         "principle_research": "旋光性源于手性介质对左、右旋圆偏振光的折射率差异（圆双折射）。线偏振光可分解为等幅左、右旋圆偏振，穿过手性介质后相位差 $\\Delta \\phi = (n_L - n_R)\\cdot\\omega L/c$ 导致出射线偏振方向旋转角 $\\alpha = \\Delta\\phi/2$。Drude单电子模型和量子力学中的旋光张量给出分子层面的理论解释。",
-        "formula": "$\\alpha = [\\alpha]·l·c$",
+        "formula": "$\\alpha = [\\alpha] \\cdot l \\cdot c$",
         "details": [
           "[$\\alpha$]为比旋光度(手性分子特性)",
           "l为样品路径长度",
@@ -1926,7 +1782,7 @@
         "principle": "粒径与波长相当时的散射，散射强度与波长关系复杂",
         "principle_foundation": "当散射粒子（如水滴）足够大，它们就不再「挑食」——红橙黄绿蓝紫，所有颜色的光都被一样地散射。混在一起就是白色！所以云是白的。",
         "principle_research": "米氏理论精确求解Maxwell方程的球对称边界问题，散射振幅由Mie系数aₙ和bₙ的无穷级数表示。尺寸参数x = 2πr/λ >> 1时，散射效率趋近于2（消光悖论），相函数呈强前向瓣。复折射率的虚部引入吸收，由Qabs = Qext - Qsca给出。",
-        "formula": "散射效率$ Qsca ≈ 2 $(大粒子极限)",
+        "formula": "散射效率$ Q_{sca} \\approx 2 $(大粒子极限)",
         "details": [
           "散射光谱较平坦",
           "白云呈白色是米氏散射结果",
@@ -2150,7 +2006,7 @@
         "principle": "光子在浑浊介质中经历多次散射，每次散射改变方向和偏振状态",
         "principle_foundation": "想象光是一个小球，在充满障碍物的房间里弹来弹去。它会碰到很多「墙」，每次都会改变方向，最终可能找到出口，也可能被困住。",
         "principle_research": "辐射传输方程(RTE)描述了比强度在介质中的传播。蒙特卡洛方法通过追踪大量光子的随机行走，统计得到比强度分布。光学特性由吸收系数μa、散射系数μs和相函数p(θ)完全确定。",
-        "formula": "平均自由程$ MFP = 1/(μ_a + μ_s)$",
+        "formula": "平均自由程$ MFP = 1/(\\mu_a + \\mu_s)$",
         "details": [
           "光子步长服从指数分布",
           "散射方向由相函数决定",
@@ -2405,7 +2261,7 @@
         "principle": "穆勒矩阵描述光学元件对偏振态的变换",
         "principle_foundation": "每个光学元件就像一个「变换器」——光进去，偏振状态变了出来。穆勒矩阵就是这个变换器的「说明书」，一个4×4的表格，告诉你输入什么、输出什么。",
         "principle_research": "Mueller矩阵M是作用于Stokes空间的4×4实矩阵：S_out = M·S_in。物理可实现性要求M将所有物理Stokes矢量映射到物理Stokes矢量（非负强度，DOP ≤ 1）。Lu-Chipman分解将M分解为三个矩阵的乘积：M = MΔ·MR·MD，分别代表退偏、延迟和双向衰减，是偏振态分析的标准工具。",
-        "formula": "S' = M · S",
+        "formula": "$S' = M \\cdot S$",
         "details": [
           "4×4矩阵描述线性变换",
           "可级联多个光学元件",
@@ -3011,7 +2867,7 @@
             "偏光太阳镜有看不见的「槽」——阻挡左右振动但让上下振动通过！"
           ],
           "facts_research": [
-            "菲涅尔方程表明空气-水界面所有角度下反射率比 Rs/Rp > 1",
+            "菲涅尔方程表明空气-水界面所有角度下反射率比 frac{R_s}{R_p} > 1",
             "在布儒斯特角（水为53°），反射光100%为s偏振",
             "二向色偏振片通过选择性吸收实现消光比>10,000:1"
           ]
@@ -3019,7 +2875,7 @@
         "physics": {
           "principle": "偏振描述光波中电场振荡的方向",
           "principle_foundation": "普通光就像一群人乱跳舞——有上下跳的、左右跳的、斜着跳的。偏振光就是让所有人「整齐划一」只朝一个方向跳。偏振太阳镜就像一扇竖栅栏的门——只放行「上下跳」的光。",
-          "principle_research": "偏振态由电场矢量的时间演化轨迹定义。完全偏振态可由Jones矢量E = [Ex, Ey]ᵀ exp[i(kz-ωt)]表示。偏振度(DOP)量化光束的偏振纯度：DOP = √(S₁²+S₂²+S₃²)/S₀，完全偏振光DOP=1，自然光DOP=0。",
+          "principle_research": "偏振态由电场矢量的时间演化轨迹定义。完全偏振态可由Jones矢量$ E = [E_x, E_y]^{T} \\cdot exp[i(kz-\\omega t)] $表示。偏振度(DOP)量化光束的偏振纯度：$ DOP = sqrt{S_1^2+S_2^2+S_3^2}{S_0} $，完全偏振光DOP=1，自然光DOP=0。",
           "details": [
             "非偏振光的电场方向随机",
             "偏振光有确定的振荡模式",
@@ -3111,7 +2967,7 @@
         "physics": {
           "principle": "不同偏振类型由正交场分量的相位和振幅关系产生",
           "principle_foundation": "想象甩跳绳的方式：上下甩是「线偏振」，转圈甩是「圆偏振」，画椭圆甩就是「椭圆偏振」。取决于你两只手配合的方式！3D电影用圆偏振是因为歪头也不会搞乱左右眼的分离。",
-          "principle_research": "偏振态由Jones矢量$J = [A_x·exp(i\\phi x), A_y·exp(i\\phi y)]^{T}$完全描述。线偏振对应$\\phi x = \\phi y$，圆偏振要求$A_x = A_y$且$\\Delta\\phi = ±\\pi/2$。在Poincaré球表示中，赤道对应线偏振态，两极对应圆偏振态，其他区域为椭圆偏振态。",
+          "principle_research": "偏振态由Jones矢量 $ J = [A_x \\cdot exp(i\\phi x), A_y\\cdot exp(i\\phi y)]^{T} $ 完全描述。线偏振对应$\\phi x = \\phi y$，圆偏振要求$A_x = A_y$且$\\Delta\\phi = ±\\pi/2$。在Poincaré球表示中，赤道对应线偏振态，两极对应圆偏振态，其他区域为椭圆偏振态。",
           "details": [
             "线偏振：电场在单一平面内振荡",
             "圆偏振：电场以恒定幅度旋转",
@@ -3194,8 +3050,8 @@
             "ATM隐私屏幕就是用叠加的偏振片让只有正对着的人才能看到"
           ],
           "facts_research": [
-            "中间偏振片在θ = 45°时最大透射$ I = I_0 \\cos^{2}(45°)\\cos^{2}(45°) = 0.25I_0$",
-            "N个偏振片以增量角度排列，当N → ∞时趋近100%透射 (cos²(π/2N))^N → 1",
+            "中间偏振片在θ = 45°时最大透射$ I = I_0 \\cos^{2}(45°)\\cos^{2}(45°) = 0.25 I_0$",
+            "N个偏振片以增量角度排列，当N → ∞时趋近100%透射 $(\\cos^2 \\frac{\\pi}{2N})^N → 1$",
             "这类似于量子芝诺效应——频繁测量使态「旋转」而不坍缩"
           ]
         },
@@ -3279,7 +3135,7 @@
         },
         "physics": {
           "principle": "使用马吕斯定律找到产生目标光强的精确偏振片角度",
-          "formula": "I = I₀ × cos²(θ)",
+          "formula": "$I = I_0 \\times \\cos^2(\\theta)$",
           "details": [
             "50%透过率需要 θ = 45°（cos²45° = 0.5）",
             "75%透过率需要 θ = 30°（cos²30° = 0.75）",
@@ -3361,7 +3217,7 @@
         }
       },
       "threePolarizers": {
-        "title": "三偏振片悖论",
+        "title": "malus定律与三偏振片",
         "description": "在正交偏振片之间添加偏振片的惊人效果",
         "lifeScene": {
           "title": "加滤光片反而增加光",
@@ -3540,7 +3396,7 @@
         "光是电磁波，由振荡的电场 (E) 和磁场 (B) 组成",
         "E 和 B 相互垂直，且都垂直于传播方向",
         "在真空中以光速$ c = 3×10^8 m/s $传播",
-        "波长 λ 和频率 f 的关系：$c = \\lambda × f$"
+        "波长$ \\lambda $ 和频率 f 的关系：$c = \\lambda × f$"
       ],
       "transverseDetails": [
         "横波：振动方向垂直于传播方向",
@@ -3621,7 +3477,7 @@
       "specialAngles": "特殊角度",
       "angleList": [
         "$\\theta = 0°: I = I_0$ (完全透过)",
-        "$\\theta = 45°: I = I_0/2$ (半透过)",
+        "$\\theta = 45°: I = \\frac{1}{2}I_0$ (半透过)",
         "$\\theta = 90°: I = 0$ (完全阻挡)"
       ]
     },
@@ -3650,7 +3506,7 @@
     },
     "brewster": {
       "title": "布儒斯特角交互演示",
-      "subtitle": "$\\tan(\\theta_B) = n_2/n_1$ —— 在此角度入射时，反射光为完全s偏振",
+      "subtitle": "$\\tan(\\theta_B) = \\frac{n_2}{n_1}$ —— 在此角度入射时，反射光为完全s偏振",
       "air": "空气",
       "medium": "介质",
       "normal": "法线",
@@ -3681,7 +3537,7 @@
       "reflectedPolDegree": "反射光偏振度",
       "chartDesc": "在布儒斯特角处，$R_p=0$，反射光偏振度达到100%（完全s偏振）。",
       "brewsterTitle": "布儒斯特角",
-      "brewsterDesc": "当入射角等于布儒斯特角时，反射光与折射光垂直（$\\theta_1+\\theta_2=90°$），p偏振反射率为零，反射光成为完全s偏振。",
+      "brewsterDesc": "当入射角等于布儒斯特角时，反射光与折射光垂直（$\\theta_1+\\theta_2=90^\\circ$），p偏振反射率为零，反射光成为完全s偏振。",
       "physicalExplanation": "物理解释",
       "physicalDesc": "在布儒斯特角，折射光中的振动电荷（p偏振方向）与反射方向平行，无法有效辐射能量到反射方向。",
       "applicationsTitle": "应用场景",
@@ -3766,240 +3622,6 @@
       "relativeIntensity": "各波长相对散射强度",
       "rayleighFeatures": "瑞利散射特性",
       "naturalExplanation": "自然现象解释"
-    }
-  },
-  "museum": {
-    "badge": "偏振演示馆 • Polarization Demo Gallery",
-    "title": "探索光的奥秘",
-    "subtitle": "从马吕斯定律到偏振成像，穿越 6 个展厅，体验 17 个交互式演示",
-    "cta": "开始探索",
-    "backToGallery": "返回演示馆",
-    "demos": "个演示",
-    "stats": {
-      "halls": "展厅",
-      "demos": "演示",
-      "levels": "难度等级"
-    },
-    "halls": {
-      "title": "展厅导览",
-      "description": "从基础到前沿，循序渐进探索偏振光学的奇妙世界",
-      "basics": {
-        "title": "光学基础",
-        "subtitle": "认识电磁波与偏振的基本概念，奠定光学探索的基础"
-      },
-      "fundamentals": {
-        "title": "偏振基础",
-        "subtitle": "马吕斯定律、双折射、波片——掌握偏振光学的核心原理"
-      },
-      "reflection": {
-        "title": "界面反射",
-        "subtitle": "菲涅尔方程与布儒斯特角——探索光在界面的偏振行为"
-      },
-      "media": {
-        "title": "透明介质",
-        "subtitle": "应力双折射、色偏振、旋光——发现介质中的偏振现象"
-      },
-      "scattering": {
-        "title": "光散射",
-        "subtitle": "瑞利散射与米氏散射——理解天空为何是蓝色的"
-      },
-      "polarimetry": {
-        "title": "偏振测量",
-        "subtitle": "斯托克斯向量与穆勒矩阵——掌握偏振光的完整表征方法"
-      }
-    },
-    "featured": {
-      "badge": "精选推荐",
-      "title": "不可错过的演示",
-      "explore": "立即体验",
-      "malus": {
-        "description": "经典的马吕斯定律演示——了解偏振片为何能控制光的强度"
-      },
-      "birefringence": {
-        "description": "冰洲石的神奇双像——探索晶体的双折射现象"
-      },
-      "rayleigh": {
-        "description": "天空为什么是蓝色的？夕阳为何是红色的？瑞利散射揭示答案"
-      }
-    },
-    "levels": {
-      "title": "选择你的学习路径",
-      "description": "每个演示都有三种难度级别，适合不同背景的学习者",
-      "foundation": {
-        "title": "基础层",
-        "description": "通过简单解释发现现象，无需公式，强调'为什么'而非'如何计算'"
-      },
-      "application": {
-        "title": "应用层",
-        "description": "带有定量公式的实践实验，专注测量原理和实验设计"
-      },
-      "research": {
-        "title": "研究层",
-        "description": "前沿研究方法与严谨的学术处理，高级理论和研究视角"
-      }
-    },
-    "quickStart": {
-      "title": "快速入门",
-      "description": "三种方式探索演示馆",
-      "explore": {
-        "title": "自由探索",
-        "description": "浏览所有演示，选择你感兴趣的主题"
-      },
-      "guided": {
-        "title": "循序渐进",
-        "description": "跟随课程设计，从基础到进阶"
-      },
-      "challenge": {
-        "title": "挑战模式",
-        "description": "通过互动测验检验你的理解"
-      }
-    },
-    "applications": {
-      "title": "偏振无处不在",
-      "description": "从日常生活到前沿科学，偏振光技术无处不在",
-      "items": {
-        "sunglasses": {
-          "title": "偏光太阳镜",
-          "description": "减少反射表面的眩光"
-        },
-        "lcd": {
-          "title": "液晶显示屏",
-          "description": "你的手机和电脑屏幕都使用偏振光"
-        },
-        "medical": {
-          "title": "医学成像",
-          "description": "检测癌细胞和组织异常"
-        },
-        "ocean": {
-          "title": "海洋科学",
-          "description": "监测海洋生态系统和水质"
-        },
-        "3d": {
-          "title": "3D 电影",
-          "description": "创造沉浸式立体视觉体验"
-        },
-        "stress": {
-          "title": "应力分析",
-          "description": "可视化材料内部的机械应力"
-        }
-      }
-    },
-    "facts": {
-      "title": "你知道吗？",
-      "items": {
-        "bees": "蜜蜂利用天空的偏振光导航，即使在阴天也能找到方向",
-        "vikings": "维京人可能使用过'太阳石'（方解石晶体）在海上导航",
-        "mantis": "螳螂虾能看到圆偏振光——这是其他动物没有的超能力",
-        "cuttlefish": "乌贼通过偏振皮肤图案交流，这对它们的捕食者是隐形的",
-        "lcd": "液晶屏的每个像素都使用两片交叉偏振片来控制光线",
-        "rainbows": "彩虹是部分偏振的——试着用偏光太阳镜观察彩虹！"
-      }
-    },
-    "footer": {
-      "explore": "探索",
-      "resources": "资源",
-      "community": "社区",
-      "demoGallery": "演示馆",
-      "opticalStudio": "光学设计室",
-      "puzzleGame": "解谜游戏",
-      "documentation": "文档",
-      "api": "API 参考",
-      "github": "GitHub",
-      "forum": "论坛",
-      "discord": "Discord",
-      "contribute": "参与贡献",
-      "tagline": "发现偏振光的隐形世界",
-      "copyright": "PolarCraft 教育平台"
-    },
-    "laws": {
-      "title": "偏振四大定律",
-      "subtitle": "点击探索详细演示",
-      "hint": "这四大定律构成了偏振光学的理论基础",
-      "orthogonality": {
-        "title": "正交性",
-        "description": "偏振方向相差90°的光可以共存而不干涉——它们完全独立",
-        "principle": "垂直偏振的光波在空间上正交，无法相互作用",
-        "example": "偏光太阳镜阻挡水面反射眩光",
-        "application": "3D电影、液晶显示、偏振显微镜"
-      },
-      "malus": {
-        "title": "马吕斯定律",
-        "description": "偏振光通过检偏器时，透射光强遵循cos²关系",
-        "formula": "I = I₀ × cos²θ",
-        "principle": "透射强度与偏振方向夹角余弦平方成正比",
-        "example": "转动偏振片，观察亮度周期性变化",
-        "application": "光强调制器、偏振分析仪、光通信"
-      },
-      "birefringence": {
-        "title": "双折射",
-        "description": "各向异性晶体将光分成两束垂直偏振的光：寻常光（o光）和非寻常光（e光）",
-        "principle": "光在晶体中沿不同方向有不同折射率",
-        "example": "冰洲石晶体产生双像现象",
-        "application": "偏光棱镜、波片制造、应力分析"
-      },
-      "interference": {
-        "title": "干涉",
-        "description": "同相光波相加增强（明亮），反相光波相消（黑暗）",
-        "principle": "相位差决定叠加结果：0°增强，180°抵消",
-        "example": "肥皂泡的彩色条纹",
-        "application": "干涉滤光片、全息术、精密测量"
-      }
-    }
-  },
-  "knowledgeMap": {
-    "badge": "知识星图",
-    "title": "偏振光学习之旅",
-    "description": "探索偏振光的完整知识图谱——从基础波动到高级偏振测量",
-    "choosePath": "选择一条学习路径，或自由探索",
-    "instructions": "点击节点查看详情，双击进入演示",
-    "startDemo": "开始演示",
-    "nextSteps": "下一步",
-    "difficulty": {
-      "foundation": "基础层",
-      "application": "应用层",
-      "research": "研究层"
-    },
-    "legend": {
-      "title": "难度等级",
-      "foundation": "基础层 - 视觉化探索",
-      "application": "应用层 - 量化实验",
-      "research": "研究层 - 高级理论"
-    },
-    "paths": {
-      "quickStart": {
-        "name": "快速入门",
-        "desc": "30 分钟了解偏振光核心概念——适合初学者"
-      },
-      "deepDive": {
-        "name": "深度探索",
-        "desc": "从电磁波到穆勒矩阵的完整学习旅程"
-      },
-      "applications": {
-        "name": "实际应用",
-        "desc": "聚焦实际应用——摄影、材料、大气科学"
-      }
-    },
-    "nodes": {
-      "emWave": "理解电磁波——光的本质基础",
-      "polarizationIntro": "发现光如何在特定方向振动",
-      "polarizationTypes": "探索线偏振、圆偏振和椭圆偏振",
-      "opticalBench": "设计和模拟你自己的光学实验",
-      "polarizationState": "在三维空间中可视化偏振态",
-      "malus": "控制偏振片透射率的经典 cos² 定律",
-      "birefringence": "晶体如何将光分成两束偏振光",
-      "waveplate": "用相位延迟变换偏振态",
-      "fresnel": "反射和透射的数学描述",
-      "brewster": "反射光变为完全偏振的角度",
-      "anisotropy": "通过正交偏振片观察应力图案",
-      "chromatic": "当双折射产生彩虹般的颜色",
-      "opticalRotation": "手性分子如何旋转偏振方向",
-      "rayleigh": "天空为什么是蓝色？日落为什么是红色？",
-      "mieScattering": "大颗粒的散射——雾、云、牛奶",
-      "monteCarloScattering": "模拟复杂介质中的光传输",
-      "stokes": "描述任意偏振态的四分量矢量",
-      "jones": "相干偏振变换的 2×2 矩阵",
-      "mueller": "完整偏振分析的 4×4 矩阵",
-      "polarimetricMicroscopy": "利用偏振揭示隐藏结构"
     }
   },
   "footer": {
