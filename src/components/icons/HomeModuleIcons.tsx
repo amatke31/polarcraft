@@ -9,30 +9,35 @@
  * - Interactive hover states
  */
 
-import { cn } from '@/utils/classNames'
+import { cn } from "@/utils/classNames";
 
 interface AnimatedIconProps {
-  className?: string
-  size?: number
-  isHovered?: boolean
-  theme?: 'dark' | 'light'
+  className?: string;
+  size?: number;
+  isHovered?: boolean;
+  theme?: "dark" | "light";
 }
 
 // Polarization colors matching PolarCraftLogo
 const POLAR_COLORS = {
-  deg0: '#ff4444',    // 0° - Red (horizontal)
-  deg45: '#ffaa00',   // 45° - Orange
-  deg90: '#44ff44',   // 90° - Green (vertical)
-  deg135: '#4488ff',  // 135° - Blue
-}
+  deg0: "#ff4444", // 0° - Red (horizontal)
+  deg45: "#ffaa00", // 45° - Orange
+  deg90: "#44ff44", // 90° - Green (vertical)
+  deg135: "#4488ff", // 135° - Blue
+};
 
 /**
  * 1. Courses Module Icon - 课程内容的时间线展示
  * Design: Hourglass with flowing light particles
  */
-export function CoursesModuleIcon({ className, size = 64, isHovered, theme = 'dark' }: AnimatedIconProps) {
-  const primaryColor = theme === 'dark' ? '#fbbf24' : '#d97706'
-  const glowColor = theme === 'dark' ? 'rgba(251, 191, 36, 0.6)' : 'rgba(217, 119, 6, 0.4)'
+export function CoursesModuleIcon({
+  className,
+  size = 64,
+  isHovered,
+  theme = "dark",
+}: AnimatedIconProps) {
+  const primaryColor = theme === "dark" ? "#fbbf24" : "#d97706";
+  const glowColor = theme === "dark" ? "rgba(251, 191, 36, 0.6)" : "rgba(217, 119, 6, 0.4)";
 
   return (
     <svg
@@ -40,22 +45,68 @@ export function CoursesModuleIcon({ className, size = 64, isHovered, theme = 'da
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      className={cn('transition-all duration-500', className)}
+      className={cn("transition-all duration-500", className)}
     >
       <defs>
-        <linearGradient id="history-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} />
-          <stop offset="50%" stopColor="#fcd34d" />
-          <stop offset="100%" stopColor={primaryColor} />
+        <linearGradient
+          id="history-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+          />
+          <stop
+            offset="50%"
+            stopColor="#fcd34d"
+          />
+          <stop
+            offset="100%"
+            stopColor={primaryColor}
+          />
         </linearGradient>
-        <linearGradient id="history-light-flow" x1="50%" y1="0%" x2="50%" y2="100%">
-          <stop offset="0%" stopColor={POLAR_COLORS.deg0} stopOpacity="0.9" />
-          <stop offset="33%" stopColor={POLAR_COLORS.deg45} stopOpacity="0.8" />
-          <stop offset="66%" stopColor={POLAR_COLORS.deg90} stopOpacity="0.8" />
-          <stop offset="100%" stopColor={POLAR_COLORS.deg135} stopOpacity="0.9" />
+        <linearGradient
+          id="history-light-flow"
+          x1="50%"
+          y1="0%"
+          x2="50%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={POLAR_COLORS.deg0}
+            stopOpacity="0.9"
+          />
+          <stop
+            offset="33%"
+            stopColor={POLAR_COLORS.deg45}
+            stopOpacity="0.8"
+          />
+          <stop
+            offset="66%"
+            stopColor={POLAR_COLORS.deg90}
+            stopOpacity="0.8"
+          />
+          <stop
+            offset="100%"
+            stopColor={POLAR_COLORS.deg135}
+            stopOpacity="0.9"
+          />
         </linearGradient>
-        <filter id="history-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
+        <filter
+          id="history-glow"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feGaussianBlur
+            stdDeviation="3"
+            result="blur"
+          />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -73,8 +124,8 @@ export function CoursesModuleIcon({ className, size = 64, isHovered, theme = 'da
         strokeWidth="1"
         strokeDasharray="4 4"
         opacity="0.3"
-        className={isHovered ? 'animate-spin' : ''}
-        style={{ animationDuration: '20s' }}
+        className={isHovered ? "animate-spin" : ""}
+        style={{ animationDuration: "20s" }}
       />
 
       {/* Hourglass frame */}
@@ -85,7 +136,7 @@ export function CoursesModuleIcon({ className, size = 64, isHovered, theme = 'da
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter={isHovered ? 'url(#history-glow)' : undefined}
+        filter={isHovered ? "url(#history-glow)" : undefined}
       />
 
       {/* Top sand/light */}
@@ -105,11 +156,39 @@ export function CoursesModuleIcon({ className, size = 64, isHovered, theme = 'da
       />
 
       {/* Flowing light particles */}
-      <g className={isHovered ? 'animate-pulse' : ''}>
-        <circle cx="32" cy="20" r="2" fill={POLAR_COLORS.deg0} opacity="0.8" filter="url(#history-glow)" />
-        <circle cx="32" cy="28" r="1.5" fill={POLAR_COLORS.deg45} opacity="0.9" filter="url(#history-glow)" />
-        <circle cx="32" cy="36" r="1.5" fill={POLAR_COLORS.deg90} opacity="0.9" filter="url(#history-glow)" />
-        <circle cx="32" cy="44" r="2" fill={POLAR_COLORS.deg135} opacity="0.8" filter="url(#history-glow)" />
+      <g className={isHovered ? "animate-pulse" : ""}>
+        <circle
+          cx="32"
+          cy="20"
+          r="2"
+          fill={POLAR_COLORS.deg0}
+          opacity="0.8"
+          filter="url(#history-glow)"
+        />
+        <circle
+          cx="32"
+          cy="28"
+          r="1.5"
+          fill={POLAR_COLORS.deg45}
+          opacity="0.9"
+          filter="url(#history-glow)"
+        />
+        <circle
+          cx="32"
+          cy="36"
+          r="1.5"
+          fill={POLAR_COLORS.deg90}
+          opacity="0.9"
+          filter="url(#history-glow)"
+        />
+        <circle
+          cx="32"
+          cy="44"
+          r="2"
+          fill={POLAR_COLORS.deg135}
+          opacity="0.8"
+          filter="url(#history-glow)"
+        />
       </g>
 
       {/* Center glow */}
@@ -119,27 +198,59 @@ export function CoursesModuleIcon({ className, size = 64, isHovered, theme = 'da
         r="4"
         fill={glowColor}
         filter="url(#history-glow)"
-        className={isHovered ? 'animate-ping' : 'animate-pulse'}
-        style={{ animationDuration: isHovered ? '1s' : '2s' }}
+        className={isHovered ? "animate-ping" : "animate-pulse"}
+        style={{ animationDuration: isHovered ? "1s" : "2s" }}
       />
 
       {/* Timeline markers */}
-      <g opacity={isHovered ? 0.8 : 0.4} className="transition-opacity duration-300">
-        <circle cx="12" cy="32" r="2" fill={POLAR_COLORS.deg0} />
-        <circle cx="52" cy="32" r="2" fill={POLAR_COLORS.deg90} />
-        <line x1="14" y1="32" x2="18" y2="32" stroke="url(#history-grad)" strokeWidth="1" />
-        <line x1="46" y1="32" x2="50" y2="32" stroke="url(#history-grad)" strokeWidth="1" />
+      <g
+        opacity={isHovered ? 0.8 : 0.4}
+        className="transition-opacity duration-300"
+      >
+        <circle
+          cx="12"
+          cy="32"
+          r="2"
+          fill={POLAR_COLORS.deg0}
+        />
+        <circle
+          cx="52"
+          cy="32"
+          r="2"
+          fill={POLAR_COLORS.deg90}
+        />
+        <line
+          x1="14"
+          y1="32"
+          x2="18"
+          y2="32"
+          stroke="url(#history-grad)"
+          strokeWidth="1"
+        />
+        <line
+          x1="46"
+          y1="32"
+          x2="50"
+          y2="32"
+          stroke="url(#history-grad)"
+          strokeWidth="1"
+        />
       </g>
     </svg>
-  )
+  );
 }
 
 /**
  * 2. Devices Module Icon - 光学器件和典型光路
  * Design: Crystal prism with refracted light beams
  */
-export function DevicesModuleIcon({ className, size = 64, isHovered, theme = 'dark' }: AnimatedIconProps) {
-  const primaryColor = theme === 'dark' ? '#22d3ee' : '#0891b2'
+export function DevicesModuleIcon({
+  className,
+  size = 64,
+  isHovered,
+  theme = "dark",
+}: AnimatedIconProps) {
+  const primaryColor = theme === "dark" ? "#22d3ee" : "#0891b2";
 
   return (
     <svg
@@ -147,28 +258,73 @@ export function DevicesModuleIcon({ className, size = 64, isHovered, theme = 'da
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      className={cn('transition-all duration-500', className)}
+      className={cn("transition-all duration-500", className)}
     >
       <defs>
-        <linearGradient id="studio-crystal" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} stopOpacity="0.9" />
-          <stop offset="50%" stopColor="#a5f3fc" stopOpacity="0.7" />
-          <stop offset="100%" stopColor={primaryColor} stopOpacity="0.9" />
+        <linearGradient
+          id="studio-crystal"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+            stopOpacity="0.9"
+          />
+          <stop
+            offset="50%"
+            stopColor="#a5f3fc"
+            stopOpacity="0.7"
+          />
+          <stop
+            offset="100%"
+            stopColor={primaryColor}
+            stopOpacity="0.9"
+          />
         </linearGradient>
-        <linearGradient id="studio-beam-in" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-          <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.8" />
+        <linearGradient
+          id="studio-beam-in"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="0%"
+        >
+          <stop
+            offset="0%"
+            stopColor="#ffffff"
+            stopOpacity="0"
+          />
+          <stop
+            offset="50%"
+            stopColor="#ffffff"
+            stopOpacity="0.9"
+          />
+          <stop
+            offset="100%"
+            stopColor="#ffffff"
+            stopOpacity="0.8"
+          />
         </linearGradient>
-        <filter id="studio-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter
+          id="studio-glow"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feGaussianBlur
+            stdDeviation="2"
+            result="blur"
+          />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
       </defs>
-{/* 折射光束经过棱镜的视觉效果 */}
+      {/* 折射光束经过棱镜的视觉效果 */}
       {/* Incoming white light beam */}
       <line
         x1="4"
@@ -189,7 +345,7 @@ export function DevicesModuleIcon({ className, size = 64, isHovered, theme = 'da
         stroke="url(#studio-crystal)"
         strokeWidth="3"
         strokeLinejoin="round"
-        filter={isHovered ? 'url(#studio-glow)' : undefined}
+        filter={isHovered ? "url(#studio-glow)" : undefined}
       />
 
       {/* Crystal facets */}
@@ -279,15 +435,20 @@ export function DevicesModuleIcon({ className, size = 64, isHovered, theme = 'da
         className="transition-all duration-300"
       />
     </svg>
-  )
+  );
 }
 
 /**
  * 3. Demos Module Icon - 基本理论和计算模拟
  * Design: Mathematical formulas with light waves
  */
-export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark' }: AnimatedIconProps) {
-  const primaryColor = theme === 'dark' ? '#818cf8' : '#4f46e5'
+export function DemosModuleIcon({
+  className,
+  size = 64,
+  isHovered,
+  theme = "dark",
+}: AnimatedIconProps) {
+  const primaryColor = theme === "dark" ? "#818cf8" : "#4f46e5";
 
   return (
     <svg
@@ -295,15 +456,36 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      className={cn('transition-all duration-500', className)}
+      className={cn("transition-all duration-500", className)}
     >
       <defs>
-        <linearGradient id="theory-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} />
-          <stop offset="100%" stopColor="#a5b4fc" />
+        <linearGradient
+          id="theory-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+          />
+          <stop
+            offset="100%"
+            stopColor="#a5b4fc"
+          />
         </linearGradient>
-        <filter id="theory-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter
+          id="theory-glow"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feGaussianBlur
+            stdDeviation="2"
+            result="blur"
+          />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -312,7 +494,10 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
       </defs>
 
       {/* Matrix brackets */}
-      <g opacity={isHovered ? 1 : 0.8} className="transition-opacity duration-300">
+      <g
+        opacity={isHovered ? 1 : 0.8}
+        className="transition-opacity duration-300"
+      >
         <path
           d="M12 16 L8 16 L8 48 L12 48"
           fill="none"
@@ -332,7 +517,7 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
       </g>
 
       {/* Matrix elements - Jones vectors */}
-      <g filter={isHovered ? 'url(#theory-glow)' : undefined}>
+      <g filter={isHovered ? "url(#theory-glow)" : undefined}>
         {/* cos θ */}
         <text
           x="20"
@@ -382,10 +567,7 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
 
       {/* Wave visualization at top */}
       <path
-        d={isHovered
-          ? "M8 8 Q16 2, 24 8 T40 8 T56 8"
-          : "M12 10 Q20 6, 28 10 T44 10 T52 10"
-        }
+        d={isHovered ? "M8 8 Q16 2, 24 8 T40 8 T56 8" : "M12 10 Q20 6, 28 10 T44 10 T52 10"}
         fill="none"
         stroke="url(#theory-grad)"
         strokeWidth="2"
@@ -397,10 +579,7 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
 
       {/* Wave visualization at bottom */}
       <path
-        d={isHovered
-          ? "M8 56 Q16 62, 24 56 T40 56 T56 56"
-          : "M12 54 Q20 58, 28 54 T44 54 T52 54"
-        }
+        d={isHovered ? "M8 56 Q16 62, 24 56 T40 56 T56 56" : "M12 54 Q20 58, 28 54 T44 54 T52 54"}
         fill="none"
         stroke="url(#theory-grad)"
         strokeWidth="2"
@@ -411,9 +590,26 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
       />
 
       {/* Floating polarization dots */}
-      <g className={isHovered ? 'animate-pulse' : ''} style={{ animationDuration: '1.5s' }}>
-        <circle cx="48" cy="20" r="3" fill={POLAR_COLORS.deg0} opacity="0.6" filter="url(#theory-glow)" />
-        <circle cx="16" cy="56" r="3" fill={POLAR_COLORS.deg90} opacity="0.6" filter="url(#theory-glow)" />
+      <g
+        className={isHovered ? "animate-pulse" : ""}
+        style={{ animationDuration: "1.5s" }}
+      >
+        <circle
+          cx="48"
+          cy="20"
+          r="3"
+          fill={POLAR_COLORS.deg0}
+          opacity="0.6"
+          filter="url(#theory-glow)"
+        />
+        <circle
+          cx="16"
+          cy="56"
+          r="3"
+          fill={POLAR_COLORS.deg90}
+          opacity="0.6"
+          filter="url(#theory-glow)"
+        />
       </g>
 
       {/* Center glow */}
@@ -427,15 +623,20 @@ export function DemosModuleIcon({ className, size = 64, isHovered, theme = 'dark
         className="transition-all duration-500"
       />
     </svg>
-  )
+  );
 }
 
 /**
  * 4. Games Module Icon - 游戏挑战
  * Design: Game controller with polarization light effects
  */
-export function GamesModuleIcon({ className, size = 64, isHovered, theme = 'dark' }: AnimatedIconProps) {
-  const primaryColor = theme === 'dark' ? '#34d399' : '#059669'
+export function GamesModuleIcon({
+  className,
+  size = 64,
+  isHovered,
+  theme = "dark",
+}: AnimatedIconProps) {
+  const primaryColor = theme === "dark" ? "#34d399" : "#059669";
 
   return (
     <svg
@@ -443,15 +644,36 @@ export function GamesModuleIcon({ className, size = 64, isHovered, theme = 'dark
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      className={cn('transition-all duration-500', className)}
+      className={cn("transition-all duration-500", className)}
     >
       <defs>
-        <linearGradient id="games-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} />
-          <stop offset="100%" stopColor="#6ee7b7" />
+        <linearGradient
+          id="games-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+          />
+          <stop
+            offset="100%"
+            stopColor="#6ee7b7"
+          />
         </linearGradient>
-        <filter id="games-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter
+          id="games-glow"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feGaussianBlur
+            stdDeviation="2"
+            result="blur"
+          />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -466,29 +688,102 @@ export function GamesModuleIcon({ className, size = 64, isHovered, theme = 'dark
         stroke="url(#games-grad)"
         strokeWidth="2.5"
         strokeLinejoin="round"
-        filter={isHovered ? 'url(#games-glow)' : undefined}
+        filter={isHovered ? "url(#games-glow)" : undefined}
       />
 
       {/* D-pad */}
       <g>
-        <rect x="16" y="30" width="4" height="10" rx="1" fill="url(#games-grad)" opacity="0.6" />
-        <rect x="13" y="33" width="10" height="4" rx="1" fill="url(#games-grad)" opacity="0.6" />
+        <rect
+          x="16"
+          y="30"
+          width="4"
+          height="10"
+          rx="1"
+          fill="url(#games-grad)"
+          opacity="0.6"
+        />
+        <rect
+          x="13"
+          y="33"
+          width="10"
+          height="4"
+          rx="1"
+          fill="url(#games-grad)"
+          opacity="0.6"
+        />
       </g>
 
       {/* Action buttons - polarization colors */}
-      <g className={isHovered ? 'animate-pulse' : ''} style={{ animationDuration: '0.8s' }}>
-        <circle cx="44" cy="28" r="3.5" fill={POLAR_COLORS.deg90} filter="url(#games-glow)" />
-        <circle cx="50" cy="34" r="3.5" fill={POLAR_COLORS.deg0} filter="url(#games-glow)" />
-        <circle cx="44" cy="40" r="3.5" fill={POLAR_COLORS.deg135} filter="url(#games-glow)" />
-        <circle cx="38" cy="34" r="3.5" fill={POLAR_COLORS.deg45} filter="url(#games-glow)" />
+      <g
+        className={isHovered ? "animate-pulse" : ""}
+        style={{ animationDuration: "0.8s" }}
+      >
+        <circle
+          cx="44"
+          cy="28"
+          r="3.5"
+          fill={POLAR_COLORS.deg90}
+          filter="url(#games-glow)"
+        />
+        <circle
+          cx="50"
+          cy="34"
+          r="3.5"
+          fill={POLAR_COLORS.deg0}
+          filter="url(#games-glow)"
+        />
+        <circle
+          cx="44"
+          cy="40"
+          r="3.5"
+          fill={POLAR_COLORS.deg135}
+          filter="url(#games-glow)"
+        />
+        <circle
+          cx="38"
+          cy="34"
+          r="3.5"
+          fill={POLAR_COLORS.deg45}
+          filter="url(#games-glow)"
+        />
       </g>
 
       {/* Light beam effects on hover */}
       {isHovered && (
         <g>
-          <line x1="44" y1="8" x2="44" y2="16" stroke={POLAR_COLORS.deg90} strokeWidth="2" strokeLinecap="round" filter="url(#games-glow)" opacity="0.8" />
-          <line x1="50" y1="12" x2="54" y2="8" stroke={POLAR_COLORS.deg0} strokeWidth="2" strokeLinecap="round" filter="url(#games-glow)" opacity="0.8" />
-          <line x1="38" y1="12" x2="34" y2="8" stroke={POLAR_COLORS.deg45} strokeWidth="2" strokeLinecap="round" filter="url(#games-glow)" opacity="0.8" />
+          <line
+            x1="44"
+            y1="8"
+            x2="44"
+            y2="16"
+            stroke={POLAR_COLORS.deg90}
+            strokeWidth="2"
+            strokeLinecap="round"
+            filter="url(#games-glow)"
+            opacity="0.8"
+          />
+          <line
+            x1="50"
+            y1="12"
+            x2="54"
+            y2="8"
+            stroke={POLAR_COLORS.deg0}
+            strokeWidth="2"
+            strokeLinecap="round"
+            filter="url(#games-glow)"
+            opacity="0.8"
+          />
+          <line
+            x1="38"
+            y1="12"
+            x2="34"
+            y2="8"
+            stroke={POLAR_COLORS.deg45}
+            strokeWidth="2"
+            strokeLinecap="round"
+            filter="url(#games-glow)"
+            opacity="0.8"
+          />
         </g>
       )}
 
@@ -504,10 +799,7 @@ export function GamesModuleIcon({ className, size = 64, isHovered, theme = 'dark
 
       {/* Decorative waves */}
       <path
-        d={isHovered
-          ? "M4 38 Q8 34, 12 38"
-          : "M6 38 Q8 36, 10 38"
-        }
+        d={isHovered ? "M4 38 Q8 34, 12 38" : "M6 38 Q8 36, 10 38"}
         fill="none"
         stroke="url(#games-grad)"
         strokeWidth="1.5"
@@ -515,10 +807,7 @@ export function GamesModuleIcon({ className, size = 64, isHovered, theme = 'dark
         className="transition-all duration-300"
       />
       <path
-        d={isHovered
-          ? "M52 38 Q56 34, 60 38"
-          : "M54 38 Q56 36, 58 38"
-        }
+        d={isHovered ? "M52 38 Q56 34, 60 38" : "M54 38 Q56 36, 58 38"}
         fill="none"
         stroke="url(#games-grad)"
         strokeWidth="1.5"
@@ -526,15 +815,20 @@ export function GamesModuleIcon({ className, size = 64, isHovered, theme = 'dark
         className="transition-all duration-300"
       />
     </svg>
-  )
+  );
 }
 
 /**
  * 5. Gallery Module Icon - 成果展示
  * Design: Star/award with radiating light
  */
-export function GalleryModuleIcon({ className, size = 64, isHovered, theme = 'dark' }: AnimatedIconProps) {
-  const primaryColor = theme === 'dark' ? '#f472b6' : '#db2777'
+export function GalleryModuleIcon({
+  className,
+  size = 64,
+  isHovered,
+  theme = "dark",
+}: AnimatedIconProps) {
+  const primaryColor = theme === "dark" ? "#f472b6" : "#db2777";
 
   return (
     <svg
@@ -542,21 +836,60 @@ export function GalleryModuleIcon({ className, size = 64, isHovered, theme = 'da
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      className={cn('transition-all duration-500', className)}
+      className={cn("transition-all duration-500", className)}
     >
       <defs>
-        <linearGradient id="gallery-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} />
-          <stop offset="100%" stopColor="#f9a8d4" />
+        <linearGradient
+          id="gallery-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+          />
+          <stop
+            offset="100%"
+            stopColor="#f9a8d4"
+          />
         </linearGradient>
-        <linearGradient id="gallery-rainbow" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={POLAR_COLORS.deg0} />
-          <stop offset="33%" stopColor={POLAR_COLORS.deg45} />
-          <stop offset="66%" stopColor={POLAR_COLORS.deg90} />
-          <stop offset="100%" stopColor={POLAR_COLORS.deg135} />
+        <linearGradient
+          id="gallery-rainbow"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={POLAR_COLORS.deg0}
+          />
+          <stop
+            offset="33%"
+            stopColor={POLAR_COLORS.deg45}
+          />
+          <stop
+            offset="66%"
+            stopColor={POLAR_COLORS.deg90}
+          />
+          <stop
+            offset="100%"
+            stopColor={POLAR_COLORS.deg135}
+          />
         </linearGradient>
-        <filter id="gallery-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
+        <filter
+          id="gallery-glow"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feGaussianBlur
+            stdDeviation="3"
+            result="blur"
+          />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -574,8 +907,8 @@ export function GalleryModuleIcon({ className, size = 64, isHovered, theme = 'da
         strokeWidth="1"
         strokeDasharray={isHovered ? "8 4" : "4 4"}
         opacity="0.4"
-        className={isHovered ? 'animate-spin' : ''}
-        style={{ animationDuration: '10s' }}
+        className={isHovered ? "animate-spin" : ""}
+        style={{ animationDuration: "10s" }}
       />
 
       {/* Star shape */}
@@ -591,7 +924,7 @@ export function GalleryModuleIcon({ className, size = 64, isHovered, theme = 'da
         stroke="url(#gallery-grad)"
         strokeWidth="2.5"
         strokeLinejoin="round"
-        filter={isHovered ? 'url(#gallery-glow)' : undefined}
+        filter={isHovered ? "url(#gallery-glow)" : undefined}
       />
 
       {/* Inner diamond */}
@@ -604,14 +937,80 @@ export function GalleryModuleIcon({ className, size = 64, isHovered, theme = 'da
       />
 
       {/* Radiating light rays on hover */}
-      <g opacity={isHovered ? 1 : 0} className="transition-opacity duration-500">
-        <line x1="32" y1="4" x2="32" y2="0" stroke={POLAR_COLORS.deg0} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
-        <line x1="56" y1="16" x2="60" y2="12" stroke={POLAR_COLORS.deg45} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
-        <line x1="60" y1="32" x2="64" y2="32" stroke={POLAR_COLORS.deg90} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
-        <line x1="56" y1="48" x2="60" y2="52" stroke={POLAR_COLORS.deg135} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
-        <line x1="8" y1="16" x2="4" y2="12" stroke={POLAR_COLORS.deg135} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
-        <line x1="4" y1="32" x2="0" y2="32" stroke={POLAR_COLORS.deg90} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
-        <line x1="8" y1="48" x2="4" y2="52" stroke={POLAR_COLORS.deg45} strokeWidth="2" strokeLinecap="round" filter="url(#gallery-glow)" />
+      <g
+        opacity={isHovered ? 1 : 0}
+        className="transition-opacity duration-500"
+      >
+        <line
+          x1="32"
+          y1="4"
+          x2="32"
+          y2="0"
+          stroke={POLAR_COLORS.deg0}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
+        <line
+          x1="56"
+          y1="16"
+          x2="60"
+          y2="12"
+          stroke={POLAR_COLORS.deg45}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
+        <line
+          x1="60"
+          y1="32"
+          x2="64"
+          y2="32"
+          stroke={POLAR_COLORS.deg90}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
+        <line
+          x1="56"
+          y1="48"
+          x2="60"
+          y2="52"
+          stroke={POLAR_COLORS.deg135}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
+        <line
+          x1="8"
+          y1="16"
+          x2="4"
+          y2="12"
+          stroke={POLAR_COLORS.deg135}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
+        <line
+          x1="4"
+          y1="32"
+          x2="0"
+          y2="32"
+          stroke={POLAR_COLORS.deg90}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
+        <line
+          x1="8"
+          y1="48"
+          x2="4"
+          y2="52"
+          stroke={POLAR_COLORS.deg45}
+          strokeWidth="2"
+          strokeLinecap="round"
+          filter="url(#gallery-glow)"
+        />
       </g>
 
       {/* Center glow */}
@@ -622,26 +1021,55 @@ export function GalleryModuleIcon({ className, size = 64, isHovered, theme = 'da
         fill={primaryColor}
         opacity={isHovered ? 0.6 : 0.4}
         filter="url(#gallery-glow)"
-        className={`transition-all duration-300 ${isHovered ? 'animate-pulse' : ''}`}
+        className={`transition-all duration-300 ${isHovered ? "animate-pulse" : ""}`}
       />
 
       {/* Sparkle dots */}
-      <g className={isHovered ? 'animate-pulse' : ''}>
-        <circle cx="12" cy="12" r="2" fill={POLAR_COLORS.deg0} opacity="0.6" />
-        <circle cx="52" cy="12" r="2" fill={POLAR_COLORS.deg45} opacity="0.6" />
-        <circle cx="52" cy="52" r="2" fill={POLAR_COLORS.deg90} opacity="0.6" />
-        <circle cx="12" cy="52" r="2" fill={POLAR_COLORS.deg135} opacity="0.6" />
+      <g className={isHovered ? "animate-pulse" : ""}>
+        <circle
+          cx="12"
+          cy="12"
+          r="2"
+          fill={POLAR_COLORS.deg0}
+          opacity="0.6"
+        />
+        <circle
+          cx="52"
+          cy="12"
+          r="2"
+          fill={POLAR_COLORS.deg45}
+          opacity="0.6"
+        />
+        <circle
+          cx="52"
+          cy="52"
+          r="2"
+          fill={POLAR_COLORS.deg90}
+          opacity="0.6"
+        />
+        <circle
+          cx="12"
+          cy="52"
+          r="2"
+          fill={POLAR_COLORS.deg135}
+          opacity="0.6"
+        />
       </g>
     </svg>
-  )
+  );
 }
 
 /**
  * 6. Lab Module Icon - 虚拟课题
  * Design: Flask with polarized light experiment
  */
-export function LabModuleIcon({ className, size = 64, isHovered, theme = 'dark' }: AnimatedIconProps) {
-  const primaryColor = theme === 'dark' ? '#2dd4bf' : '#0d9488'
+export function LabModuleIcon({
+  className,
+  size = 64,
+  isHovered,
+  theme = "dark",
+}: AnimatedIconProps) {
+  const primaryColor = theme === "dark" ? "#2dd4bf" : "#0d9488";
 
   return (
     <svg
@@ -649,19 +1077,54 @@ export function LabModuleIcon({ className, size = 64, isHovered, theme = 'dark' 
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      className={cn('transition-all duration-500', className)}
+      className={cn("transition-all duration-500", className)}
     >
       <defs>
-        <linearGradient id="research-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} />
-          <stop offset="100%" stopColor="#5eead4" />
+        <linearGradient
+          id="research-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+          />
+          <stop
+            offset="100%"
+            stopColor="#5eead4"
+          />
         </linearGradient>
-        <linearGradient id="research-liquid" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={primaryColor} stopOpacity="0.3" />
-          <stop offset="100%" stopColor={primaryColor} stopOpacity="0.7" />
+        <linearGradient
+          id="research-liquid"
+          x1="0%"
+          y1="0%"
+          x2="0%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={primaryColor}
+            stopOpacity="0.3"
+          />
+          <stop
+            offset="100%"
+            stopColor={primaryColor}
+            stopOpacity="0.7"
+          />
         </linearGradient>
-        <filter id="research-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter
+          id="research-glow"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feGaussianBlur
+            stdDeviation="2"
+            result="blur"
+          />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -677,11 +1140,19 @@ export function LabModuleIcon({ className, size = 64, isHovered, theme = 'dark' 
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter={isHovered ? 'url(#research-glow)' : undefined}
+        filter={isHovered ? "url(#research-glow)" : undefined}
       />
 
       {/* Flask neck */}
-      <rect x="24" y="4" width="16" height="6" rx="2" fill="url(#research-grad)" opacity="0.4" />
+      <rect
+        x="24"
+        y="4"
+        width="16"
+        height="6"
+        rx="2"
+        fill="url(#research-grad)"
+        opacity="0.4"
+      />
 
       {/* Liquid inside */}
       <path
@@ -714,35 +1185,123 @@ export function LabModuleIcon({ className, size = 64, isHovered, theme = 'dark' 
       </g>
 
       {/* Bubbles with polarization colors */}
-      <g className={isHovered ? 'animate-bounce' : ''} style={{ animationDuration: '1s' }}>
-        <circle cx="24" cy="48" r="3" fill={POLAR_COLORS.deg0} opacity="0.6" filter="url(#research-glow)" />
-        <circle cx="36" cy="50" r="2.5" fill={POLAR_COLORS.deg45} opacity="0.6" filter="url(#research-glow)" />
-        <circle cx="30" cy="46" r="2" fill={POLAR_COLORS.deg90} opacity="0.7" filter="url(#research-glow)" />
-        <circle cx="40" cy="48" r="1.5" fill={POLAR_COLORS.deg135} opacity="0.6" filter="url(#research-glow)" />
+      <g
+        className={isHovered ? "animate-bounce" : ""}
+        style={{ animationDuration: "1s" }}
+      >
+        <circle
+          cx="24"
+          cy="48"
+          r="3"
+          fill={POLAR_COLORS.deg0}
+          opacity="0.6"
+          filter="url(#research-glow)"
+        />
+        <circle
+          cx="36"
+          cy="50"
+          r="2.5"
+          fill={POLAR_COLORS.deg45}
+          opacity="0.6"
+          filter="url(#research-glow)"
+        />
+        <circle
+          cx="30"
+          cy="46"
+          r="2"
+          fill={POLAR_COLORS.deg90}
+          opacity="0.7"
+          filter="url(#research-glow)"
+        />
+        <circle
+          cx="40"
+          cy="48"
+          r="1.5"
+          fill={POLAR_COLORS.deg135}
+          opacity="0.6"
+          filter="url(#research-glow)"
+        />
       </g>
 
       {/* Rising bubbles on hover */}
       {isHovered && (
-        <g className="animate-pulse" style={{ animationDuration: '0.5s' }}>
-          <circle cx="28" cy="38" r="1.5" fill={POLAR_COLORS.deg45} opacity="0.5" />
-          <circle cx="34" cy="34" r="1" fill={POLAR_COLORS.deg90} opacity="0.4" />
-          <circle cx="38" cy="40" r="1.5" fill={POLAR_COLORS.deg0} opacity="0.5" />
+        <g
+          className="animate-pulse"
+          style={{ animationDuration: "0.5s" }}
+        >
+          <circle
+            cx="28"
+            cy="38"
+            r="1.5"
+            fill={POLAR_COLORS.deg45}
+            opacity="0.5"
+          />
+          <circle
+            cx="34"
+            cy="34"
+            r="1"
+            fill={POLAR_COLORS.deg90}
+            opacity="0.4"
+          />
+          <circle
+            cx="38"
+            cy="40"
+            r="1.5"
+            fill={POLAR_COLORS.deg0}
+            opacity="0.5"
+          />
         </g>
       )}
 
       {/* Data/formula indicators 数据/公式 指标 */}
-      <g opacity={isHovered ? 0.8 : 0.4} className="transition-opacity duration-300">
-        <text x="4" y="36" fill="url(#research-grad)" fontSize="8" fontFamily="serif" fontStyle="italic">λ</text>
-        <text x="54" y="36" fill="url(#research-grad)" fontSize="8" fontFamily="serif" fontStyle="italic">θ</text>
+      <g
+        opacity={isHovered ? 0.8 : 0.4}
+        className="transition-opacity duration-300"
+      >
+        <text
+          x="4"
+          y="36"
+          fill="url(#research-grad)"
+          fontSize="8"
+          fontFamily="serif"
+          fontStyle="italic"
+        >
+          λ
+        </text>
+        <text
+          x="54"
+          y="36"
+          fill="url(#research-grad)"
+          fontSize="8"
+          fontFamily="serif"
+          fontStyle="italic"
+        >
+          θ
+        </text>
       </g>
 
       {/* Sparkle effects 闪耀效果 */}
-      <g opacity={isHovered ? 1 : 0.5} className="transition-opacity duration-300">
-        <circle cx="56" cy="12" r="2" fill={primaryColor} filter="url(#research-glow)" />
-        <circle cx="8" cy="16" r="1.5" fill={primaryColor} filter="url(#research-glow)" />
+      <g
+        opacity={isHovered ? 1 : 0.5}
+        className="transition-opacity duration-300"
+      >
+        <circle
+          cx="56"
+          cy="12"
+          r="2"
+          fill={primaryColor}
+          filter="url(#research-glow)"
+        />
+        <circle
+          cx="8"
+          cy="16"
+          r="1.5"
+          fill={primaryColor}
+          filter="url(#research-glow)"
+        />
       </g>
     </svg>
-  )
+  );
 }
 
 // Export map for easy lookup
@@ -753,6 +1312,6 @@ export const HomeModuleIconMap = {
   games: GamesModuleIcon,
   gallery: GalleryModuleIcon,
   lab: LabModuleIcon,
-}
+};
 
-export type HomeModuleIconKey = keyof typeof HomeModuleIconMap
+export type HomeModuleIconKey = keyof typeof HomeModuleIconMap;

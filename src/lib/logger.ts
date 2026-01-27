@@ -1,11 +1,11 @@
 /**
  * Simple logger utility for PolarCraft
  * Can be disabled in production for cleaner console
- * 
+ *
  * 简单的日志记录器
  */
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+type LogLevel = "debug" | "info" | "warn" | "error";
 
 interface LoggerConfig {
   enabled: boolean;
@@ -22,7 +22,7 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 // Default: enable in development, disable in production
 const config: LoggerConfig = {
   enabled: import.meta.env.DEV,
-  minLevel: 'warn',
+  minLevel: "warn",
 };
 
 function shouldLog(level: LogLevel): boolean {
@@ -31,25 +31,25 @@ function shouldLog(level: LogLevel): boolean {
 
 export const logger = {
   debug: (message: string, ...args: unknown[]) => {
-    if (shouldLog('debug')) {
+    if (shouldLog("debug")) {
       console.debug(`[DEBUG] ${message}`, ...args);
     }
   },
 
   info: (message: string, ...args: unknown[]) => {
-    if (shouldLog('info')) {
+    if (shouldLog("info")) {
       console.info(`[INFO] ${message}`, ...args);
     }
   },
 
   warn: (message: string, ...args: unknown[]) => {
-    if (shouldLog('warn')) {
+    if (shouldLog("warn")) {
       console.warn(`[WARN] ${message}`, ...args);
     }
   },
 
   error: (message: string, ...args: unknown[]) => {
-    if (shouldLog('error')) {
+    if (shouldLog("error")) {
       console.error(`[ERROR] ${message}`, ...args);
     }
   },

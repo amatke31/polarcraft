@@ -8,28 +8,28 @@
  * - Works in both dark and light themes
  */
 
-import { cn } from '@/utils/classNames'
+import { cn } from "@/utils/classNames";
 
 interface OpenWisdomLabLogoProps {
-  className?: string
-  height?: number
-  theme?: 'dark' | 'light'
+  className?: string;
+  height?: number;
+  theme?: "dark" | "light";
 }
 
 export function OpenWisdomLabLogo({
   className,
   height = 40,
-  theme = 'dark'
+  theme = "dark",
 }: OpenWisdomLabLogoProps) {
   // Color scheme - enhanced for better website integration
   const colors = {
-    owlPrimary: theme === 'dark' ? '#E91E8C' : '#D91A7D',    // Pink/Magenta for owl
-    owlSecondary: theme === 'dark' ? '#D91A7D' : '#C01670',  // Darker pink for details
-    textBlue: theme === 'dark' ? '#22D3EE' : '#0891B2',      // Cyan to match site theme
-    textBlueDark: theme === 'dark' ? '#06B6D4' : '#0E7490',  // Darker cyan for emphasis
-  }
+    owlPrimary: theme === "dark" ? "#E91E8C" : "#D91A7D", // Pink/Magenta for owl
+    owlSecondary: theme === "dark" ? "#D91A7D" : "#C01670", // Darker pink for details
+    textBlue: theme === "dark" ? "#22D3EE" : "#0891B2", // Cyan to match site theme
+    textBlueDark: theme === "dark" ? "#06B6D4" : "#0E7490", // Darker cyan for emphasis
+  };
 
-  const textColor = colors.textBlue
+  const textColor = colors.textBlue;
 
   return (
     <svg
@@ -37,22 +37,35 @@ export function OpenWisdomLabLogo({
       viewBox="0 0 300 80"
       fill="none"
       className={cn(
-        'transition-all duration-500 ease-out',
-        'hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(233,30,140,0.4)]',
-        'cursor-pointer',
-        className
+        "transition-all duration-500 ease-out",
+        "hover:scale-110 hover:drop-shadow-[0_0_25px_rgba(233,30,140,0.4)]",
+        "cursor-pointer",
+        className,
       )}
       style={{
-        filter: theme === 'dark'
-          ? 'drop-shadow(0 2px 8px rgba(233,30,140,0.2))'
-          : 'drop-shadow(0 2px 6px rgba(217,26,125,0.15))'
+        filter:
+          theme === "dark"
+            ? "drop-shadow(0 2px 8px rgba(233,30,140,0.2))"
+            : "drop-shadow(0 2px 6px rgba(217,26,125,0.15))",
       }}
     >
       <defs>
         {/* Owl gradient */}
-        <linearGradient id="owl-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={colors.owlPrimary} />
-          <stop offset="100%" stopColor={colors.owlSecondary} />
+        <linearGradient
+          id="owl-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={colors.owlPrimary}
+          />
+          <stop
+            offset="100%"
+            stopColor={colors.owlSecondary}
+          />
         </linearGradient>
       </defs>
 
@@ -65,12 +78,32 @@ export function OpenWisdomLabLogo({
         />
 
         {/* Left eye */}
-        <circle cx="25" cy="18" r="6" fill="white" />
-        <circle cx="26" cy="18" r="3" fill="#1a1a1a" />
+        <circle
+          cx="25"
+          cy="18"
+          r="6"
+          fill="white"
+        />
+        <circle
+          cx="26"
+          cy="18"
+          r="3"
+          fill="#1a1a1a"
+        />
 
         {/* Right eye */}
-        <circle cx="35" cy="18" r="6" fill="white" />
-        <circle cx="36" cy="18" r="3" fill="#1a1a1a" />
+        <circle
+          cx="35"
+          cy="18"
+          r="6"
+          fill="white"
+        />
+        <circle
+          cx="36"
+          cy="18"
+          r="3"
+          fill="#1a1a1a"
+        />
 
         {/* Beak */}
         <path
@@ -113,9 +146,21 @@ export function OpenWisdomLabLogo({
 
       {/* "OPEN WISDOM LAB" Text - Enhanced gradient */}
       <defs>
-        <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={textColor} />
-          <stop offset="100%" stopColor={colors.textBlueDark} />
+        <linearGradient
+          id="text-grad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={textColor}
+          />
+          <stop
+            offset="100%"
+            stopColor={colors.textBlueDark}
+          />
         </linearGradient>
       </defs>
 
@@ -160,5 +205,5 @@ export function OpenWisdomLabLogo({
         </text>
       </g>
     </svg>
-  )
+  );
 }

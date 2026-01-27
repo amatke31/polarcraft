@@ -7,43 +7,63 @@
  * - Right: Open Wisdom Lab stylized eye with magenta feathers
  */
 
-import { cn } from '@/utils/classNames'
+import { cn } from "@/utils/classNames";
 
 interface CombinedLogoProps {
-  className?: string
-  height?: number
-  theme?: 'dark' | 'light'
+  className?: string;
+  height?: number;
+  theme?: "dark" | "light";
 }
 
-export function CombinedLogo({
-  className,
-  height = 60,
-  theme = 'dark'
-}: CombinedLogoProps) {
+export function CombinedLogo({ className, height = 60, theme = "dark" }: CombinedLogoProps) {
   // Colors matching official branding
-  const xInstituteBlue = '#1E3A8A' // Darker blue for X-Institute
-  const separatorColor = theme === 'dark' ? '#4B5563' : '#9CA3AF'
-  const owlMagenta = '#D946A0' // Magenta/pink for feathers
-  const owlMagentaDark = '#BE185D'
-  const owlBlue = '#1E40AF' // Blue for eye
+  const xInstituteBlue = "#1E3A8A"; // Darker blue for X-Institute
+  const separatorColor = theme === "dark" ? "#4B5563" : "#9CA3AF";
+  const owlMagenta = "#D946A0"; // Magenta/pink for feathers
+  const owlMagentaDark = "#BE185D";
+  const owlBlue = "#1E40AF"; // Blue for eye
 
   return (
     <svg
       height={height}
       viewBox="0 0 520 80"
       fill="none"
-      className={cn('transition-all duration-300', className)}
+      className={cn("transition-all duration-300", className)}
     >
       <defs>
         {/* Gradient for X-Institute symbol */}
-        <linearGradient id="x-inst-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={xInstituteBlue} />
-          <stop offset="100%" stopColor="#1E3A8A" />
+        <linearGradient
+          id="x-inst-grad-footer"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={xInstituteBlue}
+          />
+          <stop
+            offset="100%"
+            stopColor="#1E3A8A"
+          />
         </linearGradient>
         {/* Gradient for owl feathers */}
-        <linearGradient id="owl-feather-grad-footer" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={owlMagenta} />
-          <stop offset="100%" stopColor={owlMagentaDark} />
+        <linearGradient
+          id="owl-feather-grad-footer"
+          x1="0%"
+          y1="100%"
+          x2="100%"
+          y2="0%"
+        >
+          <stop
+            offset="0%"
+            stopColor={owlMagenta}
+          />
+          <stop
+            offset="100%"
+            stopColor={owlMagentaDark}
+          />
         </linearGradient>
       </defs>
 
@@ -240,5 +260,5 @@ export function CombinedLogo({
         </g>
       </g>
     </svg>
-  )
+  );
 }

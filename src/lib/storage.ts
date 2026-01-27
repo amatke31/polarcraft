@@ -5,29 +5,29 @@
  * Provides get, set, remove functions with JSON support 提供带有 JSON 支持的获取、设置、删除功能
  */
 
-import { logger } from '../lib/logger'
+import { logger } from "../lib/logger";
 
 // In-memory fallback when localStorage is unavailable
-const memoryStorage: Map<string, string> = new Map()
+const memoryStorage: Map<string, string> = new Map();
 
-let localStorageAvailable: boolean | null = null
+let localStorageAvailable: boolean | null = null;
 
 /**
  * Check if localStorage is available
  */
 function isLocalStorageAvailable(): boolean {
-  if (localStorageAvailable !== null) return localStorageAvailable
+  if (localStorageAvailable !== null) return localStorageAvailable;
 
   try {
-    const testKey = '__storage_test__'
-    localStorage.setItem(testKey, testKey)
-    localStorage.removeItem(testKey)
-    localStorageAvailable = true
+    const testKey = "__storage_test__";
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    localStorageAvailable = true;
   } catch {
-    localStorageAvailable = false
+    localStorageAvailable = false;
   }
 
-  return localStorageAvailable
+  return localStorageAvailable;
 }
 
 /**
@@ -36,12 +36,12 @@ function isLocalStorageAvailable(): boolean {
 export function getStorageItem(key: string): string | null {
   try {
     if (isLocalStorageAvailable()) {
-      return localStorage.getItem(key)
+      return localStorage.getItem(key);
     }
-    return memoryStorage.get(key) ?? null
+    return memoryStorage.get(key) ?? null;
   } catch (error) {
-    logger.warn(`Failed to get storage item "${key}":`, error)
-    return memoryStorage.get(key) ?? null
+    logger.warn(`Failed to get storage item "${key}":`, error);
+    return memoryStorage.get(key) ?? null;
   }
 }
 
@@ -51,15 +51,15 @@ export function getStorageItem(key: string): string | null {
 export function setStorageItem(key: string, value: string): boolean {
   try {
     if (isLocalStorageAvailable()) {
-      localStorage.setItem(key, value)
+      localStorage.setItem(key, value);
     }
-    memoryStorage.set(key, value)
-    return true
+    memoryStorage.set(key, value);
+    return true;
   } catch (error) {
-    logger.warn(`Failed to set storage item "${key}":`, error)
+    logger.warn(`Failed to set storage item "${key}":`, error);
     // Fallback to memory storage
-    memoryStorage.set(key, value)
-    return false
+    memoryStorage.set(key, value);
+    return false;
   }
 }
 
@@ -69,14 +69,14 @@ export function setStorageItem(key: string, value: string): boolean {
 export function removeStorageItem(key: string): boolean {
   try {
     if (isLocalStorageAvailable()) {
-      localStorage.removeItem(key)
+      localStorage.removeItem(key);
     }
-    memoryStorage.delete(key)
-    return true
+    memoryStorage.delete(key);
+    return true;
   } catch (error) {
-    logger.warn(`Failed to remove storage item "${key}":`, error)
-    memoryStorage.delete(key)
-    return false
+    logger.warn(`Failed to remove storage item "${key}":`, error);
+    memoryStorage.delete(key);
+    return false;
   }
 }
 
@@ -84,14 +84,14 @@ export function removeStorageItem(key: string): boolean {
  * Safely get and parse JSON from storage
  */
 export function getStorageJSON<T>(key: string, defaultValue: T): T {
-  const item = getStorageItem(key)
-  if (item === null) return defaultValue
+  const item = getStorageItem(key);
+  if (item === null) return defaultValue;
 
   try {
-    return JSON.parse(item) as T
+    return JSON.parse(item) as T;
   } catch (error) {
-    logger.warn(`Failed to parse storage JSON for "${key}":`, error)
-    return defaultValue
+    logger.warn(`Failed to parse storage JSON for "${key}":`, error);
+    return defaultValue;
   }
 }
 
@@ -100,9 +100,9 @@ export function getStorageJSON<T>(key: string, defaultValue: T): T {
  */
 export function setStorageJSON<T>(key: string, value: T): boolean {
   try {
-    return setStorageItem(key, JSON.stringify(value))
+    return setStorageItem(key, JSON.stringify(value));
   } catch (error) {
-    logger.warn(`Failed to stringify value for "${key}":`, error)
-    return false
+    logger.warn(`Failed to stringify value for "${key}":`, error);
+    return false;
   }
 }

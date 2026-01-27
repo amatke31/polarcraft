@@ -1,7 +1,7 @@
 // export * from './ModuleIcons'
 // export * from './DeviceIcons'
 // export * from './PolarCraftLogo'
-export * from './OpenWisdomLabLogo'
-export * from './CombinedLogo'
+export * from "./OpenWisdomLabLogo";
+export * from "./CombinedLogo";
 // export * from './NodeIcons'
-export * from './HomeModuleIcons'
+export * from "./HomeModuleIcons";
