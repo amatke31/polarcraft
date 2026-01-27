@@ -2456,7 +2456,7 @@ export const ModuleIconMap = {
   courses: CoursesIcon,
   opticalDesignStudio: OpticsLabIcon, // Main mapping for Optical Design Studio
   opticsLab: OpticsLabIcon,
-  formulaLab: DemoGalleryIcon,
+  demos: DemoGalleryIcon,
   polarquest: PolarQuestIcon,
   creativeLab: CreativeLabIcon,
   labGroup: LabGroupIcon,

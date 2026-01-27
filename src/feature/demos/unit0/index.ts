@@ -1,5 +1,5 @@
 // Legacy exports (kept for backward compatibility)
-export { LightWaveDemo } from './LightWaveDemo'
+export { LightWaveDemo } from "./LightWaveDemo";
 
 // export { PolarizationIntroDemo } from './PolarizationIntroDemo'
 // export { PolarizationTypesDemo } from './PolarizationTypesDemo'
@@ -11,5 +11,5 @@ export { LightWaveDemo } from './LightWaveDemo'
 // export { MalusLawGraphDemo } from './MalusLawGraphDemo'
 
 // Unified demos (new merged versions)
-export { ElectromagneticWaveDemo } from './ElectromagneticWaveDemo'
-export { PolarizationTypesDemo } from './PolarizationTypesDemo'
+export { ElectromagneticWaveDemo } from "./ElectromagneticWaveDemo";
+export { PolarizationTypesDemo } from "./PolarizationTypesDemo";

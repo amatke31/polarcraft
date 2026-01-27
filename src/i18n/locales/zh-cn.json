@@ -41,6 +41,9 @@
       "coursedirectory": "课程目录",
       "tags": "标签",
       "resources": "资源"
+    },
+    "demos": {
+      "title": "理论模拟"
     }
   },
   "discovery": {
