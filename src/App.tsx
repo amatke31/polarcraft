@@ -13,7 +13,7 @@ const HomePage = lazy(() => import("@/pages/HomePage"));
 // ============================================================
 // Module 1: 课程历史
 // 科学原理 × 历史故事
-const CousesPage = lazy(() => import("@/pages/CousesPage"));
+const CoursesPage = lazy(() => import("@/pages/CoursesPage"));
 
 // Module 2: 光学器件
 // 偏振器件 × 光路设计
@@ -78,7 +78,7 @@ export function App() {
             {/* Module 1: 课程历史 */}
             <Route
               path="/courses"
-              element={<CousesPage />}
+              element={<CoursesPage />}
             />
 
             {/* Module 2: 光学器件 */}
