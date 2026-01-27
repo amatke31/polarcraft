@@ -38,11 +38,12 @@ import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 // Optical Basics demos
 //import { PolarizationIntroDemo } from '@/feature/demos/unit0/PolarizationIntroDemo'
 //import { InteractiveOpticalBenchDemo } from '@/feature/demos/unit0/InteractiveOpticalBenchDemo'
+
 import { PolarizationTypesDemo } from "@/feature/demos/unit0/PolarizationTypesDemo";
 import { ElectromagneticWaveDemo } from "@/feature/demos/unit0/ElectromagneticWaveDemo";
 
 // Unit 1 Demo components
-import { PolarizationStateDemo } from "@/feature/demos/unit1/PolarizationStateDemo";
+
 
 // 课程难度层级类型
 export type DifficultyLevel = "foundation" | "application" | "research";
@@ -64,7 +65,7 @@ interface DemoItem {
 
 // 演示列表：定义所有可用的演示项
 const DEMOS: DemoItem[] = [
-  // 单元0 - 光学基础
+  // 单元0 - 电磁波在界面的相互作用
   // 电磁波演示
   {
     id: "em-wave",
@@ -74,25 +75,24 @@ const DEMOS: DemoItem[] = [
     descriptionKey: "demos.theorySimulation.units.unit0.demos.lightWave.description",
     visualType: "2D",
   },
-  // 偏振类型演示（统一版：包含偏振类型和三偏振片悖论）
+  // 偏振类型演示
   {
-    id: "polarization-types-unified",
+    id: "polarization-types",
     titleKey: "demos.theorySimulation.units.unit0.demos.polarizationTypes.title",
     unit: 0,
     component: PolarizationTypesDemo,
     descriptionKey: "demos.theorySimulation.units.unit0.demos.polarizationTypes.description",
     visualType: "2D",
   },
-  // 单元1 - 偏振
-  // 偏振态演示
-  {
-    id: "polarization-state",
-    titleKey: "demos.theorySimulation.units.unit1.demos.polarizationState.title",
-    unit: 1,
-    component: PolarizationStateDemo,
-    descriptionKey: "demos.theorySimulation.units.unit1.demos.polarizationState.description",
-    visualType: "3D",
-  },
+  // 单元1 - 各向异性介质中的偏振演化
+  //
+
+  // 单元2 - 光散射与部分偏振形成机制
+  //
+
+  // 单元3 - 偏振态的数学表征与成像技术
+  //
+
 ];
 
 // 单元配置：定义所有理论模拟单元

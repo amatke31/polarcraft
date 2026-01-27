@@ -1,1243 +1,662 @@
 /**
- * PolarizationTypesUnifiedDemo - 偏振类型统一演示
- * 合并原有的 PolarizationTypesDemo（偏振类型）和 MalusLawDemo（马吕斯定律）
- *
- * Features:
- * - Tab-based navigation between Polarization Types and Three-Polarizer Paradox
- * - Interactive visualization of linear, circular, elliptical polarization
- * - Three polarizer experiment with Malus's Law calculations
- * - Haptic audio feedback for precision angles
- * - Difficulty-aware content display
+ * 偏振态演示 - Unit 0
+ * 展示光波合成与不同偏振态（线偏振、圆偏振、椭圆偏振）
+ * 重构版本：使用清晰的伪3D Canvas替代R3F 3D视图
  */
-import { useState, useMemo, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, FlaskConical, Volume2, VolumeX } from "lucide-react";
-import { useHapticAudio } from "@/hooks/useHapticAudio";
-import { PolarizationPhysics } from "@/hooks/usePolarizationSimulation";
-import {
-  ControlPanel,
-  SliderControl,
-  Toggle,
-  InfoCard,
-  Formula,
-  PresetButtons,
-  AnimatedValue,
-} from "../DemoControls";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { SliderControl, ControlPanel, ValueDisplay, Formula, InfoCard } from "../DemoControls";
 import MathText from "@/components/shared/MathText";
-import {
-  DifficultyLevel,
-  useDifficultyConfig,
-  WhyButton,
-  DifficultyGate,
-  TaskModeWrapper,
-} from "../DifficultyStrategy";
 
-type ViewMode = "types" | "paradox";
-type PolarizationType = "linear" | "circular" | "elliptical";
-
-// Polarizer visualization component
-interface PolarizerVisualizerProps {
-  x: number;
-  angle: number;
-  label: string;
-  color: string;
-  isActive: boolean;
-  showLines?: boolean;
-}
-
-function PolarizerVisualizer({
-  x,
-  angle,
-  label,
-  color,
-  isActive,
-  showLines = true,
-}: PolarizerVisualizerProps) {
-  const lineCount = 7;
-  const radius = 35;
-
-  return (
-    <g transform={`translate(${x}, 150)`}>
-      <motion.ellipse
-        cx="0"
-        cy="0"
-        rx={radius}
-        ry={radius * 1.2}
-        fill={isActive ? `${color}15` : "#1e293b"}
-        stroke={isActive ? color : "#475569"}
-        strokeWidth={isActive ? 2 : 1}
-        animate={{ scale: isActive ? 1.05 : 1 }}
-        transition={{ duration: 0.3 }}
-      />
-      {showLines && (
-        <g transform={`rotate(${angle})`}>
-          {Array.from({ length: lineCount }, (_, i) => {
-            const yOffset = ((i - Math.floor(lineCount / 2)) / (lineCount / 2)) * radius * 0.9;
-            const xLength = Math.sqrt(radius * radius - yOffset * yOffset) * 0.85;
-            return (
-              <line
-                key={i}
-                x1={-xLength}
-                y1={yOffset}
-                x2={xLength}
-                y2={yOffset}
-                stroke={isActive ? color : "#64748b"}
-                strokeWidth={1.5}
-                opacity={isActive ? 0.8 : 0.4}
-              />
-            );
-          })}
-          <line
-            x1="0"
-            y1={-radius - 8}
-            x2="0"
-            y2={radius + 8}
-            stroke={color}
-            strokeWidth="2"
-            opacity="0.7"
-          />
-          <polygon
-            points="0,-47 -4,-40 4,-40"
-            fill={color}
-            opacity="0.7"
-          />
-          <polygon
-            points="0,47 -4,40 4,40"
-            fill={color}
-            opacity="0.7"
-          />
-        </g>
-      )}
-      <text
-        x="0"
-        y={radius + 25}
-        textAnchor="middle"
-        fill="#9ca3af"
-        fontSize="11"
-      >
-        {label}
-      </text>
-      <text
-        x="0"
-        y={radius + 40}
-        textAnchor="middle"
-        fill={color}
-        fontSize="12"
-        fontWeight="bold"
-      >
-        {angle}°
-      </text>
-    </g>
-  );
-}
-
-// Light beam component
-interface LightBeamProps {
-  x1: number;
-  x2: number;
-  intensity: number;
-  polarization: number;
-  showPolarization: boolean;
-}
-
-function getPolarizationColor(angle: number): string {
-  const normalizedAngle = ((angle % 180) + 180) % 180;
-  if (normalizedAngle < 22.5 || normalizedAngle >= 157.5) return "#ff4444";
-  if (normalizedAngle < 67.5) return "#ffaa00";
-  if (normalizedAngle < 112.5) return "#44ff44";
-  return "#4444ff";
-}
-
-function LightBeam({ x1, x2, intensity, polarization, showPolarization }: LightBeamProps) {
-  const y = 150;
-  const color = showPolarization ? getPolarizationColor(polarization) : "#ffd700";
-  const strokeWidth = Math.max(1, intensity * 8);
-  const opacity = Math.max(0.1, intensity);
-
-  return (
-    <g>
-      <motion.line
-        x1={x1}
-        y1={y}
-        x2={x2}
-        y2={y}
-        stroke={color}
-        strokeWidth={strokeWidth}
-        strokeOpacity={opacity}
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 0.5 }}
-      />
-      <line
-        x1={x1}
-        y1={y}
-        x2={x2}
-        y2={y}
-        stroke={color}
-        strokeWidth={strokeWidth * 3}
-        strokeOpacity={opacity * 0.3}
-        strokeLinecap="round"
-      />
-      {showPolarization && intensity > 0.1 && (
-        <g transform={`translate(${(x1 + x2) / 2}, ${y})`}>
-          <line
-            x1={-15 * Math.cos((polarization * Math.PI) / 180)}
-            y1={-15 * Math.sin((polarization * Math.PI) / 180)}
-            x2={15 * Math.cos((polarization * Math.PI) / 180)}
-            y2={15 * Math.sin((polarization * Math.PI) / 180)}
-            stroke={color}
-            strokeWidth="2"
-            strokeOpacity="0.8"
-          />
-        </g>
-      )}
-    </g>
-  );
-}
-
-// Presets for three polarizer experiment
-const POLARIZER_PRESETS = [
-  { name: { "zh-CN": "正交（0°-90°）" }, p1: 0, p2: null, p3: 90 },
-  { name: { "zh-CN": "加入45°中间片" }, p1: 0, p2: 45, p3: 90 },
-  { name: { "zh-CN": "加入30°中间片" }, p1: 0, p2: 30, p3: 90 },
-  { name: { "zh-CN": "全对齐（全0°）" }, p1: 0, p2: 0, p3: 0 },
-];
-
-interface Props {
-  difficultyLevel?: DifficultyLevel;
-}
-
-export function PolarizationTypesDemo({ difficultyLevel = "application" }: Props) {
-  const config = useDifficultyConfig(difficultyLevel);
-
-  // View mode
-  const [viewMode, setViewMode] = useState<ViewMode>("types");
-
-  // Haptic audio
-  const { checkAngle, initAudio, isAudioEnabled, toggleAudio } = useHapticAudio({
-    snapAngles: [0, 30, 45, 60, 90, 120, 135, 150, 180],
-    angleThreshold: 2.5,
-    volume: 0.12,
-    pitchVariation: true,
-  });
+// 3D波动传播视图 - 伪3D等轴测投影Canvas
+function WavePropagation3DCanvas({
+  phaseDiff,
+  ampX,
+  ampY,
+  animate,
+}: {
+  phaseDiff: number;
+  ampX: number;
+  ampY: number;
+  animate: boolean;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const timeRef = useRef(0);
+  const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    const handleFirstInteraction = () => {
-      initAudio();
-      document.removeEventListener("click", handleFirstInteraction);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const width = 500;
+    const height = 300;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+
+    const axisY = height / 2;
+    const k = 0.05; // 波数
+    const speed = 0.1;
+    const scale = 40;
+    // 投影因子 - 产生伪3D效果
+    const slantX = 0.5; // 深度移动X
+    const slantY = -0.3; // 深度移动Y
+
+    const draw = () => {
+      // 清除画布
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, width, height);
+
+      const t = timeRef.current * speed;
+      const phaseRad = (phaseDiff * Math.PI) / 180;
+
+      // 绘制传播方向轴（灰色）
+      ctx.beginPath();
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = 1;
+      ctx.moveTo(20, axisY);
+      ctx.lineTo(width - 20, axisY);
+      ctx.stroke();
+
+      // Ex 分量 (红色) - 在伪3D空间中的"水平"方向
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255, 68, 68, 0.6)";
+      ctx.lineWidth = 2;
+      for (let i = 0; i < width - 40; i += 2) {
+        const val = ampX * Math.cos(k * i - t);
+        const sx = 20 + i + val * scale * slantX;
+        const sy = axisY + val * scale * slantY;
+        if (i === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+
+      // Ey 分量 (绿色) - 垂直方向
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(68, 255, 68, 0.6)";
+      ctx.lineWidth = 2;
+      for (let i = 0; i < width - 40; i += 2) {
+        const val = ampY * Math.cos(k * i - t + phaseRad);
+        const sx = 20 + i;
+        const sy = axisY - val * scale;
+        if (i === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+
+      // 合成矢量轨迹 (黄色) - 螺旋路径
+      ctx.beginPath();
+      ctx.strokeStyle = "#ffff00";
+      ctx.lineWidth = 2.5;
+      for (let i = 0; i < width - 40; i++) {
+        const valX = ampX * Math.cos(k * i - t);
+        const valY = ampY * Math.cos(k * i - t + phaseRad);
+        const sx = 20 + i + valX * scale * slantX;
+        const sy = axisY + valX * scale * slantY - valY * scale;
+        if (i === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+
+      // 绘制矢量箭头 - 帮助可视化
+      for (let i = 0; i < width - 40; i += 60) {
+        const valX = ampX * Math.cos(k * i - t);
+        const valY = ampY * Math.cos(k * i - t + phaseRad);
+        const sx = 20 + i + valX * scale * slantX;
+        const sy = axisY + valX * scale * slantY - valY * scale;
+        const originX = 20 + i;
+        const originY = axisY;
+
+        // 矢量线
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255, 255, 0, 0.4)";
+        ctx.lineWidth = 1;
+        ctx.moveTo(originX, originY);
+        ctx.lineTo(sx, sy);
+        ctx.stroke();
+
+        // 矢量端点
+        ctx.beginPath();
+        ctx.fillStyle = "#ffff00";
+        ctx.arc(sx, sy, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 轴标签
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "12px sans-serif";
+      ctx.fillText("传播方向 Z", width - 80, axisY + 20);
+
+      // 图例
+      ctx.fillStyle = "#ff4444";
+      ctx.fillRect(20, 20, 12, 12);
+      ctx.fillStyle = "#e0e0e0";
+      ctx.fillText("Ex (水平)", 38, 30);
+
+      ctx.fillStyle = "#44ff44";
+      ctx.fillRect(20, 38, 12, 12);
+      ctx.fillStyle = "#e0e0e0";
+      ctx.fillText("Ey (垂直)", 38, 48);
+
+      ctx.fillStyle = "#ffff00";
+      ctx.fillRect(20, 56, 12, 12);
+      ctx.fillStyle = "#e0e0e0";
+      ctx.fillText("E (合成)", 38, 66);
+
+      if (animate) {
+        timeRef.current += 1;
+      }
+      animationRef.current = requestAnimationFrame(draw);
     };
-    document.addEventListener("click", handleFirstInteraction);
-    return () => document.removeEventListener("click", handleFirstInteraction);
-  }, [initAudio]);
 
-  // ===== Types View States =====
-  const [polarizationType, setPolarizationType] = useState<PolarizationType>("linear");
-  const [linearAngle, setLinearAngle] = useState(45);
-  const [ellipseRatio, setEllipseRatio] = useState(0.5);
-  const [circularDirection, setCircularDirection] = useState<"right" | "left">("right");
-  const [animationSpeed, setAnimationSpeed] = useState(0.5);
-  const [showTrail, setShowTrail] = useState(true);
-  const [time, setTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+    draw();
 
-  // ===== Paradox View States =====
-  const [polarizer1Angle, setPolarizer1Angle] = useState(0);
-  const [polarizer2Angle, setPolarizer2Angle] = useState<number | null>(45);
-  const [polarizer3Angle, setPolarizer3Angle] = useState(90);
-  const [showMiddlePolarizer, setShowMiddlePolarizer] = useState(true);
-  const [showPolarization, setShowPolarization] = useState(true);
-  const [showFormulas, setShowFormulas] = useState(true);
-  const [selectedPreset, setSelectedPreset] = useState<number | null>(1);
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [phaseDiff, ampX, ampY, animate]);
 
-  // Task completion for Application mode
-  const [taskCompleted, setTaskCompleted] = useState(false);
+  return (
+    <canvas
+      ref={canvasRef}
+      className="rounded-lg border border-cyan-400/20 w-full"
+      style={{ maxWidth: 500, height: 300 }}
+    />
+  );
+}
 
-  // Animation loop for Types view
+// 2D偏振态投影Canvas
+function PolarizationStateCanvas({
+  phaseDiff,
+  ampX,
+  ampY,
+  animate,
+}: {
+  phaseDiff: number;
+  ampX: number;
+  ampY: number;
+  animate: boolean;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const timeRef = useRef(0);
+  const animationRef = useRef<number | undefined>(undefined);
+
   useEffect(() => {
-    if (!isPlaying || animationSpeed === 0 || viewMode !== "types") return;
-    const interval = setInterval(() => {
-      setTime((t) => t + 0.05 * animationSpeed);
-    }, 16);
-    return () => clearInterval(interval);
-  }, [isPlaying, animationSpeed, viewMode]);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  // Calculate E-field position for Types view
-  const { ex, ey, trailPath } = useMemo(() => {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const width = 300;
+    const height = 300;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+
+    const cx = width / 2;
+    const cy = height / 2;
     const radius = 100;
-    const phase = time * 2;
-    let ex = 0,
-      ey = 0;
-    const trailPoints: string[] = [];
+    const phaseRad = (phaseDiff * Math.PI) / 180;
 
-    if (polarizationType === "linear") {
-      const angleRad = (linearAngle * Math.PI) / 180;
-      const oscillation = Math.sin(phase);
-      ex = radius * Math.cos(angleRad) * oscillation;
-      ey = -radius * Math.sin(angleRad) * oscillation;
-      for (let t = 0; t < 100; t++) {
-        const p = (time - t * 0.01) * 2;
-        const osc = Math.sin(p);
-        trailPoints.push(
-          `${200 + radius * Math.cos(angleRad) * osc},${200 - radius * Math.sin(angleRad) * osc}`,
-        );
-      }
-    } else if (polarizationType === "circular") {
-      const direction = circularDirection === "right" ? 1 : -1;
-      ex = radius * Math.cos(phase);
-      ey = -radius * Math.sin(phase * direction);
-      for (let t = 0; t < 100; t++) {
-        const p = (time - t * 0.01) * 2;
-        trailPoints.push(`${200 + radius * Math.cos(p)},${200 - radius * Math.sin(p * direction)}`);
-      }
-    } else {
-      const direction = circularDirection === "right" ? 1 : -1;
-      ex = radius * Math.cos(phase);
-      ey = -radius * ellipseRatio * Math.sin(phase * direction);
-      for (let t = 0; t < 100; t++) {
-        const p = (time - t * 0.01) * 2;
-        trailPoints.push(
-          `${200 + radius * Math.cos(p)},${200 - radius * ellipseRatio * Math.sin(p * direction)}`,
-        );
-      }
-    }
+    const draw = () => {
+      // 清除画布
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, width, height);
 
+      // 绘制坐标轴
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx, 20);
+      ctx.lineTo(cx, height - 20);
+      ctx.moveTo(20, cy);
+      ctx.lineTo(width - 20, cy);
+      ctx.stroke();
+
+      // 轴标签
+      ctx.fillStyle = "#64748b";
+      ctx.font = "12px sans-serif";
+      ctx.fillText("Ex", width - 30, cy - 10);
+      ctx.fillText("Ey", cx + 10, 30);
+
+      // 绘制偏振椭圆轨迹
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255, 255, 0, 0.4)";
+      ctx.lineWidth = 2;
+      for (let a = 0; a <= Math.PI * 2; a += 0.05) {
+        const px = ampX * Math.cos(a) * radius;
+        const py = ampY * Math.cos(a + phaseRad) * radius;
+        if (a === 0) ctx.moveTo(cx + px, cy - py);
+        else ctx.lineTo(cx + px, cy - py);
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      // 当前矢量位置
+      const phase = -timeRef.current * 0.05;
+      const vecX = ampX * Math.cos(phase) * radius;
+      const vecY = ampY * Math.cos(phase + phaseRad) * radius;
+
+      // 绘制当前矢量
+      ctx.beginPath();
+      ctx.strokeStyle = "#ffff00";
+      ctx.lineWidth = 3;
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + vecX, cy - vecY);
+      ctx.stroke();
+
+      ctx.setLineDash([5, 5]);
+
+      ctx.beginPath();
+      ctx.strokeStyle = "#aaa";
+      ctx.lineWidth = 2;
+      ctx.moveTo(cx + vecX, cy);
+      ctx.lineTo(cx + vecX, cy - vecY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.strokeStyle = "#aaa";
+      ctx.lineWidth = 2;
+      ctx.moveTo(cx + vecX, cy - vecY);
+      ctx.lineTo(cx, cy - vecY);
+      ctx.stroke();
+
+      ctx.setLineDash([]);
+
+      // 矢量端点
+      ctx.beginPath();
+      ctx.fillStyle = "#ffff00";
+      ctx.arc(cx + vecX, cy - vecY, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ex分量指示
+      ctx.beginPath();
+      ctx.strokeStyle = "#ff4444";
+      ctx.lineWidth = 2;
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + vecX, cy);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.fillStyle = "#ff4444";
+      ctx.arc(cx + vecX, cy, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ey分量指示
+      ctx.beginPath();
+      ctx.strokeStyle = "#44ff44";
+      ctx.lineWidth = 2;
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx, cy - vecY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.fillStyle = "#44ff44";
+      ctx.arc(cx, cy - vecY, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 图例
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "11px sans-serif";
+      ctx.fillText("Ex分量", cx + 50, cy + 135);
+      ctx.fillText("Ey分量", 15, cy - 100);
+
+      if (animate) {
+        timeRef.current += 1;
+      }
+      animationRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [phaseDiff, ampX, ampY, animate]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="rounded-lg border border-cyan-400/20"
+      style={{ width: 300, height: 300 }}
+    />
+  );
+}
+
+// 偏振态类型判断
+function getPolarizationState(
+  phaseDiff: number,
+  ampX: number,
+  ampY: number,
+): { type: LabelI18n; color: string; description: LabelI18n } {
+  const normalizedPhase = ((phaseDiff % 360) + 360) % 360;
+
+  if (ampX < 0.05 || ampY < 0.05) {
     return {
-      ex: 200 + ex,
-      ey: 200 + ey,
-      trailPath: `M ${trailPoints.join(" L ")}`,
+      type: { "zh-CN": "线偏振 (单轴)" },
+      color: "#ff4444",
+      description: { "zh-CN": "只有一个分量振动，光沿单一方向振动" },
     };
-  }, [time, polarizationType, linearAngle, ellipseRatio, circularDirection]);
+  }
 
-  // Reference shape path for Types view
-  const referencePath = useMemo(() => {
-    const radius = 100;
-    if (polarizationType === "linear") {
-      const angleRad = (linearAngle * Math.PI) / 180;
-      const x1 = 200 - radius * Math.cos(angleRad);
-      const y1 = 200 + radius * Math.sin(angleRad);
-      const x2 = 200 + radius * Math.cos(angleRad);
-      const y2 = 200 - radius * Math.sin(angleRad);
-      return `M ${x1},${y1} L ${x2},${y2}`;
-    } else if (polarizationType === "circular") {
-      return `M 300,200 A 100,100 0 1,1 299.99,200`;
-    } else {
-      const ry = radius * ellipseRatio;
-      return `M 300,200 A 100,${ry} 0 1,1 299.99,200`;
-    }
-  }, [polarizationType, linearAngle, ellipseRatio]);
+  if (
+    Math.abs(ampX - ampY) < 0.1 &&
+    (Math.abs(normalizedPhase - 90) < 5 || Math.abs(normalizedPhase - 270) < 5)
+  ) {
+    const direction = Math.abs(normalizedPhase - 90) < 5 ? "右旋" : "左旋";
+    return {
+      type: { "zh-CN": `${direction}圆偏振` },
+      color: "#44ff44",
+      description: { "zh-CN": "电场矢量沿圆轨迹旋转，产生螺旋传播" },
+    };
+  }
 
-  // Calculate light intensity for Paradox view using unified physics engine
-  const calculations = useMemo(() => {
-    const I0 = 1;
-    const pol1 = polarizer1Angle;
+  if (
+    normalizedPhase < 5 ||
+    Math.abs(normalizedPhase - 180) < 5 ||
+    Math.abs(normalizedPhase - 360) < 5
+  ) {
+    return {
+      type: { "zh-CN": "线偏振" },
+      color: "#ffaa00",
+      description: { "zh-CN": "两分量同相或反相，矢量沿直线振动" },
+    };
+  }
 
-    // Build polarizer chain based on configuration
-    const polarizers: (number | null)[] =
-      showMiddlePolarizer && polarizer2Angle !== null
-        ? [polarizer1Angle, polarizer2Angle, polarizer3Angle]
-        : [polarizer1Angle, polarizer3Angle];
+  return {
+    type: { "zh-CN": "椭圆偏振" },
+    color: "#a78bfa",
+    description: { "zh-CN": "最一般的偏振态，电场矢量沿椭圆轨迹旋转" },
+  };
+}
 
-    // Use unified physics engine for Malus's Law calculation
-    const result = PolarizationPhysics.polarizerChain(
-      polarizers,
-      true, // isUnpolarizedInput
-      I0, // inputIntensity
-    );
+// 预设按钮组件
+function PresetButton({
+  label,
+  isActive,
+  onClick,
+  color,
+}: {
+  label: LabelI18n;
+  isActive: boolean;
+  onClick: () => void;
+  color: string;
+}) {
+  const { i18n } = useTranslation();
+  return (
+    <motion.button
+      className={`px-3 py-2 rounded-lg text-sm font-medium border transition-all ${
+        isActive
+          ? `bg-opacity-20 border-opacity-50`
+          : "bg-slate-700/50 text-gray-400 border-slate-600/50 hover:border-slate-500"
+      }`}
+      style={{
+        backgroundColor: isActive ? `${color}20` : undefined,
+        borderColor: isActive ? `${color}80` : undefined,
+        color: isActive ? color : undefined,
+      }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+    >
+      {label[i18n.language]}
+    </motion.button>
+  );
+}
 
-    // Extract intermediate intensities from stages
-    const stages = result.stages;
-    const I1 = stages[0] ?? 0.5; // After first polarizer (always 50% for unpolarized)
+// 主演示组件
+export function PolarizationTypesDemo() {
+  const { i18n } = useTranslation();
+  const [phaseDiff, setPhaseDiff] = useState(0);
+  const [ampX, setAmpX] = useState(1);
+  const [ampY, setAmpY] = useState(1);
+  const [animate, setAnimate] = useState(true);
 
-    if (!showMiddlePolarizer || polarizer2Angle === null) {
-      // Two polarizers: P1 → P3
-      const I3 = stages[1] ?? 0;
-      const angleDiff = Math.abs(polarizer3Angle - polarizer1Angle) % 180;
-      const theta2 = Math.min(angleDiff, 180 - angleDiff);
-      return {
-        I0,
-        I1,
-        I2: null,
-        I3,
-        pol1,
-        pol2: null,
-        pol3: polarizer3Angle,
-        theta1: null,
-        theta2,
-        transmission: result.intensity / I0,
-      };
-    } else {
-      // Three polarizers: P1 → P2 → P3
-      const I2 = stages[1] ?? 0;
-      const I3 = stages[2] ?? 0;
-      const angleDiff1 = Math.abs(polarizer2Angle - polarizer1Angle) % 180;
-      const theta1 = Math.min(angleDiff1, 180 - angleDiff1);
-      const angleDiff2 = Math.abs(polarizer3Angle - polarizer2Angle) % 180;
-      const theta2 = Math.min(angleDiff2, 180 - angleDiff2);
-
-      return {
-        I0,
-        I1,
-        I2,
-        I3,
-        pol1,
-        pol2: polarizer2Angle,
-        pol3: polarizer3Angle,
-        theta1,
-        theta2,
-        transmission: result.intensity / I0,
-      };
-    }
-  }, [polarizer1Angle, polarizer2Angle, polarizer3Angle, showMiddlePolarizer]);
-
-  // Check task completion
-  useEffect(() => {
-    if (viewMode === "paradox" && calculations.transmission > 0.1 && showMiddlePolarizer) {
-      setTaskCompleted(true);
-    }
-  }, [viewMode, calculations.transmission, showMiddlePolarizer]);
-
-  // Handle angle changes with haptic feedback
-  const handleAngleChange = useCallback(
-    (setter: (v: number) => void, value: number) => {
-      setter(value);
-      checkAngle(value);
-    },
-    [checkAngle],
+  const polarizationState = useMemo(
+    () => getPolarizationState(phaseDiff, ampX, ampY),
+    [phaseDiff, ampX, ampY],
   );
 
-  // Handle preset selection
-  const handlePresetSelect = useCallback((index: number) => {
-    const preset = POLARIZER_PRESETS[index];
-    setSelectedPreset(index);
-    setPolarizer1Angle(preset.p1);
-    setPolarizer3Angle(preset.p3);
-    if (preset.p2 !== null) {
-      setShowMiddlePolarizer(true);
-      setPolarizer2Angle(preset.p2);
-    } else {
-      setShowMiddlePolarizer(false);
-      setPolarizer2Angle(null);
-    }
+  // 预设选项
+  const presets = [
+    { label: { "zh-CN": "水平线偏振" }, params: { phase: 0, ax: 1, ay: 0 }, color: "#ff4444" },
+    { label: { "zh-CN": "45°线偏振" }, params: { phase: 0, ax: 1, ay: 1 }, color: "#ffaa00" },
+    { label: { "zh-CN": "右旋圆偏振" }, params: { phase: 90, ax: 1, ay: 1 }, color: "#44ff44" },
+    { label: { "zh-CN": "左旋圆偏振" }, params: { phase: 270, ax: 1, ay: 1 }, color: "#22d3ee" },
+    { label: { "zh-CN": "椭圆偏振" }, params: { phase: 45, ax: 1, ay: 0.6 }, color: "#a78bfa" },
+  ];
+
+  const handlePresetClick = useCallback((params: { phase: number; ax: number; ay: number }) => {
+    setPhaseDiff(params.phase);
+    setAmpX(params.ax);
+    setAmpY(params.ay);
   }, []);
 
-  const getTypeLabel = (type: PolarizationType) => {
-    if (type === "linear") return "线偏振";
-    if (type === "circular") return circularDirection === "right" ? "右旋圆偏振" : "左旋圆偏振";
-    return "椭圆偏振";
-  };
+  // 当前选中的预设
+  const currentPresetIndex = useMemo(() => {
+    return presets.findIndex(
+      (p) =>
+        Math.abs(p.params.phase - phaseDiff) < 5 &&
+        Math.abs(p.params.ax - ampX) < 0.1 &&
+        Math.abs(p.params.ay - ampY) < 0.1,
+    );
+  }, [phaseDiff, ampX, ampY]);
 
   return (
-    <div className="space-y-6">
-      {/* View Mode Tabs */}
-      <div className="flex gap-2 p-1 bg-slate-800/50 rounded-lg w-fit">
-        <button
-          onClick={() => setViewMode("types")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
-            viewMode === "types"
-              ? "bg-orange-500/20 text-orange-400 shadow-sm"
-              : "text-gray-400 hover:text-gray-300 hover:bg-slate-700/50"
-          }`}
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>偏振类型</span>
-        </button>
-        <button
-          onClick={() => setViewMode("paradox")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
-            viewMode === "paradox"
-              ? "bg-purple-500/20 text-purple-400 shadow-sm"
-              : "text-gray-400 hover:text-gray-300 hover:bg-slate-700/50"
-          }`}
-        >
-          <FlaskConical className="w-4 h-4" />
-          <span>马吕斯定律展示</span>
-        </button>
+    <div className="flex flex-col gap-6 h-full">
+      {/* 标题 */}
+      <div className="text-center">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
+          偏振态与波合成
+        </h2>
+        <p className="text-gray-400 mt-1">探索光的偏振状态：由两个垂直分量的振幅比和相位差决定</p>
       </div>
 
-      <AnimatePresence mode="wait">
-        {viewMode === "types" ? (
-          <motion.div
-            key="types"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.2 }}
-          >
-            {/* Types View */}
-            <div className="flex gap-6 flex-col lg:flex-row">
-              <div className="flex-1">
-                <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 rounded-xl border border-indigo-500/20 p-4">
-                  <svg
-                    viewBox="0 0 400 400"
-                    className="w-full h-auto max-w-[400px] mx-auto"
-                  >
-                    <defs>
-                      <filter id="glow-cyan">
-                        <feGaussianBlur
-                          stdDeviation="4"
-                          result="coloredBlur"
-                        />
-                        <feMerge>
-                          <feMergeNode in="coloredBlur" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                      <linearGradient
-                        id="trail-gradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#22d3ee"
-                          stopOpacity="0"
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="#22d3ee"
-                          stopOpacity="0.5"
-                        />
-                      </linearGradient>
-                    </defs>
+      {/* 上方：两个可视化面板 */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* 3D 波动传播视图 */}
+        <div className="flex-1 bg-slate-900/50 rounded-xl border border-cyan-400/20 overflow-hidden">
+          <div className="px-4 py-3 border-b border-cyan-400/10 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-white">3D 空间传播视图</h3>
+            <div className="text-xs text-gray-500">伪等轴测投影</div>
+          </div>
+          <div className="p-4 flex justify-center">
+            <WavePropagation3DCanvas
+              phaseDiff={phaseDiff}
+              ampX={ampX}
+              ampY={ampY}
+              animate={animate}
+            />
+          </div>
+        </div>
 
-                    {/* Axes */}
-                    <line
-                      x1="70"
-                      y1="200"
-                      x2="330"
-                      y2="200"
-                      stroke="#4b5563"
-                      strokeWidth="1.5"
-                    />
-                    <line
-                      x1="200"
-                      y1="70"
-                      x2="200"
-                      y2="330"
-                      stroke="#4b5563"
-                      strokeWidth="1.5"
-                    />
-                    <polygon
-                      points="330,200 320,195 320,205"
-                      fill="#4b5563"
-                    />
-                    <polygon
-                      points="200,70 195,80 205,80"
-                      fill="#4b5563"
-                    />
-                    <text
-                      x="340"
-                      y="205"
-                      fill="#9ca3af"
-                      fontSize="14"
-                    >
-                      Ex
-                    </text>
-                    <text
-                      x="205"
-                      y="60"
-                      fill="#9ca3af"
-                      fontSize="14"
-                    >
-                      Ey
-                    </text>
-
-                    {/* Reference shape */}
-                    <path
-                      d={referencePath}
-                      fill="none"
-                      stroke="#4b5563"
-                      strokeWidth="1"
-                      strokeDasharray="5 5"
-                    />
-
-                    {/* Trail */}
-                    {showTrail && (
-                      <motion.path
-                        d={trailPath}
-                        fill="none"
-                        stroke="url(#trail-gradient)"
-                        strokeWidth="2"
-                      />
-                    )}
-
-                    {/* E-field vector */}
-                    <motion.line
-                      x1="200"
-                      y1="200"
-                      x2={ex}
-                      y2={ey}
-                      stroke="#22d3ee"
-                      strokeWidth="3"
-                      filter="url(#glow-cyan)"
-                    />
-                    <circle
-                      cx={ex}
-                      cy={ey}
-                      r="6"
-                      fill="#22d3ee"
-                      filter="url(#glow-cyan)"
-                    />
-                    <motion.circle
-                      cx={ex}
-                      cy={ey}
-                      r="4"
-                      fill="#fbbf24"
-                      filter="url(#glow-cyan)"
-                    />
-                    <circle
-                      cx="200"
-                      cy="200"
-                      r="4"
-                      fill="#9ca3af"
-                    />
-
-                    {/* Label */}
-                    <text
-                      x="20"
-                      y="30"
-                      fill="#9ca3af"
-                      fontSize="14"
-                    >
-                      {getTypeLabel(polarizationType)}
-                    </text>
-                    <text
-                      x="320"
-                      y="30"
-                      fill="#6b7280"
-                      fontSize="12"
-                    >
-                      φ = {(((time * 2 * 180) / Math.PI) % 360).toFixed(0)}°
-                    </text>
-                  </svg>
-                </div>
-
-                {/* Type selector */}
-                <div className="mt-4 p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
-                  <h4 className="text-sm font-semibold text-gray-300 mb-3">偏振类型</h4>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["linear", "circular", "elliptical"] as PolarizationType[]).map((type) => {
-                      const colors = {
-                        linear: {
-                          active: "bg-orange-400/20 border-orange-400/50 text-orange-400",
-                          inactive: "hover:border-orange-400/30",
-                        },
-                        circular: {
-                          active: "bg-green-400/20 border-green-400/50 text-green-400",
-                          inactive: "hover:border-green-400/30",
-                        },
-                        elliptical: {
-                          active: "bg-purple-400/20 border-purple-400/50 text-purple-400",
-                          inactive: "hover:border-purple-400/30",
-                        },
-                      };
-                      const labels = {
-                        linear: "线偏振",
-                        circular: "圆偏振",
-                        elliptical: "椭圆偏振",
-                      };
-
-                      return (
-                        <motion.button
-                          key={type}
-                          className={`py-2.5 px-3 rounded-lg text-sm font-medium border transition-all ${
-                            polarizationType === type
-                              ? colors[type].active
-                              : `bg-slate-700/50 text-gray-400 border-slate-600/50 ${colors[type].inactive}`
-                          }`}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => setPolarizationType(type)}
-                        >
-                          {labels[type]}
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              <ControlPanel
-                title="参数"
-                className="w-full lg:w-72"
-              >
-                {polarizationType === "linear" && (
-                  <SliderControl
-                    label="偏振角度"
-                    value={linearAngle}
-                    min={0}
-                    max={180}
-                    step={15}
-                    unit="°"
-                    onChange={(v) => handleAngleChange(setLinearAngle, v)}
-                    color="orange"
-                  />
-                )}
-
-                {(polarizationType === "circular" || polarizationType === "elliptical") && (
-                  <div className="space-y-2">
-                    <span className="text-xs text-gray-400">旋转方向</span>
-                    <div className="grid grid-cols-2 gap-2">
-                      <motion.button
-                        className={`py-2 rounded-lg text-sm font-medium border transition-all ${
-                          circularDirection === "right"
-                            ? "bg-green-400/20 text-green-400 border-green-400/50"
-                            : "bg-slate-700/50 text-gray-400 border-slate-600/50"
-                        }`}
-                        whileHover={{ scale: 1.02 }}
-                        onClick={() => setCircularDirection("right")}
-                      >
-                        右旋
-                      </motion.button>
-                      <motion.button
-                        className={`py-2 rounded-lg text-sm font-medium border transition-all ${
-                          circularDirection === "left"
-                            ? "bg-purple-400/20 text-purple-400 border-purple-400/50"
-                            : "bg-slate-700/50 text-gray-400 border-slate-600/50"
-                        }`}
-                        whileHover={{ scale: 1.02 }}
-                        onClick={() => setCircularDirection("left")}
-                      >
-                        左旋
-                      </motion.button>
-                    </div>
-                  </div>
-                )}
-
-                {polarizationType === "elliptical" && (
-                  <SliderControl
-                    label="椭圆率"
-                    value={ellipseRatio}
-                    min={0.1}
-                    max={0.9}
-                    step={0.1}
-                    onChange={setEllipseRatio}
-                    color="purple"
-                  />
-                )}
-
-                <SliderControl
-                  label="动画速度"
-                  value={animationSpeed}
-                  min={0}
-                  max={2}
-                  step={0.25}
-                  onChange={setAnimationSpeed}
-                  color="cyan"
-                />
-
-                <Toggle
-                  label="显示轨迹"
-                  checked={showTrail}
-                  onChange={setShowTrail}
-                />
-
-                <motion.button
-                  className={`w-full py-2.5 rounded-lg font-medium transition-all ${
-                    isPlaying
-                      ? "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                      : "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setIsPlaying(!isPlaying)}
+        {/* 2D 偏振态投影 */}
+        <div className="lg:w-[360px] bg-slate-900/50 rounded-xl border border-cyan-400/20 overflow-hidden">
+          <div className="px-4 py-3 border-b border-cyan-400/10">
+            <h3 className="text-sm font-semibold text-white">偏振态投影</h3>
+          </div>
+          <div className="p-4 flex flex-col items-center gap-3">
+            <PolarizationStateCanvas
+              phaseDiff={phaseDiff}
+              ampX={ampX}
+              ampY={ampY}
+              animate={animate}
+            />
+            <div className="text-center space-y-1">
+              <div>
+                <span className="text-gray-400 text-sm">当前状态: </span>
+                <span
+                  className="font-semibold"
+                  style={{ color: polarizationState.color }}
                 >
-                  {isPlaying ? "暂停" : "播放"}
-                </motion.button>
-
-                <motion.button
-                  className="w-full py-2 rounded-lg text-sm text-purple-400 bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 transition-all mt-2"
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() => setViewMode("paradox")}
-                >
-                  探索马吕斯定律 →
-                </motion.button>
-              </ControlPanel>
+                  {polarizationState.type[i18n.language]}
+                </span>
+              </div>
+              <p className="text-xs text-gray-500">
+                {polarizationState.description[i18n.language]}
+              </p>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Foundation: Why button */}
-            <DifficultyGate
-              level="foundation"
-              currentLevel={difficultyLevel}
-            >
-              <WhyButton className="mt-4">
-                <div className="space-y-2 text-sm">
-                  <p>光是电磁波，电场可以在不同方向振动。偏振就是描述电场振动方向的方式！</p>
-                  <p>线偏振像钟摆一样来回摆动，圆偏振像旋转的绳子，椭圆偏振介于两者之间。</p>
-                </div>
-              </WhyButton>
-            </DifficultyGate>
-
-            {/* Info cards */}
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <InfoCard
-                title="线偏振"
-                color={polarizationType === "linear" ? "orange" : "cyan"}
-              >
-                <p className="text-xs text-gray-300">电场在固定平面内振荡，如同钟摆运动。</p>
-              </InfoCard>
-              <InfoCard
-                title="圆偏振"
-                color={polarizationType === "circular" ? "green" : "cyan"}
-              >
-                <p className="text-xs text-gray-300">
-                  电场矢量端点描绘圆形轨迹，等振幅、相位差90°。
-                </p>
-              </InfoCard>
-              <InfoCard
-                title="椭圆偏振"
-                color={polarizationType === "elliptical" ? "purple" : "cyan"}
-              >
-                <p className="text-xs text-gray-300">最一般的偏振态，线偏振和圆偏振是特例。</p>
-              </InfoCard>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="paradox"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.2 }}
+      {/* 快速预设 */}
+      <div className="bg-slate-900/50 rounded-xl border border-cyan-400/20 p-4">
+        <div className="flex flex-wrap gap-2 justify-center">
+          {presets.map((preset, index) => (
+            <PresetButton
+              key={index}
+              label={preset.label}
+              isActive={currentPresetIndex === index}
+              onClick={() => handlePresetClick(preset.params)}
+              color={preset.color}
+            />
+          ))}
+          <motion.button
+            onClick={() => setAnimate(!animate)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              animate
+                ? "bg-cyan-400/20 text-cyan-400 border border-cyan-400/50"
+                : "bg-slate-700/50 text-gray-400 border border-slate-600"
+            }`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            {/* Paradox View */}
-            <DifficultyGate
-              level="application"
-              currentLevel={difficultyLevel}
-            >
-              <TaskModeWrapper
-                taskTitle="让光通过！"
-                taskDescription="在两个正交偏振片之间加入45°偏振片，让光通过。"
-                isCompleted={taskCompleted}
-              >
-                <div />
-              </TaskModeWrapper>
-            </DifficultyGate>
+            {animate ? "⏸ 暂停" : "▶ 播放"}
+          </motion.button>
+        </div>
+      </div>
 
-            <div className="flex gap-6 flex-col lg:flex-row">
-              <div className="flex-1">
-                <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 rounded-xl border border-blue-500/20 p-4 overflow-hidden">
-                  <svg
-                    viewBox="0 0 700 320"
-                    className="w-full h-auto"
-                    style={{ minHeight: "300px" }}
-                  >
-                    <defs>
-                      <pattern
-                        id="three-pol-grid"
-                        width="40"
-                        height="40"
-                        patternUnits="userSpaceOnUse"
-                      >
-                        <path
-                          d="M 40 0 L 0 0 0 40"
-                          fill="none"
-                          stroke="rgba(100,150,255,0.05)"
-                          strokeWidth="1"
-                        />
-                      </pattern>
-                    </defs>
+      {/* 下方：控制面板 */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* 参数控制 */}
+        <ControlPanel title="参数调节">
+          <SliderControl
+            label={MathText({ text: "$\\delta$" })}
+            value={phaseDiff}
+            min={0}
+            max={360}
+            step={5}
+            unit="°"
+            onChange={setPhaseDiff}
+            color="purple"
+          />
+          <SliderControl
+            label="Ex 振幅"
+            value={ampX}
+            min={0}
+            max={1}
+            step={0.1}
+            onChange={setAmpX}
+            formatValue={(v) => v.toFixed(1)}
+            color="red"
+          />
+          <SliderControl
+            label="Ey 振幅"
+            value={ampY}
+            min={0}
+            max={1}
+            step={0.1}
+            onChange={setAmpY}
+            formatValue={(v) => v.toFixed(1)}
+            color="green"
+          />
+        </ControlPanel>
 
-                    <rect
-                      width="700"
-                      height="320"
-                      fill="url(#three-pol-grid)"
-                    />
+        {/* 计算结果 */}
+        <ControlPanel title="偏振参数">
+          <ValueDisplay
+            label={MathText({ text: "$\\delta$" })}
+            value={`${phaseDiff}°`}
+          />
+          <ValueDisplay
+            label={MathText({ text: "$E_y/E_x$" })}
+            value={ampX > 0 ? (ampY / ampX).toFixed(2) : "∞"}
+          />
+          <ValueDisplay
+            label="偏振态"
+            value={polarizationState.type[i18n.language]}
+            color={
+              polarizationState.type[i18n.language].includes("圆")
+                ? "green"
+                : polarizationState.type[i18n.language].includes("线")
+                  ? "orange"
+                  : "purple"
+            }
+          />
+          <Formula>$E = E_x \cos(\omega t) \mathbf e_x + E_y \cos(\omega t + \delta) \mathbf e_y$</Formula>
+        </ControlPanel>
 
-                    <text
-                      x="350"
-                      y="25"
-                      textAnchor="middle"
-                      fill="#e2e8f0"
-                      fontSize="14"
-                      fontWeight="bold"
-                    >
-                      三偏振片实验
-                    </text>
+        {/* 物理原理 */}
+        <ControlPanel title="物理原理">
+          <div className="text-xs text-gray-400 space-y-2">
+            <p>
+              <strong className="text-cyan-400">偏振态</strong>
+              由两个互相垂直的电场分量 ({MathText({ text: "$E_x, E_y$" })}) 的振幅比和相位差(
+              {MathText({ text: "$\\delta$" })})决定。
+            </p>
+            <p>
+              当{" "}
+              <span className="text-purple-400">
+                <MathText text="$\delta = 90^\circ$" />
+              </span>{" "}
+              且{" "}
+              <span className="text-cyan-400">
+                <MathText text="$E_x = E_y$" />
+              </span>{" "}
+              时，合成矢量画出圆（圆偏振）。
+            </p>
+            <p>
+              当{" "}
+              <span className="text-orange-400">
+                <MathText text="$\delta = 0^\circ \text{ 或 } 180^\circ$" />
+              </span>{" "}
+              时，合成矢量画出直线（线偏振）。
+            </p>
+          </div>
+        </ControlPanel>
+      </div>
 
-                    {/* Light source */}
-                    <g transform="translate(50, 150)">
-                      <motion.circle
-                        cx="0"
-                        cy="0"
-                        r="20"
-                        fill="#ffd700"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                      <circle
-                        cx="0"
-                        cy="0"
-                        r="15"
-                        fill="#fff"
-                        opacity="0.5"
-                      />
-                      <text
-                        x="0"
-                        y="45"
-                        textAnchor="middle"
-                        fill="#9ca3af"
-                        fontSize="11"
-                      >
-                        非偏振光
-                      </text>
-                      <text
-                        x="0"
-                        y="60"
-                        textAnchor="middle"
-                        fill="#ffd700"
-                        fontSize="11"
-                      >
-                        I₀ = 100%
-                      </text>
-                    </g>
-
-                    {/* Light beams */}
-                    <LightBeam
-                      x1={70}
-                      x2={130}
-                      intensity={calculations.I0}
-                      polarization={0}
-                      showPolarization={false}
-                    />
-                    <LightBeam
-                      x1={200}
-                      x2={showMiddlePolarizer ? 280 : 430}
-                      intensity={calculations.I1}
-                      polarization={calculations.pol1}
-                      showPolarization={showPolarization}
-                    />
-                    {showMiddlePolarizer && calculations.I2 !== null && (
-                      <LightBeam
-                        x1={350}
-                        x2={430}
-                        intensity={calculations.I2}
-                        polarization={calculations.pol2 || 0}
-                        showPolarization={showPolarization}
-                      />
-                    )}
-                    <LightBeam
-                      x1={500}
-                      x2={650}
-                      intensity={calculations.I3}
-                      polarization={calculations.pol3}
-                      showPolarization={showPolarization}
-                    />
-
-                    {/* Polarizers */}
-                    <PolarizerVisualizer
-                      x={165}
-                      angle={polarizer1Angle}
-                      label="起偏器 P₁"
-                      color="#22d3ee"
-                      isActive={true}
-                    />
-                    <AnimatePresence>
-                      {showMiddlePolarizer && polarizer2Angle !== null && (
-                        <motion.g
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.8 }}
-                        >
-                          <PolarizerVisualizer
-                            x={315}
-                            angle={polarizer2Angle}
-                            label="中间片 P₂"
-                            color="#fbbf24"
-                            isActive={true}
-                          />
-                        </motion.g>
-                      )}
-                    </AnimatePresence>
-                    <PolarizerVisualizer
-                      x={465}
-                      angle={polarizer3Angle}
-                      label="检偏器 P₃"
-                      color="#4ade80"
-                      isActive={true}
-                    />
-
-                    {/* Detector */}
-                    <g transform="translate(610, 150)">
-                      <rect
-                        x="-20"
-                        y="-25"
-                        width="40"
-                        height="50"
-                        rx="4"
-                        fill={calculations.I3 > 0.01 ? "#22c55e20" : "#1e293b"}
-                        stroke={calculations.I3 > 0.01 ? "#22c55e" : "#475569"}
-                        strokeWidth="2"
-                      />
-                      <text
-                        x="0"
-                        y="45"
-                        textAnchor="middle"
-                        fill="#9ca3af"
-                        fontSize="11"
-                      >
-                        探测器
-                      </text>
-                      <text
-                        x="0"
-                        y="60"
-                        textAnchor="middle"
-                        fill="#22c55e"
-                        fontSize="11"
-                        fontWeight="bold"
-                      >
-                        {(calculations.transmission * 100).toFixed(1)}%
-                      </text>
-                    </g>
-
-                    {/* Intensity labels */}
-                    <text
-                      x="165"
-                      y="90"
-                      textAnchor="middle"
-                      fill="#22d3ee"
-                      fontSize="10"
-                    >
-                      I₁ = 50%
-                    </text>
-                    {showMiddlePolarizer && calculations.I2 !== null && (
-                      <text
-                        x="315"
-                        y="90"
-                        textAnchor="middle"
-                        fill="#fbbf24"
-                        fontSize="10"
-                      >
-                        I₂ = {(calculations.I2 * 100).toFixed(1)}%
-                      </text>
-                    )}
-                    <text
-                      x="465"
-                      y="90"
-                      textAnchor="middle"
-                      fill="#4ade80"
-                      fontSize="10"
-                    >
-                      I₃ = {(calculations.I3 * 100).toFixed(1)}%
-                    </text>
-                  </svg>
-                </div>
-
-                {/* Intensity bars */}
-                <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <AnimatedValue
-                    label="初始光强"
-                    value={100}
-                    unit="%"
-                    decimals={0}
-                    color="orange"
-                    showBar
-                    max={100}
-                  />
-                  <AnimatedValue
-                    label={MathText({ text: "$P_2后$" })}
-                    value={calculations.I1 * 100}
-                    unit="%"
-                    decimals={1}
-                    color="cyan"
-                    showBar
-                    max={100}
-                  />
-                  {showMiddlePolarizer && calculations.I2 !== null && (
-                    <AnimatedValue
-                      label={MathText({ text: "$P_2后$" })}
-                      value={calculations.I2 * 100}
-                      unit="%"
-                      decimals={1}
-                      color="orange"
-                      showBar
-                      max={100}
-                    />
-                  )}
-                  <AnimatedValue
-                    label="透射率"
-                    value={calculations.transmission * 100}
-                    unit="%"
-                    decimals={1}
-                    color="green"
-                    showBar
-                    max={100}
-                  />
-                </div>
-              </div>
-
-              <div className="w-full lg:w-80 space-y-4">
-                <ControlPanel title="预设实验">
-                  <PresetButtons
-                    options={POLARIZER_PRESETS.map((p, i) => ({ value: i, label: p.name }))}
-                    value={selectedPreset ?? -1}
-                    onChange={(v) => handlePresetSelect(v as number)}
-                    columns={2}
-                  />
-                </ControlPanel>
-
-                <ControlPanel title="偏振片角度">
-                  <SliderControl
-                    label="P₁"
-                    value={polarizer1Angle}
-                    min={0}
-                    max={180}
-                    step={5}
-                    unit="°"
-                    onChange={(v) => {
-                      handleAngleChange(setPolarizer1Angle, v);
-                      setSelectedPreset(null);
-                    }}
-                    color="cyan"
-                  />
-
-                  <Toggle
-                    label={MathText({ text: "$P_2\\text{后}$" })}
-                    checked={showMiddlePolarizer}
-                    onChange={(v) => {
-                      setShowMiddlePolarizer(v);
-                      if (v && polarizer2Angle === null) setPolarizer2Angle(45);
-                      setSelectedPreset(null);
-                    }}
-                  />
-
-                  {showMiddlePolarizer && polarizer2Angle !== null && (
-                    <SliderControl
-                      label="P₂"
-                      value={polarizer2Angle}
-                      min={0}
-                      max={180}
-                      step={5}
-                      unit="°"
-                      onChange={(v) => {
-                        handleAngleChange((val) => setPolarizer2Angle(val), v);
-                        setSelectedPreset(null);
-                      }}
-                      color="orange"
-                    />
-                  )}
-
-                  <SliderControl
-                    label={MathText({ text: "$P_3$" })}
-                    value={polarizer3Angle}
-                    min={0}
-                    max={180}
-                    step={5}
-                    unit="°"
-                    onChange={(v) => {
-                      handleAngleChange(setPolarizer3Angle, v);
-                      setSelectedPreset(null);
-                    }}
-                    color="green"
-                  />
-                </ControlPanel>
-
-                <ControlPanel title="显示选项">
-                  <Toggle
-                    label="偏振颜色"
-                    checked={showPolarization}
-                    onChange={setShowPolarization}
-                  />
-                  <Toggle
-                    label="公式标注"
-                    checked={showFormulas}
-                    onChange={setShowFormulas}
-                  />
-
-                  <div className="pt-2 border-t border-slate-700/50 mt-2">
-                    <button
-                      onClick={toggleAudio}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm w-full transition-colors ${
-                        isAudioEnabled
-                          ? "bg-cyan-500/20 text-cyan-400"
-                          : "bg-slate-700/50 text-gray-400"
-                      }`}
-                    >
-                      {isAudioEnabled ? (
-                        <Volume2 className="w-4 h-4" />
-                      ) : (
-                        <VolumeX className="w-4 h-4" />
-                      )}
-                      <span>角度咔哒声</span>
-                    </button>
-                  </div>
-                </ControlPanel>
-
-                {showFormulas && config.showFormula && (
-                  <InfoCard
-                    title="马吕斯定律"
-                    color="cyan"
-                  >
-                    <Formula highlight>$I = I_0 \\times \\cos^2(\\theta)$</Formula>
-                    <div className="mt-3 space-y-2 text-xs text-slate-400">
-                      {showMiddlePolarizer ? (
-                        <>
-                          <p className="font-mono text-cyan-400"><MathText text={`$I_1 = I_0 \\times 0.5 = 50\\%$`} /></p>
-                          <p className="font-mono text-orange-400">
-                            <MathText text={`$I_2 = I_1 \\times \\cos^2(${calculations.theta1}^\\circ) = ${((calculations.I2 || 0) * 100).toFixed(1)}\\%$`} />
-                          </p>
-                          <p className="font-mono text-green-400">
-                            <MathText text={`$I_3 = I_2 \\times \\cos^2(${calculations.theta2}^\\circ) = ${(calculations.I3 * 100).toFixed(1)}\\%$`} />
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="font-mono text-cyan-400"><MathText text={`$I_1 = I_0 \\times 0.5 = 50\\%$`} /></p>
-                          <p className="font-mono text-green-400">
-                            <MathText text={`$I_3 = I_1 \\times \\cos^2(${calculations.theta2}^\\circ) = ${(calculations.I3 * 100).toFixed(1)}\\%$`} />
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </InfoCard>
-                )}
-              </div>
-            </div>
-
-            {/* Foundation: Why button */}
-            <DifficultyGate
-              level="foundation"
-              currentLevel={difficultyLevel}
-            >
-              <WhyButton className="mt-4">
-                <div className="space-y-2 text-sm">
-                  <p>两个正交（90°）的偏振片会完全阻挡光线。但神奇的是...</p>
-                  <p>
-                    在中间加入一个45°偏振片，光反而能通过了！这是因为每个偏振片都会"重新定向"光的偏振方向。
-                  </p>
-                </div>
-              </WhyButton>
-            </DifficultyGate>
-
-            {/* Knowledge cards */}
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InfoCard
-                title="实验现象"
-                color="purple"
-              >
-                <ul className="text-xs text-gray-300 space-y-1.5">
-                  <li>• 两个正交偏振片完全阻挡光</li>
-                  <li>• 加入45°偏振片，反而有光通过！</li>
-                  <li>• <MathText text="$最大透射率：0^\\circ \\rightarrow 45^\\circ \\rightarrow 90^\\circ = 12.5\\%$" /></li>
-                </ul>
-              </InfoCard>
-              <InfoCard
-                title="物理解释"
-                color="cyan"
-              >
-                <ul className="text-xs text-gray-300 space-y-1.5">
-                  <li>• 偏振片不只"过滤"，还"重新定向"</li>
-                  <li>• 中间片将0°偏振光转为45°</li>
-                  <li>• 45°偏振光可部分通过90°偏振片</li>
-                </ul>
-              </InfoCard>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* 现实应用场景 */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <InfoCard
+          title="🎬 3D电影技术"
+          color="cyan"
+        >
+          <p className="text-xs text-gray-300">
+            3D电影利用圆偏振光：左右眼分别接收左旋和右旋圆偏振图像，通过偏振眼镜分离产生立体效果。
+          </p>
+        </InfoCard>
+        <InfoCard
+          title="📡 卫星通信"
+          color="purple"
+        >
+          <p className="text-xs text-gray-300">
+            卫星使用圆偏振天线：避免发射和接收天线方向对准问题，提高通信稳定性。
+          </p>
+        </InfoCard>
+        <InfoCard
+          title="🔬 生物检测"
+          color="orange"
+        >
+          <p className="text-xs text-gray-300">
+            椭圆偏振光谱用于检测蛋白质分子结构：不同分子会产生特定的偏振变化，用于医学诊断。
+          </p>
+        </InfoCard>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,3 @@
-// Legacy exports (kept for backward compatibility)
-export { LightWaveDemo } from "./LightWaveDemo";
-
 // export { PolarizationIntroDemo } from './PolarizationIntroDemo'
 // export { PolarizationTypesDemo } from './PolarizationTypesDemo'
 // export { ElectromagneticSpectrumDemo } from './ElectromagneticSpectrumDemo'

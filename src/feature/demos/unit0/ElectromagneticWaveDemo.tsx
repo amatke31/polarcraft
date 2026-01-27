@@ -1,6 +1,5 @@
 /**
- * ElectromagneticWaveDemo - 电磁波统一演示
- * 合并原有的 LightWaveDemo（电磁波可视化）和 ElectromagneticSpectrumDemo（电磁波谱）
+ * ElectromagneticWaveDemo
  *
  * Features:
  * - Tab-based navigation between Wave View and Spectrum View
