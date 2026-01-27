@@ -1,6 +1,8 @@
 import { Suspense, lazy } from "react"; // React 组件懒加载和 Suspense
 import { BrowserRouter, Routes, Route } from "react-router-dom"; // React Router 组件，删去navigate重定向模块，后续可能使用
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary"; // 错误边界组件
+// Shared Components - 共享组件
+import { Footer } from "@/components/shared/Footer"; // 页脚组件
 
 // Lazy load all pages for code splitting
 // 懒加载所有页面组件以实现代码分割
@@ -13,7 +15,7 @@ const HomePage = lazy(() => import("@/pages/HomePage"));
 // ============================================================
 // Module 1: 课程历史
 // 科学原理 × 历史故事
-const CousesPage = lazy(() => import("@/pages/CousesPage"));
+const CoursesPage = lazy(() => import("@/pages/CoursesPage"));
 
 // Module 2: 光学器件
 // 偏振器件 × 光路设计
@@ -78,7 +80,7 @@ export function App() {
             {/* Module 1: 课程历史 */}
             <Route
               path="/courses"
-              element={<CousesPage />}
+              element={<CoursesPage />}
             />
 
             {/* Module 2: 光学器件 */}
@@ -133,6 +135,7 @@ export function App() {
             />
           </Routes>
         </Suspense>
+      <Footer />
       </BrowserRouter>
     </ErrorBoundary>
   );

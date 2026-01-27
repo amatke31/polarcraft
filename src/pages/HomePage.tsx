@@ -1,8 +1,10 @@
+// src/pages/Homepage.tsx
+// Home Page Component - Main landing page with module overviews
+
 // 导入外部库
 import { useState, useRef, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Footer } from "@/components/shared/Footer";
 
 // 导入组件
 import { useTheme } from "@/contexts/ThemeContext";
@@ -517,9 +519,6 @@ export function HomePage() {
           </nav>
         </div>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

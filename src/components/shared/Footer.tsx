@@ -1,9 +1,10 @@
 /**
  * Footer Component - Site-wide footer with cool facts and minimal navigation
- * 页脚组件 - 精简版页脚，包含随机偏振光知识/历史事件
+ * 页脚组件 - 精简版页脚，{已经删去(包含随机偏振光知识/历史事件)}
  */
 
 // import { Link } from 'react-router-dom'
+
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/utils/classNames";

@@ -1,3 +1,7 @@
+// src/components/shared/MathText.tsx
+// A component to render text with embedded LaTeX math expressions.
+// Supports inline math ($...$) and display math ($$...$$).
+
 import MathRenderer from "./MathRenderer";
 
 type Props = { text: string };

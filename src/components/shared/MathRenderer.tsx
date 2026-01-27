@@ -1,3 +1,6 @@
+// src/components/shared/MathRenderer.tsx
+// A component to render LaTeX math expressions using KaTeX.
+
 import React from "react";
 import katex from "katex";
 
