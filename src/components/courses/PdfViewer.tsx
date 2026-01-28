@@ -18,7 +18,6 @@ import {
   FileText,
 } from "lucide-react";
 
-// 设置 pdf.js worker - 使用本地库
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
@@ -74,19 +73,13 @@ function PdfViewer({ url, theme }: PdfViewerProps) {
       let newScale = 1;
 
       if (isLandscape) {
-        // 横屏模式：根据容器尺寸计算，保持页面完整显示
-        const padding = 32;
-        const availableWidth = containerWidth - padding;
-        const availableHeight = containerHeight - padding;
-
-        const scaleX = availableWidth / pageWidth;
-        const scaleY = availableHeight / pageHeight;
+        // 横屏模式：占满整个容器
+        const scaleX = containerWidth / pageWidth;
+        const scaleY = containerHeight / pageHeight;
         newScale = Math.min(scaleX, scaleY);
       } else {
-        // 竖屏模式：根据容器宽度计算
-        const padding = 32;
-        const availableWidth = containerWidth - padding;
-        newScale = availableWidth / pageWidth;
+        // 竖屏模式：占满容器宽度
+        newScale = containerWidth / pageWidth;
       }
 
       setScale(Math.max(0.1, newScale));
@@ -298,7 +291,7 @@ function PdfViewer({ url, theme }: PdfViewerProps) {
             Array.from({ length: numPages }, (_, index) => (
               <div
                 key={index}
-                className="pdf-page-wrapper flex justify-center py-4"
+                className="pdf-page-wrapper flex justify-center"
               >
                 <Page
                   pageNumber={index + 1}
