@@ -91,13 +91,17 @@ const MODULES: ModuleConfig[] = [
     // 2. 光学器件
     id: "devices",
     i18nNamespace: "home.modules.studio",
-    path: "/studio",
+    // 原路径为 "/studio"，但在App.tsx中对应的路由路径是 "/devices"
+    // 由于路径不一致，访问/studio时会显示Footer而不是错误边界
+    // 已修改为 "/devices" 以与App.tsx中的路由配置保持一致
+    path: "/devices",
     IconComponent: DevicesModuleIcon,
     inDevelopment: true,
     quickLinks: [
-      { labelKey: "home.modules.studio.link1", path: "/studio" },
-      { labelKey: "home.modules.studio.link2", path: "/studio" },
-      { labelKey: "home.modules.studio.link3", path: "/studio" },
+      // 原路径为 "/studio"，已修改为 "/devices"
+      { labelKey: "home.modules.studio.link1", path: "/devices" },
+      { labelKey: "home.modules.studio.link2", path: "/devices" },
+      { labelKey: "home.modules.studio.link3", path: "/devices" },
     ],
     colorTheme: {
       bg: "bg-blue-950/20 backdrop-blur-sm",
