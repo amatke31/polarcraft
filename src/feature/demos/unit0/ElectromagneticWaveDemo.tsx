@@ -1,6 +1,5 @@
 /**
- * ElectromagneticWaveDemo - 电磁波统一演示
- * 合并原有的 LightWaveDemo（电磁波可视化）和 ElectromagneticSpectrumDemo（电磁波谱）
+ * ElectromagneticWaveDemo
  *
  * Features:
  * - Tab-based navigation between Wave View and Spectrum View
@@ -21,12 +20,8 @@ import {
   InfoCard,
   Formula,
 } from "../DemoControls";
-import {
-  DifficultyLevel,
-  useDifficultyConfig,
-  WhyButton,
-  DifficultyGate,
-} from "../DifficultyStrategy";
+import { WhyButton } from "../DifficultyStrategy";
+import MathText from "@/components/shared/MathText";
 
 type ViewMode = "wave" | "spectrum";
 
@@ -171,13 +166,8 @@ function formatWavelength(meters: number): string {
   return `${(meters * 1e15).toFixed(1)} fm`;
 }
 
-interface Props {
-  difficultyLevel?: DifficultyLevel;
-}
-
-export function ElectromagneticWaveDemo({ difficultyLevel = "application" }: Props) {
+export function ElectromagneticWaveDemo() {
   const { t, i18n } = useTranslation();
-  const config = useDifficultyConfig(difficultyLevel);
 
   // View mode state
   const [viewMode, setViewMode] = useState<ViewMode>("wave");
@@ -478,14 +468,11 @@ export function ElectromagneticWaveDemo({ difficultyLevel = "application" }: Pro
                       </text>
                     </g>
 
-                    <text
-                      x="600"
-                      y="30"
-                      fill="#6b7280"
-                      fontSize="11"
-                    >
-                      c ≈ 2.998×10⁸ m/s
-                    </text>
+                    <foreignObject x="580" y="18" width="120" height="24">
+                      <div {...({ xmlns: "http://www.w3.org/1999/xhtml", style: { fontSize: "11px", color: "#6b7280", display: "flex", alignItems: "center" } } as any)}>
+                        {MathText({ text: "$c \\approx 2.998 \\times 10^8 \\text{ m/s}$" })}
+                      </div>
+                    </foreignObject>
                     <rect
                       x="600"
                       y="40"
@@ -591,7 +578,7 @@ export function ElectromagneticWaveDemo({ difficultyLevel = "application" }: Pro
                   {/* 使用精确光速值 c = 2.998×10^8 m/s 计算频率 f = c/λ */}
                   <ValueDisplay
                     label={t("demoUi.common.frequency")}
-                    value={`${(2.998e8 / (wavelength * 1e-9) / 1e14).toFixed(2)} × 10¹⁴ Hz`}
+                    value={MathText({text:`$ ${(2.998e8 / (wavelength * 1e-9) / 1e14).toFixed(2)} \\times 10^{14} \\text{ Hz} $`})}
                   />
                 </div>
 
@@ -606,51 +593,40 @@ export function ElectromagneticWaveDemo({ difficultyLevel = "application" }: Pro
               </ControlPanel>
             </div>
 
-            {/* Foundation: Why button */}
-            <DifficultyGate
-              level="foundation"
-              currentLevel={difficultyLevel}
-            >
-              <WhyButton className="mt-4">
-                <div className="space-y-2 text-sm">
-                  <p>光是一种电磁波，它由电场（E）和磁场（B）相互垂直振荡产生。</p>
-                  <p>
-                    就像海浪在水面上波动，光波也在空间中传播，只是振动的是电场和磁场而不是水分子。
-                  </p>
-                </div>
-              </WhyButton>
-            </DifficultyGate>
-
-            {/* Application/Research: Formula */}
-            <DifficultyGate
-              level="application"
-              currentLevel={difficultyLevel}
-              showWhen="at-least"
-            >
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InfoCard
-                  title="电磁波特性"
-                  color="cyan"
-                >
-                  <ul className="text-xs text-gray-300 space-y-1.5">
-                    <li>• E场和B场相互垂直</li>
-                    <li>• 横波：振动方向垂直于传播方向</li>
-                    <li>• 真空中速度恒定：c = 3×10⁸ m/s</li>
-                  </ul>
-                  {config.showFormula && <Formula className="mt-2">c = λf</Formula>}
-                </InfoCard>
-                <InfoCard
-                  title="与偏振的联系"
-                  color="purple"
-                >
-                  <ul className="text-xs text-gray-300 space-y-1.5">
-                    <li>• 偏振描述电场振动方向</li>
-                    <li>• 自然光包含所有偏振方向</li>
-                    <li>• 只有横波才能偏振</li>
-                  </ul>
-                </InfoCard>
+            {/* Why button */}
+            <WhyButton className="mt-4">
+              <div className="space-y-2 text-sm">
+                <p>光是一种电磁波，它由电场（E）和磁场（B）相互垂直振荡产生。</p>
+                <p>
+                  就像海浪在水面上波动，光波也在空间中传播，只是振动的是电场和磁场而不是水分子。
+                </p>
               </div>
-            </DifficultyGate>
+            </WhyButton>
+
+            {/* Formula */}
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoCard
+                title="电磁波特性"
+                color="cyan"
+              >
+                <ul className="text-xs text-gray-300 space-y-1.5">
+                  <li>• E场和B场相互垂直</li>
+                  <li>• 横波：振动方向垂直于传播方向</li>
+                  <li> {MathText({text: "• 真空中速度恒定：$c = 3 \\times 10^8 \\text{ m/s}$"})}</li>
+                </ul>
+                <Formula className="mt-2">$c = \lambda f$</Formula>
+              </InfoCard>
+              <InfoCard
+                title="与偏振的联系"
+                color="purple"
+              >
+                <ul className="text-xs text-gray-300 space-y-1.5">
+                  <li>• 偏振描述电场振动方向</li>
+                  <li>• 自然光包含所有偏振方向</li>
+                  <li>• 只有横波才能偏振</li>
+                </ul>
+              </InfoCard>
+            </div>
           </motion.div>
         ) : (
           <motion.div
@@ -1026,64 +1002,49 @@ export function ElectromagneticWaveDemo({ difficultyLevel = "application" }: Pro
               </ControlPanel>
             </div>
 
-            {/* Foundation: Why button */}
-            <DifficultyGate
-              level="foundation"
-              currentLevel={difficultyLevel}
-            >
-              <WhyButton className="mt-4">
-                <div className="space-y-2 text-sm">
-                  <p>电磁波谱就像一把无限长的"光尺子"——我们看到的彩虹只是其中很小的一段！</p>
-                  <p>从广播塔发出的无线电波到医院X光机发出的射线，都是电磁波家族的成员。</p>
-                </div>
-              </WhyButton>
-            </DifficultyGate>
-
-            {/* Knowledge cards for application/research */}
-            <DifficultyGate
-              level="application"
-              currentLevel={difficultyLevel}
-              showWhen="at-least"
-            >
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <InfoCard
-                  title="光的本质"
-                  color="cyan"
-                >
-                  <ul className="text-xs text-gray-300 space-y-1.5">
-                    <li>• 光是电磁波，不需要介质</li>
-                    <li>• 波长与频率成反比</li>
-                    {config.showFormula && (
-                      <li className="font-mono text-cyan-400">c = λf = 3×10⁸ m/s</li>
-                    )}
-                  </ul>
-                </InfoCard>
-
-                <InfoCard
-                  title="能量与波长"
-                  color="purple"
-                >
-                  <ul className="text-xs text-gray-300 space-y-1.5">
-                    <li>• 波长越短，能量越高</li>
-                    <li>• 伽马射线能量最高</li>
-                    {config.showFormula && (
-                      <li className="font-mono text-purple-400">E = hf = hc/λ</li>
-                    )}
-                  </ul>
-                </InfoCard>
-
-                <InfoCard
-                  title="人眼视觉"
-                  color="green"
-                >
-                  <ul className="text-xs text-gray-300 space-y-1.5">
-                    <li>• 人眼仅见380-700nm</li>
-                    <li>• 对绿光最敏感(~555nm)</li>
-                    <li>• 可见光只占极小部分</li>
-                  </ul>
-                </InfoCard>
+            {/* Why button */}
+            <WhyButton className="mt-4">
+              <div className="space-y-2 text-sm">
+                <p>电磁波谱就像一把无限长的"光尺子"——我们看到的彩虹只是其中很小的一段！</p>
+                <p>从广播塔发出的无线电波到医院X光机发出的射线，都是电磁波家族的成员。</p>
               </div>
-            </DifficultyGate>
+            </WhyButton>
+
+            {/* Knowledge cards */}
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <InfoCard
+                title="光的本质"
+                color="cyan"
+              >
+                <ul className="text-xs text-gray-300 space-y-1.5">
+                  <li>• 光是电磁波，不需要介质</li>
+                  <li>• 波长与频率成反比</li>
+                  <li>{MathText({ text: "$c = \\lambda f = 3 \\times 10^8 \\text{ m/s}$", className: "font-mono text-cyan-400" })}</li>
+                </ul>
+              </InfoCard>
+
+              <InfoCard
+                title="能量与波长"
+                color="purple"
+              >
+                <ul className="text-xs text-gray-300 space-y-1.5">
+                  <li>• 波长越短，能量越高</li>
+                  <li>• 伽马射线能量最高</li>
+                  <li>{MathText({ text: "$E = hf = hc/\\lambda$", className: "font-mono text-purple-400" })}</li>
+                </ul>
+              </InfoCard>
+
+              <InfoCard
+                title="人眼视觉"
+                color="green"
+              >
+                <ul className="text-xs text-gray-300 space-y-1.5">
+                  <li>• 人眼仅见380-700nm</li>
+                  <li>• 对绿光最敏感(~555nm)</li>
+                  <li>• 可见光只占极小部分</li>
+                </ul>
+              </InfoCard>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

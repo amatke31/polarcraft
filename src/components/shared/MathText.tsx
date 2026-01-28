@@ -4,10 +4,10 @@
 
 import MathRenderer from "./MathRenderer";
 
-type Props = { text: string };
+type Props = { text: string; className?: string };
 
 // Simple parser: split by inline $...$ or display $$...$$ and render math segments
-export default function MathText({ text }: Props) {
+export default function MathText({ text, className }: Props) {
   const parts: Array<{ type: "text" | "math"; content: string; display?: boolean }> = [];
   let rest = text;
   const displayRegex = /\$\$(.+?)\$\$/s;
@@ -38,12 +38,13 @@ export default function MathText({ text }: Props) {
     <>
       {parts.map((p, i) =>
         p.type === "text" ? (
-          <span key={i}>{p.content}</span>
+          <span key={i} className={className}>{p.content}</span>
         ) : (
           <MathRenderer
             key={i}
             latex={p.content}
             displayMode={!!p.display}
+            className={className}
           />
         ),
       )}

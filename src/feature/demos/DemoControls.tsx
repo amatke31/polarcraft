@@ -7,10 +7,11 @@ import { ReactNode } from "react";
 import { cn } from "@/utils/classNames";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "react-i18next";
+import MathText from "@/components/shared/MathText";
 
 // 滑块控制器
 interface SliderControlProps {
-  label: string;
+  label: string | ReactNode;
   value: number;
   min: number;
   max: number;
@@ -209,7 +210,7 @@ export function ButtonGroup({ label, options, value, onChange }: ButtonGroupProp
 
 // 切换开关
 interface ToggleProps {
-  label: string;
+  label: string | ReactNode;
   checked: boolean;
   onChange: (checked: boolean) => void;
 }
@@ -287,8 +288,8 @@ export function InfoPanel({ title, children, className }: InfoPanelProps) {
 
 // 数值显示
 interface ValueDisplayProps {
-  label: string;
-  value: string | number;
+  label: string | ReactNode;
+  value: string | number | ReactNode;
   unit?: string;
   color?: string;
 }
@@ -386,7 +387,7 @@ export function Formula({ children, className, highlight = false }: FormulaProps
         className,
       )}
     >
-      {children}
+      <MathText text={children} />
     </div>
   );
 }
@@ -573,7 +574,7 @@ export function SimpleDiagram({ src, alt, children, className }: SimpleDiagramPr
 
 // 实时数值显示（带动画效果）
 interface AnimatedValueProps {
-  label: string;
+  label: string | ReactNode;
   value: number;
   unit?: string;
   decimals?: number;

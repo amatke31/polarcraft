@@ -7,6 +7,7 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { SliderControl, ControlPanel, ValueDisplay, Formula, InfoCard } from "../DemoControls";
+import MathText from "@/components/shared/MathText";
 
 // 3D波动传播视图 - 伪3D等轴测投影Canvas
 function WavePropagation3DCanvas({
@@ -544,7 +545,7 @@ export function PolarizationStateDemo() {
         {/* 参数控制 */}
         <ControlPanel title="参数调节">
           <SliderControl
-            label="相位差 (δ)"
+            label={MathText({ text: "$\\delta$" })}
             value={phaseDiff}
             min={0}
             max={360}
@@ -578,11 +579,11 @@ export function PolarizationStateDemo() {
         {/* 计算结果 */}
         <ControlPanel title="偏振参数">
           <ValueDisplay
-            label="相位差 δ"
+            label={MathText({ text: "$\\delta$" })}
             value={`${phaseDiff}°`}
           />
           <ValueDisplay
-            label="振幅比 Ey/Ex"
+            label={MathText({ text: "$E_y/E_x$" })}
             value={ampX > 0 ? (ampY / ampX).toFixed(2) : "∞"}
           />
           <ValueDisplay
@@ -596,7 +597,7 @@ export function PolarizationStateDemo() {
                   : "purple"
             }
           />
-          <Formula>E = Ex·cos(ωt) x̂ + Ey·cos(ωt+δ) ŷ</Formula>
+          <Formula>$E = E_x \cos(\omega t) \mathbf e_x + E_y \cos(\omega t + \delta) \mathbf e_y$</Formula>
         </ControlPanel>
 
         {/* 物理原理 */}
@@ -604,14 +605,25 @@ export function PolarizationStateDemo() {
           <div className="text-xs text-gray-400 space-y-2">
             <p>
               <strong className="text-cyan-400">偏振态</strong>
-              由两个互相垂直的电场分量 (Ex, Ey) 的振幅比和相位差(δ)决定。
+              由两个互相垂直的电场分量 ({MathText({ text: "$E_x, E_y$" })}) 的振幅比和相位差(
+              {MathText({ text: "$\\delta$" })})决定。
             </p>
             <p>
-              当 <span className="text-purple-400">δ = 90°</span> 且{" "}
-              <span className="text-cyan-400">Ex = Ey</span> 时，合成矢量画出圆（圆偏振）。
+              当{" "}
+              <span className="text-purple-400">
+                <MathText text="$\delta = 90^\circ$" />
+              </span>{" "}
+              且{" "}
+              <span className="text-cyan-400">
+                <MathText text="$E_x = E_y$" />
+              </span>{" "}
+              时，合成矢量画出圆（圆偏振）。
             </p>
             <p>
-              当 <span className="text-orange-400">δ = 0° 或 180°</span>{" "}
+              当{" "}
+              <span className="text-orange-400">
+                <MathText text="$\delta = 0^\circ \text{ 或 } 180^\circ$" />
+              </span>{" "}
               时，合成矢量画出直线（线偏振）。
             </p>
           </div>

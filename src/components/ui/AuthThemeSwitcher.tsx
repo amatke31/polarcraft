@@ -36,6 +36,13 @@ export function AuthThemeSwitcher({ className, compact = false }: AuthThemeSwitc
     navigate('/')
   }
 
+  // User dropdown menu classes - theme-aware
+  const userMenuClasses = theme === 'dark'
+    ? 'bg-slate-800 border-slate-700 shadow-xl'
+    : 'bg-white border-gray-200 shadow-lg'
+
+  const userMenuItemClasses = 'hover:bg-[var(--bg-tertiary)]'
+
   if (compact) {
     return (
       <div className={cn('flex items-center gap-1', className)}>
@@ -50,14 +57,20 @@ export function AuthThemeSwitcher({ className, compact = false }: AuthThemeSwitc
               <User className="w-4 h-4" />
             </button>
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-2 z-50">
-                <div className="px-4 py-2 border-b border-slate-700">
-                  <p className="text-sm font-medium text-white">{user?.username}</p>
-                  <p className="text-xs text-slate-400">{user?.email || 'user@polarcraft'}</p>
+              <div className={cn(
+                'absolute right-0 mt-2 w-48 rounded-lg border py-2 z-50',
+                userMenuClasses
+              )}>
+                <div className="px-4 py-2 border-b border-[var(--border-color)]">
+                  <p className="text-sm font-medium text-[var(--text-primary)]">{user?.username}</p>
+                  <p className="text-xs text-[var(--text-secondary)]">{user?.email || 'user@polarcraft'}</p>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 flex items-center gap-2"
+                  className={cn(
+                    'w-full px-4 py-2 text-left text-sm text-[var(--text-secondary)] flex items-center gap-2',
+                    userMenuItemClasses
+                  )}
                 >
                   <LogOut className="w-4 h-4" />
                   {t('auth.logout', '登出')}
@@ -109,14 +122,20 @@ export function AuthThemeSwitcher({ className, compact = false }: AuthThemeSwitc
             <span className="text-sm">{user?.username || 'User'}</span>
           </button>
           {showUserMenu && (
-            <div className="absolute right-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-2 z-50">
-              <div className="px-4 py-2 border-b border-slate-700">
-                <p className="text-sm font-medium text-white">{user?.username}</p>
-                <p className="text-xs text-slate-400">{user?.email || 'user@polarcraft'}</p>
+            <div className={cn(
+              'absolute right-0 mt-2 w-48 rounded-lg border py-2 z-50',
+              userMenuClasses
+            )}>
+              <div className="px-4 py-2 border-b border-[var(--border-color)]">
+                <p className="text-sm font-medium text-[var(--text-primary)]">{user?.username}</p>
+                <p className="text-xs text-[var(--text-secondary)]">{user?.email || 'user@polarcraft'}</p>
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 flex items-center gap-2"
+                className={cn(
+                  'w-full px-4 py-2 text-left text-sm text-[var(--text-secondary)] flex items-center gap-2',
+                  userMenuItemClasses
+                )}
               >
                 <LogOut className="w-4 h-4" />
                 {t('auth.logout', '登出')}

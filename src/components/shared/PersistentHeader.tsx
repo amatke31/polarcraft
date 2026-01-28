@@ -122,6 +122,7 @@ export function PersistentHeader({
   moduleKey,
   moduleNameKey,
   moduleName,
+  showSettings = false,
   compact = false,
   rightContent,
   centerContent,
@@ -226,7 +227,7 @@ export function PersistentHeader({
 
       {/* Right section: Settings + Custom content */}
       <div className="flex items-center gap-2">{rightContent}</div>
-      <AuthThemeSwitcher compact={compact} />
+      {showSettings && <AuthThemeSwitcher compact={compact} />}
     </header>
   );
 }

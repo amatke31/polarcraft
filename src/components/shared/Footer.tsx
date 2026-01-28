@@ -49,9 +49,10 @@ export function Footer() {
   return (
     <footer
       className={cn(
-        "border-t py-8 px-4 sm:px-6 lg:px-8",
-        theme === "dark" ? "bg-slate-900/50 border-slate-800" : "bg-gray-50 border-gray-200",
+        "border-t py-8 px-4 sm:px-6 lg:px-8 bottom-0 w-full", 
+        theme === "dark" ? "bg-slate-900 border-slate-800" : "bg-white border-gray-200",
       )}
+      style={{ zIndex: 1000, position: "relative" }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Bottom Bar */}
