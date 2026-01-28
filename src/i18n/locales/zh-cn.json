@@ -40,7 +40,12 @@
       "downloadpptx": "下载 PPTX 文件",
       "coursedirectory": "课程目录",
       "tags": "标签",
-      "resources": "资源"
+      "resources": "资源",
+      "all": "全部",
+      "discovery": "发现",
+      "theory": "理论",
+      "experiment": "实验",
+      "application": "应用"
     },
     "demos": {
       "title": "理论模拟"
