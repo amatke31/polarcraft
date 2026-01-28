@@ -122,7 +122,7 @@ export function PersistentHeader({
   moduleKey,
   moduleNameKey,
   moduleName,
-  showSettings = false,
+  showSettings = true,
   compact = false,
   rightContent,
   centerContent,

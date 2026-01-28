@@ -1,7 +1,7 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils/classNames";
-import { Calendar, Tag } from "lucide-react";
+import { Calendar } from "lucide-react";
 import type { RecordEntry } from "@/data/gallery";
 
 interface RecordSectionProps {
@@ -94,26 +94,6 @@ export function RecordSection({ entries }: RecordSectionProps) {
                         alt={`Record ${idx + 1}`}
                         className="rounded-lg object-cover w-full h-32 hover:scale-105 transition-transform cursor-pointer"
                       />
-                    ))}
-                  </div>
-                )}
-
-                {/* 标签 */}
-                {entry.tags && entry.tags.length > 0 && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Tag className="w-4 h-4 text-gray-500" />
-                    {entry.tags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className={cn(
-                          "text-xs px-2 py-1 rounded-full",
-                          theme === "dark"
-                            ? "bg-slate-600 text-gray-300"
-                            : "bg-gray-200 text-gray-700"
-                        )}
-                      >
-                        {tag}
-                      </span>
                     ))}
                   </div>
                 )}

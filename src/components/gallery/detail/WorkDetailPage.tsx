@@ -5,11 +5,11 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/utils/classNames";
 import { ChevronLeft, Eye, Heart, Share2, Calendar } from "lucide-react";
 import { getWorkById } from "@/data/gallery";
-import { CommentSection } from "../discussion/CommentSection";
 import { RecordSection } from "../record/RecordSection";
 import { MediaGallery } from "../media/MediaGallery";
+import { PersistentHeader } from "@/components/shared";
 
-type DetailTab = "overview" | "record" | "discussion" | "media";
+type DetailTab = "overview" | "record" | "media";
 
 export function WorkDetailPage() {
   const { theme } = useTheme();
@@ -23,28 +23,26 @@ export function WorkDetailPage() {
   const work = workId ? getWorkById(workId) : null;
 
   // Determine back route based on navigation state or work status
-  const from = (location.state as { from?: "gallery" | "lab" })?.from ?? (work?.status === "public" ? "gallery" : "lab");
+  const from =
+    (location.state as { from?: "gallery" | "lab" })?.from ??
+    (work?.status === "public" ? "gallery" : "lab");
   const backRoute = from === "lab" ? "/lab" : "/gallery";
 
   if (!work) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className={cn(
-          "text-center p-8 rounded-2xl",
-          theme === "dark" ? "bg-slate-800/50" : "bg-white"
-        )}>
-          <p className={cn(
-            "text-lg mb-4",
-            theme === "dark" ? "text-gray-300" : "text-gray-600"
-          )}>
+        <div
+          className={cn(
+            "text-center p-8 rounded-2xl",
+            theme === "dark" ? "bg-slate-800/50" : "bg-white",
+          )}
+        >
+          <p className={cn("text-lg mb-4", theme === "dark" ? "text-gray-300" : "text-gray-600")}>
             {t("works.noWorks")}
           </p>
           <button
             onClick={() => navigate(backRoute)}
-            className={cn(
-              "px-6 py-2 rounded-lg",
-              "bg-purple-600 text-white hover:bg-purple-700"
-            )}
+            className={cn("px-6 py-2 rounded-lg", "bg-purple-600 text-white hover:bg-purple-700")}
           >
             {t("common.back")}
           </button>
@@ -57,17 +55,21 @@ export function WorkDetailPage() {
   const tabs = [
     { id: "overview" as const, label: { "zh-CN": t("works.tabs.overview") } },
     ...(work.recordEntries?.length
-      ? [{ id: "record" as const, label: { "zh-CN": t("works.tabs.recordCount", { count: work.recordEntries.length }) } }]
-      : []
-    ),
-    ...(work.comments?.length
-      ? [{ id: "discussion" as const, label: { "zh-CN": t("works.tabs.discussionCount", { count: work.comments.length }) } }]
-      : []
-    ),
+      ? [
+          {
+            id: "record" as const,
+            label: { "zh-CN": t("works.tabs.recordCount", { count: work.recordEntries.length }) },
+          },
+        ]
+      : []),
     ...(work.mediaResources?.length
-      ? [{ id: "media" as const, label: { "zh-CN": t("works.tabs.mediaCount", { count: work.mediaResources.length }) } }]
-      : []
-    ),
+      ? [
+          {
+            id: "media" as const,
+            label: { "zh-CN": t("works.tabs.mediaCount", { count: work.mediaResources.length }) },
+          },
+        ]
+      : []),
   ];
 
   const handleLike = () => {
@@ -90,16 +92,18 @@ export function WorkDetailPage() {
         "min-h-screen",
         theme === "dark"
           ? "bg-gradient-to-br from-[#0a0a1a] via-[#1a1a3a] to-[#0a0a2a]"
-          : "bg-gradient-to-br from-[#fffbeb] via-[#fef3c7] to-[#fffbeb]"
+          : "bg-gradient-to-br from-[#fffbeb] via-[#fef3c7] to-[#fffbeb]",
       )}
     >
+      <PersistentHeader
+        className={cn("sticky top-0 z-50", theme === "dark" ? "bg-slate-900/80" : "bg-white/80")}
+      />
+
       {/* Sticky Header */}
       <div className="sticky top-0 z-40 backdrop-blur-lg border-b">
         <div
           className={cn(
-            theme === "dark"
-              ? "bg-slate-900/80 border-slate-700"
-              : "bg-white/80 border-gray-200"
+            theme === "dark" ? "bg-slate-900/80 border-slate-700" : "bg-white/80 border-gray-200",
           )}
         >
           <div className="max-w-7xl mx-auto px-4 py-4">
@@ -110,7 +114,7 @@ export function WorkDetailPage() {
                 "inline-flex items-center gap-2 mb-4 text-sm transition-colors",
                 theme === "dark"
                   ? "text-gray-400 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
+                  : "text-gray-600 hover:text-gray-900",
               )}
             >
               <ChevronLeft className="w-4 h-4" />
@@ -138,7 +142,7 @@ export function WorkDetailPage() {
                 <h1
                   className={cn(
                     "text-2xl md:text-3xl font-bold mb-2",
-                    theme === "dark" ? "text-white" : "text-gray-900"
+                    theme === "dark" ? "text-white" : "text-gray-900",
                   )}
                 >
                   {work.title[i18n.language] || work.title["zh-CN"]}
@@ -148,7 +152,7 @@ export function WorkDetailPage() {
                   <p
                     className={cn(
                       "text-sm mb-3",
-                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      theme === "dark" ? "text-gray-400" : "text-gray-500",
                     )}
                   >
                     {work.subtitle[i18n.language] || work.subtitle["zh-CN"]}
@@ -158,31 +162,17 @@ export function WorkDetailPage() {
                 {/* 作者信息 */}
                 <div className="flex flex-wrap items-center gap-4 mb-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <span
-                      className={cn(
-                        theme === "dark" ? "text-gray-400" : "text-gray-500"
-                      )}
-                    >
+                    <span className={cn(theme === "dark" ? "text-gray-400" : "text-gray-500")}>
                       {t("works.authors")}:
                     </span>
-                    <span
-                      className={cn(
-                        theme === "dark" ? "text-gray-300" : "text-gray-700"
-                      )}
-                    >
-                      {work.authors
-                        .map((a) => a.name[i18n.language] || a.name["zh-CN"])
-                        .join(", ")}
+                    <span className={cn(theme === "dark" ? "text-gray-300" : "text-gray-700")}>
+                      {work.authors.map((a) => a.name[i18n.language] || a.name["zh-CN"]).join(", ")}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-500" />
-                    <span
-                      className={cn(
-                        theme === "dark" ? "text-gray-400" : "text-gray-500"
-                      )}
-                    >
+                    <span className={cn(theme === "dark" ? "text-gray-400" : "text-gray-500")}>
                       {new Date(work.createdAt).toLocaleDateString("zh-CN")}
                     </span>
                   </div>
@@ -197,8 +187,8 @@ export function WorkDetailPage() {
                       liked
                         ? "bg-red-100 text-red-600 hover:bg-red-200"
                         : theme === "dark"
-                        ? "bg-slate-700 text-gray-300 hover:bg-slate-600"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          ? "bg-slate-700 text-gray-300 hover:bg-slate-600"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200",
                     )}
                   >
                     <Heart className={cn("w-4 h-4", liked && "fill-current")} />
@@ -211,7 +201,7 @@ export function WorkDetailPage() {
                       "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors",
                       theme === "dark"
                         ? "bg-slate-700 text-gray-300 hover:bg-slate-600"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200",
                     )}
                   >
                     <Share2 className="w-4 h-4" />
@@ -221,9 +211,7 @@ export function WorkDetailPage() {
                   <div
                     className={cn(
                       "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
-                      theme === "dark"
-                        ? "bg-slate-700 text-gray-400"
-                        : "bg-gray-100 text-gray-500"
+                      theme === "dark" ? "bg-slate-700 text-gray-400" : "bg-gray-100 text-gray-500",
                     )}
                   >
                     <Eye className="w-4 h-4" />
@@ -238,7 +226,7 @@ export function WorkDetailPage() {
               <div
                 className={cn(
                   "flex gap-1 p-1 rounded-lg overflow-x-auto",
-                  theme === "dark" ? "bg-slate-800" : "bg-gray-100"
+                  theme === "dark" ? "bg-slate-800" : "bg-gray-100",
                 )}
               >
                 {tabs.map((tab) => (
@@ -252,8 +240,8 @@ export function WorkDetailPage() {
                           ? "bg-slate-700 text-white"
                           : "bg-white text-gray-900 shadow-sm"
                         : theme === "dark"
-                        ? "text-gray-400 hover:text-gray-300"
-                        : "text-gray-600 hover:text-gray-900"
+                          ? "text-gray-400 hover:text-gray-300"
+                          : "text-gray-600 hover:text-gray-900",
                     )}
                   >
                     {(tab.label as Record<string, string>)[i18n.language] || tab.label["zh-CN"]}
@@ -268,16 +256,11 @@ export function WorkDetailPage() {
       {/* 内容区域 */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {activeTab === "overview" && (
-          <div
-            className={cn(
-              "rounded-2xl p-6",
-              theme === "dark" ? "bg-slate-800/50" : "bg-white"
-            )}
-          >
+          <div className={cn("rounded-2xl p-6", theme === "dark" ? "bg-slate-800/50" : "bg-white")}>
             <h2
               className={cn(
                 "text-xl font-bold mb-4",
-                theme === "dark" ? "text-white" : "text-gray-900"
+                theme === "dark" ? "text-white" : "text-gray-900",
               )}
             >
               {t("works.overview.title")}
@@ -285,7 +268,7 @@ export function WorkDetailPage() {
             <p
               className={cn(
                 "mb-6 leading-relaxed whitespace-pre-line",
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
+                theme === "dark" ? "text-gray-300" : "text-gray-700",
               )}
             >
               {work.description[i18n.language] || work.description["zh-CN"]}
@@ -297,7 +280,7 @@ export function WorkDetailPage() {
                 <h3
                   className={cn(
                     "text-lg font-semibold mb-4",
-                    theme === "dark" ? "text-white" : "text-gray-900"
+                    theme === "dark" ? "text-white" : "text-gray-900",
                   )}
                 >
                   {t("works.overview.projectShowcase")}
@@ -322,10 +305,6 @@ export function WorkDetailPage() {
 
         {activeTab === "record" && work.recordEntries && (
           <RecordSection entries={work.recordEntries} />
-        )}
-
-        {activeTab === "discussion" && work.comments && (
-          <CommentSection comments={work.comments} workId={work.id} />
         )}
 
         {activeTab === "media" && work.mediaResources && (
