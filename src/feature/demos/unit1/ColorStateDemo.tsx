@@ -446,7 +446,105 @@ function SaccharimeterCanvas({
       ctx.fillStyle = "#aaa";
       ctx.fillText(`L = ${pathLength} dm  |  c = ${concentration.toFixed(2)} g/mL`, tubeCenterX, layout.tubeY + layout.tubeRadius + 52);
 
-      // ===== 6. 绘制出射色散光扇 =====
+      // ===== 6. 绘制出射光 - 平行光线展示偏振面旋转 =====
+      // 原理说明：量糖计中光的传播方向不变，只是偏振面旋转
+      // 这与牛顿棱镜色散完全不同（棱镜是光的方向改变）
+      const rayOriginX = layout.tubeEndX;
+      const rayOriginY = layout.tubeY;
+      const rayLength = 200;
+      const raySpacing = 35; // 光线之间的垂直间距
+
+      // 计算Y方向的偏移，使光线居中排列
+      const totalHeight = (rotationsData.length - 1) * raySpacing;
+      const startY = rayOriginY - totalHeight / 2;
+
+      // 绘制各波长的平行出射光线
+      rotationsData.forEach((data, index) => {
+        const rayY = startY + index * raySpacing;
+        const endX = rayOriginX + rayLength;
+
+        // 绘制光线（水平平行线）
+        // 光线渐变
+        const rayGradient = ctx.createLinearGradient(
+          rayOriginX,
+          rayY,
+          endX,
+          rayY
+        );
+        rayGradient.addColorStop(0, data.color.replace("rgb", "rgba").replace(")", ", 0.95)"));
+        rayGradient.addColorStop(0.7, data.color.replace("rgb", "rgba").replace(")", ", 0.6)"));
+        rayGradient.addColorStop(1, data.color.replace("rgb", "rgba").replace(")", ", 0.2)"));
+
+        ctx.strokeStyle = rayGradient;
+        ctx.lineWidth = 6;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(rayOriginX, rayY);
+        ctx.lineTo(endX, rayY);
+        ctx.stroke();
+
+        // 光晕效果
+        ctx.strokeStyle = data.color.replace("rgb", "rgba").replace(")", ", 0.15)");
+        ctx.lineWidth = 15;
+        ctx.beginPath();
+        ctx.moveTo(rayOriginX, rayY);
+        ctx.lineTo(endX, rayY);
+        ctx.stroke();
+
+        // 在光线末端绘制偏振矢量箭头（旋转后的方向）
+        const vectorSize = 30;
+
+        // 最终偏振角度 = 起偏器角度 + 旋光角度
+        const finalAngle = polarizerAngle + data.rotationAngle;
+        const finalRad = (finalAngle * Math.PI) / 180;
+
+        ctx.save();
+        ctx.translate(endX, rayY);
+        ctx.rotate(-finalRad);
+
+        // 绘制偏振矢量箭头
+        ctx.strokeStyle = data.color;
+        ctx.fillStyle = data.color;
+        ctx.lineWidth = 3;
+
+        // 箭头主线
+        ctx.beginPath();
+        ctx.moveTo(-vectorSize, 0);
+        ctx.lineTo(vectorSize, 0);
+        ctx.stroke();
+
+        // 箭头头部
+        ctx.beginPath();
+        ctx.moveTo(vectorSize, 0);
+        ctx.lineTo(vectorSize - 10, -6);
+        ctx.lineTo(vectorSize - 10, 6);
+        ctx.closePath();
+        ctx.fill();
+
+        // 箭头尾部（小圆点表示起点）
+        ctx.beginPath();
+        ctx.arc(-vectorSize, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+
+        // 在光线右端显示波长和旋转角度
+        if (showRotationAngles) {
+          ctx.fillStyle = data.color;
+          ctx.font = "bold 11px sans-serif";
+          ctx.textAlign = "left";
+          ctx.fillText(`${data.wavelength}nm`, endX + 8, rayY - 8);
+
+          ctx.font = "10px sans-serif";
+          ctx.fillStyle = "#aaa";
+          ctx.fillText(`${data.rotationAngle.toFixed(1)}°`, endX + 8, rayY + 6);
+        }
+      });
+
+      // 以下是原来的扇形展开实现，已注释
+      // 原因：用户指出扇形展开会让人联想到牛顿棱镜色散，
+      // 但量糖计的原理是偏振面旋转，不是光的方向改变
+      /*
       const fanOriginX = layout.tubeEndX;
       const fanOriginY = layout.tubeY;
       const fanRadius = 180;
@@ -463,7 +561,6 @@ function SaccharimeterCanvas({
 
       rotationsData.forEach((data, _index) => {
         const angle = data.rotationAngle;
-        // 限制在 [0, 1] 范围内，避免 addColorStop 参数超过 1.0
         const normalizedAngle = Math.max(0, Math.min(1, (angle / 180) * 0.8));
         fanGradient.addColorStop(normalizedAngle, data.color.replace("rgb", "rgba").replace(")", ", 0.1)"));
       });
@@ -479,7 +576,7 @@ function SaccharimeterCanvas({
       rotationsData.forEach((data) => {
         const angle = data.rotationAngle;
         const baseAngle = -Math.PI / 2;
-        const spreadAngle = (angle / 180) * 0.5; // 缩小扇形展开角度
+        const spreadAngle = (angle / 180) * 0.5;
 
         const endX = fanOriginX + fanRadius * Math.cos(baseAngle + spreadAngle);
         const endY = fanOriginY + fanRadius * Math.sin(baseAngle + spreadAngle);
@@ -543,6 +640,7 @@ function SaccharimeterCanvas({
           ctx.fillText(`${data.colorName} ${data.rotationAngle.toFixed(1)}°`, endX + 8, endY + 4);
         }
       });
+      */
 
       // ===== 7. 绘制图例 =====
       const legendX = 60;
@@ -570,17 +668,17 @@ function SaccharimeterCanvas({
       ctx.fillStyle = "#aaa";
       ctx.fillText("起偏器", legendX + 138, legendY);
 
-      // 色散说明
+      // 旋光色散说明
       ctx.fillStyle = "linear-gradient(to right, #ff4444, #4444ff)";
       ctx.fillRect(legendX + 210, legendY - 5, 30, 10);
       ctx.fillStyle = "#aaa";
-      ctx.fillText("管内色散", legendX + 245, legendY);
+      ctx.fillText("旋光色散", legendX + 245, legendY);
 
-      // 旋光色散原理说明
+      // 旋光原理说明（强调偏振面旋转，不是光的方向改变）
       ctx.fillStyle = "#666";
       ctx.font = "10px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("不同波长的光在糖溶液中旋转速度不同，颜色在管内逐渐分离", width / 2, legendY + 25);
+      ctx.fillText("不同波长的偏振面旋转角度不同 | 光的传播方向不变", width / 2, legendY + 25);
 
       if (animate) {
         timeRef.current += 1;
