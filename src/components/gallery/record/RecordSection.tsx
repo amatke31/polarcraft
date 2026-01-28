@@ -86,14 +86,25 @@ export function RecordSection({ entries }: RecordSectionProps) {
 
                 {/* 图片 */}
                 {entry.images && entry.images.length > 0 && (
-                  <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="grid grid-cols-4 gap-3 mb-4">
                     {entry.images.map((img, idx) => (
-                      <img
-                        key={idx}
-                        src={img}
-                        alt={`Record ${idx + 1}`}
-                        className="rounded-lg object-cover w-full h-32 hover:scale-105 transition-transform cursor-pointer"
-                      />
+                      <div key={idx} className="group">
+                        <img
+                          src={img.url}
+                          alt={img.caption?.[i18n.language] || img.caption?.["zh-CN"] || `Record ${idx + 1}`}
+                          className="rounded-lg object-contain w-full aspect-auto hover:scale-105 transition-transform cursor-pointer"
+                        />
+                        {img.caption && (
+                          <p
+                            className={cn(
+                              "text-xs mt-1.5 text-center",
+                              theme === "dark" ? "text-gray-400" : "text-gray-500"
+                            )}
+                          >
+                            {img.caption[i18n.language] || img.caption["zh-CN"]}
+                          </p>
+                        )}
+                      </div>
                     ))}
                   </div>
                 )}

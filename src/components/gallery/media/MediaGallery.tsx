@@ -29,9 +29,41 @@ export function MediaGallery({ media }: MediaGalleryProps) {
   const { t, i18n } = useTranslation();
   const mediaTypeConfig = getMediaTypeConfig(t);
 
-  const handleDownload = (mediaItem: GalleryMedia) => {
-    // TODO: 实现下载逻辑
-    console.log("下载:", mediaItem);
+  const handleDownload = async (mediaItem: GalleryMedia) => {
+    try {
+      // 从 URL 中提取文件名
+      const fileName = mediaItem.url.split("/").pop() || "download";
+
+      // 创建一个隐藏的 <a> 标签来触发下载
+      const link = document.createElement("a");
+      link.href = mediaItem.url;
+      link.download = fileName;
+      link.style.display = "none";
+
+      // 对于跨域资源，尝试使用 fetch 下载
+      try {
+        const response = await fetch(mediaItem.url);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        link.href = blobUrl;
+
+        document.body.appendChild(link);
+        link.click();
+
+        // 清理
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(blobUrl);
+        }, 100);
+      } catch {
+        // 如果 fetch 失败，回退到直接打开链接
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error("下载失败:", error);
+    }
   };
 
   return (

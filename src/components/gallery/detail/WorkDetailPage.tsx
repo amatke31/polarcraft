@@ -291,7 +291,7 @@ export function WorkDetailPage() {
                       key={idx}
                       src={img}
                       alt={`Gallery ${idx + 1}`}
-                      className="rounded-lg object-cover w-full h-32 hover:scale-105 transition-transform cursor-pointer"
+                      className="rounded-lg object-contain w-full aspect-auto hover:scale-105 transition-transform cursor-pointer"
                       onClick={() => {
                         /* TODO: 打开图片查看器 */
                       }}
