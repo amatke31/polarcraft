@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Sparkles, FlaskConical, RotateCcw } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import {
   SliderControl,
   ControlPanel,
@@ -162,6 +163,7 @@ function BiRefringenceCanvas({
 
 export function BiRefringenceIcelandSparDemo() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   // 状态 | State
   const [incidentAngle, setIncidentAngle] = useState(30);
@@ -209,7 +211,7 @@ export function BiRefringenceIcelandSparDemo() {
         <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
           {t("basics.demos.birefringenceIcelandSpar.title") || "双折射效应"}
         </h2>
-        <p className="text-gray-400 mt-1">
+        <p className={theme === "dark" ? "text-gray-400 mt-1" : "text-gray-600 mt-1"}>
           {t("basics.demos.birefringenceIcelandSpar.description") || "方解石等晶体将一束光分裂为o光和e光的现象"}
         </p>
       </div>
@@ -219,8 +221,8 @@ export function BiRefringenceIcelandSparDemo() {
         {/* 画布 | Canvas */}
         <div className="flex-1 bg-slate-900/50 rounded-xl border border-cyan-400/20 overflow-hidden">
           <div className="px-4 py-3 border-b border-cyan-400/10 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">3D晶体演示</h3>
-            <div className="flex items-center gap-2 text-xs text-gray-400">
+            <h3 className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>3D晶体演示</h3>
+            <div className={`flex items-center gap-2 text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
               <span className="inline-block w-2 h-2 rounded-full bg-yellow-400" />
               入射光
               <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 ml-2" />
@@ -245,7 +247,7 @@ export function BiRefringenceIcelandSparDemo() {
         {/* 信息面板 | Info Panel */}
         <div className="lg:w-[320px] bg-slate-900/50 rounded-xl border border-cyan-400/20 overflow-hidden">
           <div className="px-4 py-3 border-b border-cyan-400/10">
-            <h3 className="text-sm font-semibold text-white">参数信息</h3>
+            <h3 className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>参数信息</h3>
           </div>
           <div className="p-4 space-y-4">
             {/* 当前状态 | Current status */}
@@ -270,7 +272,7 @@ export function BiRefringenceIcelandSparDemo() {
                   {isSignificantWalkOff ? "明显的双折射" : "当前状态"}
                 </span>
               </div>
-              <p className="text-xs text-gray-300">
+              <p className={`text-xs ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                 {isSignificantWalkOff
                   ? `走离角达到 ${walkOffAngle.toFixed(2)}°，o光和e光显著分离`
                   : "调节入射角和晶体旋转观察双折射现象"}
@@ -322,7 +324,7 @@ export function BiRefringenceIcelandSparDemo() {
                 <h4 className="font-semibold text-orange-400 mb-1">
                   明显的双折射现象
                 </h4>
-                <p className="text-sm text-gray-300">
+                <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                   走离角达到{" "}
                   <span className="text-orange-400 font-semibold">
                     {walkOffAngle.toFixed(2)}°
@@ -358,21 +360,21 @@ export function BiRefringenceIcelandSparDemo() {
           <div className="flex gap-2 mt-3">
             <button
               onClick={() => setIncidentAngle(0)}
-              className="flex-1 px-3 py-2 text-xs rounded-lg bg-slate-700/50 text-gray-400 border border-slate-600/50 hover:border-cyan-400/30 hover:text-gray-300 transition-colors"
+              className={`flex-1 px-3 py-2 text-xs rounded-lg ${theme === "dark" ? "bg-slate-700/50 text-gray-400 border-slate-600/50" : "bg-gray-100/50 text-gray-600 border-gray-300/50"} border hover:border-cyan-400/30 transition-colors`}
               type="button"
             >
               0°
             </button>
             <button
               onClick={() => setIncidentAngle(30)}
-              className="flex-1 px-3 py-2 text-xs rounded-lg bg-slate-700/50 text-gray-400 border border-slate-600/50 hover:border-cyan-400/30 hover:text-gray-300 transition-colors"
+              className={`flex-1 px-3 py-2 text-xs rounded-lg ${theme === "dark" ? "bg-slate-700/50 text-gray-400 border-slate-600/50" : "bg-gray-100/50 text-gray-600 border-gray-300/50"} border hover:border-cyan-400/30 transition-colors`}
               type="button"
             >
               30°
             </button>
             <button
               onClick={() => setIncidentAngle(60)}
-              className="flex-1 px-3 py-2 text-xs rounded-lg bg-slate-700/50 text-gray-400 border border-slate-600/50 hover:border-cyan-400/30 hover:text-gray-300 transition-colors"
+              className={`flex-1 px-3 py-2 text-xs rounded-lg ${theme === "dark" ? "bg-slate-700/50 text-gray-400 border-slate-600/50" : "bg-gray-100/50 text-gray-600 border-gray-300/50"} border hover:border-cyan-400/30 transition-colors`}
               type="button"
             >
               60°
@@ -396,21 +398,21 @@ export function BiRefringenceIcelandSparDemo() {
           <div className="flex gap-2 mt-3">
             <button
               onClick={() => setCrystalRotation(0)}
-              className="flex-1 px-3 py-2 text-xs rounded-lg bg-slate-700/50 text-gray-400 border border-slate-600/50 hover:border-purple-400/30 hover:text-gray-300 transition-colors"
+              className={`flex-1 px-3 py-2 text-xs rounded-lg ${theme === "dark" ? "bg-slate-700/50 text-gray-400 border-slate-600/50" : "bg-gray-100/50 text-gray-600 border-gray-300/50"} border hover:border-purple-400/30 transition-colors`}
               type="button"
             >
               0°
             </button>
             <button
               onClick={() => setCrystalRotation(45)}
-              className="flex-1 px-3 py-2 text-xs rounded-lg bg-slate-700/50 text-gray-400 border border-slate-600/50 hover:border-purple-400/30 hover:text-gray-300 transition-colors"
+              className={`flex-1 px-3 py-2 text-xs rounded-lg ${theme === "dark" ? "bg-slate-700/50 text-gray-400 border-slate-600/50" : "bg-gray-100/50 text-gray-600 border-gray-300/50"} border hover:border-purple-400/30 transition-colors`}
               type="button"
             >
               45°
             </button>
             <button
               onClick={() => setCrystalRotation(90)}
-              className="flex-1 px-3 py-2 text-xs rounded-lg bg-slate-700/50 text-gray-400 border border-slate-600/50 hover:border-purple-400/30 hover:text-gray-300 transition-colors"
+              className={`flex-1 px-3 py-2 text-xs rounded-lg ${theme === "dark" ? "bg-slate-700/50 text-gray-400 border-slate-600/50" : "bg-gray-100/50 text-gray-600 border-gray-300/50"} border hover:border-purple-400/30 transition-colors`}
               type="button"
             >
               90°
@@ -438,7 +440,7 @@ export function BiRefringenceIcelandSparDemo() {
           <Toggle label="显示e光" checked={showERay} onChange={setShowERay} />
           <Toggle label="显示双像文字" checked={showText} onChange={setShowText} />
           <Toggle label="动画" checked={animate} onChange={setAnimate} />
-          <div className="mt-4 text-xs text-gray-400 space-y-1">
+          <div className={`mt-4 text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"} space-y-1`}>
             <p>
               • <span className="text-yellow-400">黄色</span>: 入射光
             </p>
@@ -463,14 +465,14 @@ export function BiRefringenceIcelandSparDemo() {
       {/* 信息卡片 | Info Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <InfoCard title="维京人的秘密导航晶体" color="cyan">
-          <p className="text-xs text-gray-300">
+          <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
             {t("basics.demos.birefringenceIcelandSpar.lifeScene.hook") ||
               "维京人如何在阴天的大洋上导航？传说中的「太阳石」——科学家认为就是方解石晶体！这种晶体即使在多云天气也能通过分析天空偏振找到太阳位置。"}
           </p>
         </InfoCard>
 
         <InfoCard title="双折射原理" color="purple">
-          <ul className="text-xs text-gray-300 space-y-1.5">
+          <ul className={`text-xs ${theme === "dark" ? "text-gray-300" : "text-gray-700"} space-y-1.5`}>
             <ListItem>{(t("basics.demos.birefringenceIcelandSpar.physics.details", { returnObjects: true }) as string[])[0] || "o光和e光的偏振方向互相垂直"}</ListItem>
             <ListItem>{(t("basics.demos.birefringenceIcelandSpar.physics.details", { returnObjects: true }) as string[])[1] || "两光传播速度不同造成相位差"}</ListItem>
             <ListItem>{(t("basics.demos.birefringenceIcelandSpar.physics.details", { returnObjects: true }) as string[])[2] || "方解石是典型的双折射材料"}</ListItem>
@@ -481,7 +483,7 @@ export function BiRefringenceIcelandSparDemo() {
         </InfoCard>
 
         <InfoCard title="应用场景" color="green">
-          <ul className="text-xs text-gray-300 space-y-1.5">
+          <ul className={`text-xs ${theme === "dark" ? "text-gray-300" : "text-gray-700"} space-y-1.5`}>
             <ListItem>{(t("basics.demos.birefringenceIcelandSpar.frontier.details", { returnObjects: true }) as string[])[0] || "偏振光学元件（渥拉斯顿棱镜）"}</ListItem>
             <ListItem>{(t("basics.demos.birefringenceIcelandSpar.frontier.details", { returnObjects: true }) as string[])[1] || "光通信中的偏振复用技术"}</ListItem>
             <ListItem>{(t("basics.demos.birefringenceIcelandSpar.frontier.details", { returnObjects: true }) as string[])[2] || "应力分析（光弹效应）"}</ListItem>
@@ -491,22 +493,22 @@ export function BiRefringenceIcelandSparDemo() {
       </div>
 
       {/* 思考题 | Thinking Questions */}
-      <div className="bg-slate-900/50 rounded-xl border border-cyan-400/20 p-4">
-        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+      <div className={`${theme === "dark" ? "bg-slate-900/50 border-cyan-400/20" : "bg-gray-100/50 border-cyan-600/20"} rounded-xl border p-4`}>
+        <h3 className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"} mb-3 flex items-center gap-2`}>
           <FlaskConical className="w-4 h-4 text-cyan-400" />
           思考题
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300">
-          <div className="p-3 bg-slate-800/50 rounded-lg">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-3 text-xs ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+          <div className={`p-3 ${theme === "dark" ? "bg-slate-800/50" : "bg-gray-200/50"} rounded-lg`}>
             <span className="text-cyan-400 font-semibold">Q1:</span> {(t("basics.demos.birefringenceIcelandSpar.questions.guided", { returnObjects: true }) as string[])[0] || "为什么透过方解石观看文字会产生双像？"}
           </div>
-          <div className="p-3 bg-slate-800/50 rounded-lg">
+          <div className={`p-3 ${theme === "dark" ? "bg-slate-800/50" : "bg-gray-200/50"} rounded-lg`}>
             <span className="text-cyan-400 font-semibold">Q2:</span> {(t("basics.demos.birefringenceIcelandSpar.questions.guided", { returnObjects: true }) as string[])[1] || "o光和e光之间有什么偏振关系？"}
           </div>
-          <div className="p-3 bg-slate-800/50 rounded-lg">
+          <div className={`p-3 ${theme === "dark" ? "bg-slate-800/50" : "bg-gray-200/50"} rounded-lg`}>
             <span className="text-cyan-400 font-semibold">Q3:</span> {(t("basics.demos.birefringenceIcelandSpar.questions.openEnded", { returnObjects: true }) as string[])[0] || "双折射如何用于测量透明材料中的应力？"}
           </div>
-          <div className="p-3 bg-slate-800/50 rounded-lg">
+          <div className={`p-3 ${theme === "dark" ? "bg-slate-800/50" : "bg-gray-200/50"} rounded-lg`}>
             <span className="text-cyan-400 font-semibold">Q4:</span> {(t("basics.demos.birefringenceIcelandSpar.questions.guided_research", { returnObjects: true }) as string[])[0] || "旋转方解石晶体时，两个像会怎么变化？"}
           </div>
         </div>
