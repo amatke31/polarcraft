@@ -40,10 +40,41 @@
       "downloadpptx": "下载 PPTX 文件",
       "coursedirectory": "课程目录",
       "tags": "标签",
-      "resources": "资源"
+      "resources": "资源",
+      "all": "全部",
+      "discovery": "发现",
+      "theory": "理论",
+      "experiment": "实验",
+      "application": "应用"
     },
     "demos": {
       "title": "理论模拟"
+    },
+    "gallery": {
+      "title": "成果展示",
+      "modal": {
+        "guide": "实验指南",
+        "tools": "数字工具",
+        "materials": "所需材料",
+        "safety": "安全注意事项",
+        "steps": "实验步骤",
+        "science": "科学原理",
+        "tips": "小贴士",
+        "photoIdeas": "拍照创意",
+        "viewDemo": "查看相关演示"
+      },
+      "galleryTitle": "偏振艺术作品展示",
+      "galleryDescription": "来自社区的精彩偏振光艺术作品，包括胶带艺术、摄影和科学项目。",
+      "category": {
+        "tapeArt": "胶带艺术",
+        "photography": "摄影",
+        "installation": "装置",
+        "science": "科学",
+        "student": "学生作品"
+      }
+    },
+    "lab": {
+      "title": "虚拟课题"
     }
   },
   "discovery": {
@@ -81,7 +112,7 @@
       },
       "theory": {
         "title": "理论模拟",
-        "description": "20+交互演示，让抽象公式「动」起来。拖动参数看马吕斯定律生效，旋转波片观察偏振态变化，在庞加莱球上追踪光的轨迹——用双手建立物理直觉。90°散射光为完全线偏振。散射光的偏振度与观测角度相关，在90°达到最大。",
+        "description": "20+交互演示，让抽象公式「动」起来。拖动参数看马吕斯定律生效，旋转波片观察偏振态变化，在庞加莱球上追踪光的轨迹——用双手建立物理直觉。",
         "link1": "马吕斯定律演示",
         "link2": "双折射晶体",
         "link3": "斯托克斯向量"
@@ -107,6 +138,9 @@
         "link2": "计算工具",
         "link3": "社区广场"
       }
+    },
+    "badges": {
+      "inDevelopment": "开发中"
     }
   },
   "course": {
@@ -547,6 +581,91 @@
     "keepLearning": "继续加油！",
     "startQuiz": "开始测验",
     "skipQuiz": "跳过测验"
+  },
+  "works": {
+    "title": "学生作品展示",
+    "description": "探索学生们在偏振光领域的精彩研究成果和创意实验",
+    "noWorks": "暂无作品展示",
+    "views": "浏览",
+    "likes": "喜欢",
+    "authors": "作者",
+    "public": "公开",
+    "private": "私密",
+    "tabs": {
+      "overview": "概览",
+      "record": "研究记录",
+      "discussion": "讨论",
+      "media": "媒体资源",
+      "overviewCount": "概览",
+      "recordCount": "研究记录 ({{count}})",
+      "discussionCount": "讨论 ({{count}})",
+      "mediaCount": "媒体资源 ({{count}})"
+    },
+    "overview": {
+      "title": "项目简介",
+      "projectShowcase": "项目展示"
+    },
+    "record": {
+      "title": "研究记录",
+      "noRecords": "暂无研究记录"
+    },
+    "discussion": {
+      "title": "讨论",
+      "placeholder": "写下你的想法...",
+      "send": "发送",
+      "noComments": "还没有评论，来发表第一条评论吧！",
+      "reply": "回复",
+      "likes": "点赞"
+    },
+    "media": {
+      "title": "媒体资源",
+      "viewImage": "查看大图",
+      "playVideo": "播放视频",
+      "openFile": "打开文件",
+      "download": "下载",
+      "types": {
+        "image": "图片",
+        "video": "视频",
+        "pdf": "PDF",
+        "pptx": "PPT",
+        "docx": "Word",
+        "markdown": "Markdown",
+        "matlab": "MATLAB",
+        "other": "文件"
+      }
+    },
+    "actions": {
+      "share": "分享",
+      "like": "点赞",
+      "viewCount": "{{count}} 浏览"
+    },
+    "back": "返回"
+  },
+  "lab": {
+    "title": "虚拟课题",
+    "description": "学生进行中的研究项目，在这里可以查看和参与课题讨论",
+    "features": {
+      "private": {
+        "title": "私密空间",
+        "description": "课题仅对成员可见，保护研究隐私"
+      },
+      "discussion": {
+        "title": "讨论交流",
+        "description": "团队成员可以实时讨论，协作研究"
+      },
+      "progress": {
+        "title": "进度跟踪",
+        "description": "记录研究过程，追踪课题进展"
+      }
+    },
+    "noProjects": "暂无进行中的课题",
+    "noProjectsHint": "创建新课题后，它们会显示在这里",
+    "projectsSection": "进行中的课题",
+    "cta": {
+      "title": "开始你的研究之旅",
+      "description": "创建新的研究课题，邀请同学一起探索偏振光奥秘",
+      "button": "创建新课题"
+    }
   },
   "related": {
     "title": "相关演示",

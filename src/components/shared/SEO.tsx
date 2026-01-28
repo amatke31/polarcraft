@@ -54,7 +54,7 @@ export function SEO({
   productData
 }: SEOProps) {
   const { i18n } = useTranslation()
-  const isZh = i18n.language === 'zh'
+  const isZh = true
 
   const finalTitle = isZh && titleZh ? titleZh : title
   const finalDescription = isZh && descriptionZh ? descriptionZh : description

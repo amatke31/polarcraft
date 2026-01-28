@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 
 import { PersistentHeader } from "@/components/shared/PersistentHeader";
+import { AuthThemeSwitcher } from "@/components/ui/AuthThemeSwitcher";
 
 // 判断是否为移动设备的自定义 Hook
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -112,7 +113,6 @@ const DEMOS: DemoItem[] = [
 
   // 单元3 - 偏振态的数学表征与成像技术
   //
-
 ];
 
 // 单元配置：定义所有理论模拟单元
@@ -156,11 +156,6 @@ const DemoLoading = () => {
 // 视觉类型徽章
 const VisualTypeBadge = ({ type }: { type: "2D" | "3D" }) => {
   return <span className="px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-800">{type}</span>;
-};
-
-// 主题语言切换器
-const LanguageThemeSwitcher = () => {
-  return <div>{/* 主题和语言切换器将在后续实现 */}</div>;
 };
 
 export function DemosPage() {
@@ -295,7 +290,7 @@ export function DemosPage() {
                 {showMobileSidebar ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             )}
-            <LanguageThemeSwitcher />
+            <AuthThemeSwitcher compact />
           </div>
         }
       />
@@ -314,95 +309,99 @@ export function DemosPage() {
                     "pt-14",
                   )
                 : "w-64 left-0 top-[60px] bottom-0", // 为 footer 留出空间
-              theme === "dark" ? "bg-slate-900/95 border-cyan-400/10" : "bg-white/95 border-cyan-200",
+              theme === "dark"
+                ? "bg-slate-900/95 border-cyan-400/10"
+                : "bg-white/95 border-cyan-200",
             )}
           >
-          <div className="p-4">
-            {UNITS.map((unit) => {
-              // 获取当前单元的演示列表
-              const unitDemos = DEMOS.filter((d) => d.unit === unit.num);
-              const isExpanded = !isCompact || expandedUnit === unit.num;
+            <div className="p-4">
+              {UNITS.map((unit) => {
+                // 获取当前单元的演示列表
+                const unitDemos = DEMOS.filter((d) => d.unit === unit.num);
+                const isExpanded = !isCompact || expandedUnit === unit.num;
 
-              return (
-                <div
-                  key={unit.num}
-                  className="mb-3"
-                >
-                  {/* 单元标题按钮 */}
-                  <button
-                    onClick={() =>
-                      isCompact && setExpandedUnit(expandedUnit === unit.num ? null : unit.num)
-                    }
-                    className={cn(
-                      "w-full text-[10px] uppercase tracking-wider mb-2 px-2 font-semibold flex items-center gap-2",
-                      theme === "dark" ? "text-gray-500" : "text-gray-500",
-                      "transition-colors",
-                    )}
+                return (
+                  <div
+                    key={unit.num}
+                    className="mb-3"
                   >
-                    <span className="text-yellow-400">★</span>
-                    <span className="flex-1 text-left">{t(unit.titleKey)}</span>
-                  </button>
-                  {/* 单元展开时显示演示列表 */}
-                  {isExpanded && (
-                    <ul className="space-y-0.5">
-                      {unitDemos.length > 0 ? (
-                        // 有演示项时显示列表
-                        unitDemos.map((demo) => (
-                          <li key={demo.id}>
-                            <button
-                              onClick={() => {
-                                handleDemoChange(demo.id);
-                                if (isCompact) setShowMobileSidebar(false);
-                              }}
-                              className={cn(
-                                "w-full flex flex-col gap-1 px-3 py-2 rounded-lg text-sm text-left transition-all duration-200",
-                                "hover:translate-x-1 active:scale-[0.98]",
-                                activeDemo === demo.id
-                                  ? theme === "dark"
-                                    ? "bg-gradient-to-r from-cyan-400/20 to-blue-400/10 text-cyan-400 border-l-2 border-cyan-400"
-                                    : "bg-gradient-to-r from-cyan-100 to-blue-50 text-cyan-700 border-l-2 border-cyan-500"
-                                  : theme === "dark"
-                                    ? "text-gray-400 hover:bg-slate-800/50 hover:text-white"
-                                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
-                              )}
-                            >
-                              <div className="flex items-center gap-2">
-                                <span
-                                  className={cn(
-                                    "w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-semibold flex-shrink-0",
-                                    activeDemo === demo.id
-                                      ? theme === "dark"
-                                        ? "bg-cyan-400 text-black"
-                                        : "bg-cyan-500 text-white"
-                                      : theme === "dark"
-                                        ? "bg-slate-700 text-gray-400"
-                                        : "bg-gray-200 text-gray-500",
-                                  )}
-                                >
-                                  {unitDemos.indexOf(demo) + 1}
-                                </span>
-                                <span className="truncate flex-1">{t(demo.titleKey)}</span>
-                                <VisualTypeBadge type={demo.visualType} />
-                              </div>
-                            </button>
-                          </li>
-                        ))
-                      ) : (
-                        // 无演示项时显示占位符
-                        <li className={cn(
-                          "px-3 py-2 text-sm",
-                          theme === "dark" ? "text-gray-500" : "text-gray-400"
-                        )}>
-                          {t("demos.theorySimulation.comingSoon", "即将推出")}
-                        </li>
+                    {/* 单元标题按钮 */}
+                    <button
+                      onClick={() =>
+                        isCompact && setExpandedUnit(expandedUnit === unit.num ? null : unit.num)
+                      }
+                      className={cn(
+                        "w-full text-[10px] uppercase tracking-wider mb-2 px-2 font-semibold flex items-center gap-2",
+                        theme === "dark" ? "text-gray-500" : "text-gray-500",
+                        "transition-colors",
                       )}
-                    </ul>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </aside>
+                    >
+                      <span className="text-yellow-400">★</span>
+                      <span className="flex-1 text-left">{t(unit.titleKey)}</span>
+                    </button>
+                    {/* 单元展开时显示演示列表 */}
+                    {isExpanded && (
+                      <ul className="space-y-0.5">
+                        {unitDemos.length > 0 ? (
+                          // 有演示项时显示列表
+                          unitDemos.map((demo) => (
+                            <li key={demo.id}>
+                              <button
+                                onClick={() => {
+                                  handleDemoChange(demo.id);
+                                  if (isCompact) setShowMobileSidebar(false);
+                                }}
+                                className={cn(
+                                  "w-full flex flex-col gap-1 px-3 py-2 rounded-lg text-sm text-left transition-all duration-200",
+                                  "hover:translate-x-1 active:scale-[0.98]",
+                                  activeDemo === demo.id
+                                    ? theme === "dark"
+                                      ? "bg-gradient-to-r from-cyan-400/20 to-blue-400/10 text-cyan-400 border-l-2 border-cyan-400"
+                                      : "bg-gradient-to-r from-cyan-100 to-blue-50 text-cyan-700 border-l-2 border-cyan-500"
+                                    : theme === "dark"
+                                      ? "text-gray-400 hover:bg-slate-800/50 hover:text-white"
+                                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                                )}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={cn(
+                                      "w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-semibold flex-shrink-0",
+                                      activeDemo === demo.id
+                                        ? theme === "dark"
+                                          ? "bg-cyan-400 text-black"
+                                          : "bg-cyan-500 text-white"
+                                        : theme === "dark"
+                                          ? "bg-slate-700 text-gray-400"
+                                          : "bg-gray-200 text-gray-500",
+                                    )}
+                                  >
+                                    {unitDemos.indexOf(demo) + 1}
+                                  </span>
+                                  <span className="truncate flex-1">{t(demo.titleKey)}</span>
+                                  <VisualTypeBadge type={demo.visualType} />
+                                </div>
+                              </button>
+                            </li>
+                          ))
+                        ) : (
+                          // 无演示项时显示占位符
+                          <li
+                            className={cn(
+                              "px-3 py-2 text-sm",
+                              theme === "dark" ? "text-gray-500" : "text-gray-400",
+                            )}
+                          >
+                            {t("demos.theorySimulation.comingSoon", "即将推出")}
+                          </li>
+                        )}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </aside>
         )}
 
         {/* Mobile sidebar overlay - 仅在查看演示时显示 */}
@@ -414,19 +413,23 @@ export function DemosPage() {
         )}
 
         {/* Main Content */}
-        <main className={cn("flex-1", isCompact ? "p-3" : (currentDemo && !showMuseumHomepage ? "ml-64 p-6" : "p-6"))}>
+        <main
+          className={cn(
+            "flex-1",
+            isCompact ? "p-3" : currentDemo && !showMuseumHomepage ? "ml-64 p-6" : "p-6",
+          )}
+        >
           {/* 理论模拟主标题 */}
           <div className="mb-6 text-center">
-            <h1 className={cn(
-              "text-5xl font-bold",
-              theme === "dark" ? "text-white" : "text-gray-900"
-            )}>
+            <h1
+              className={cn(
+                "text-5xl font-bold",
+                theme === "dark" ? "text-white" : "text-gray-900",
+              )}
+            >
               {t("demos.theorySimulation.title", "理论模拟")}
             </h1>
-            <p className={cn(
-              "text-xl mt-2",
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            )}>
+            <p className={cn("text-xl mt-2", theme === "dark" ? "text-gray-400" : "text-gray-600")}>
               {t("demos.theorySimulation.description", "光学基础、偏振、旋光与散射的交互演示")}
             </p>
           </div>
@@ -452,16 +455,20 @@ export function DemosPage() {
                       <h3 className="text-lg font-semibold">{t(demo.titleKey)}</h3>
                       <VisualTypeBadge type={demo.visualType} />
                     </div>
-                    <p className={cn(
-                      "text-sm",
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    )}>
+                    <p
+                      className={cn(
+                        "text-sm",
+                        theme === "dark" ? "text-gray-400" : "text-gray-600",
+                      )}
+                    >
                       {t(demo.descriptionKey)}
                     </p>
-                    <div className={cn(
-                      "mt-4 text-sm font-medium",
-                      theme === "dark" ? "text-cyan-400" : "text-cyan-600"
-                    )}>
+                    <div
+                      className={cn(
+                        "mt-4 text-sm font-medium",
+                        theme === "dark" ? "text-cyan-400" : "text-cyan-600",
+                      )}
+                    >
                       开始探索 →
                     </div>
                   </button>
@@ -482,8 +489,8 @@ export function DemosPage() {
                         : "bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 border-cyan-300",
                     )}
                   >
-                    {currentDemo && UNITS.find(u => u.num === currentDemo.unit)?.titleKey
-                      ? t(UNITS.find(u => u.num === currentDemo.unit)!.titleKey)
+                    {currentDemo && UNITS.find((u) => u.num === currentDemo.unit)?.titleKey
+                      ? t(UNITS.find((u) => u.num === currentDemo.unit)!.titleKey)
                       : t("demos.theorySimulation.title", "理论模拟")}
                   </span>
                   <VisualTypeBadge type={currentDemo?.visualType || "2D"} />

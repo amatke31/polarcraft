@@ -15,6 +15,7 @@ import { cn } from "@/utils/classNames";
 import { PolarCraftLogo, ModuleIconMap, type ModuleIconKey } from "@/components/icons";
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
+import { AuthThemeSwitcher } from "../ui/AuthThemeSwitcher";
 
 // Module configuration for color theming
 const MODULE_THEMES: Record<
@@ -121,6 +122,7 @@ export function PersistentHeader({
   moduleKey,
   moduleNameKey,
   moduleName,
+  showSettings = true,
   compact = false,
   rightContent,
   centerContent,
@@ -225,6 +227,7 @@ export function PersistentHeader({
 
       {/* Right section: Settings + Custom content */}
       <div className="flex items-center gap-2">{rightContent}</div>
+      {showSettings && <AuthThemeSwitcher compact={compact} />}
     </header>
   );
 }

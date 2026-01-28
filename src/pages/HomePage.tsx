@@ -22,6 +22,8 @@ import {
   LabModuleIcon,
 } from "@/components/icons";
 
+import { AuthThemeSwitcher } from "@/components/ui/AuthThemeSwitcher";
+
 // Icon component type for animated module icons
 type AnimatedIconComponent = React.ComponentType<{
   className?: string;
@@ -44,6 +46,7 @@ interface ModuleConfig {
   path: string;
   IconComponent: AnimatedIconComponent;
   quickLinks: QuickLink[];
+  inDevelopment?: boolean;
   colorTheme: {
     bg: string;
     bgHover: string;
@@ -93,6 +96,7 @@ const MODULES: ModuleConfig[] = [
     // 已修改为 "/devices" 以与App.tsx中的路由配置保持一致
     path: "/devices",
     IconComponent: DevicesModuleIcon,
+    inDevelopment: true,
     quickLinks: [
       // 原路径为 "/studio"，已修改为 "/devices"
       { labelKey: "home.modules.studio.link1", path: "/devices" },
@@ -144,6 +148,7 @@ const MODULES: ModuleConfig[] = [
     i18nNamespace: "home.modules.games",
     path: "/games",
     IconComponent: GamesModuleIcon,
+    inDevelopment: true,
     quickLinks: [
       { labelKey: "home.modules.games.link1", path: "/games/2d" },
       { labelKey: "home.modules.games.link2", path: "/games/3d" },
@@ -274,6 +279,23 @@ function ModuleCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* "In Development" Badge */}
+      {module.inDevelopment && (
+        <div
+          className={`
+            absolute top-2 right-2 sm:top-3 sm:right-3 z-10
+            px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded-full
+            ${
+              theme === "dark"
+                ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                : "bg-amber-100 text-amber-700 border border-amber-300"
+            }
+          `}
+        >
+          {t("home.badges.inDevelopment")}
+        </div>
+      )}
+
       {/* Background glow effect on hover */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -443,9 +465,9 @@ export function HomePage() {
       /> */}
 
       {/* Settings */}
-      {/* <div className="fixed top-4 right-4 z-50">
-        <LanguageThemeSwitcher />
-      </div> */}
+      <div className="fixed top-4 right-4 z-50">
+        <AuthThemeSwitcher />
+      </div>
 
       {/* Hero Section */}
       <header className="flex flex-col items-center justify-center pt-12 pb-8 px-4 text-center">
