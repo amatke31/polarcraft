@@ -24,6 +24,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { PersistentHeader } from "@/components/shared/PersistentHeader";
+import { AuthThemeSwitcher } from "@/components/ui/AuthThemeSwitcher";
 
 // 判断是否为移动设备的自定义 Hook
 // import { useIsMobile } from "@/hooks/useIsMobile";
@@ -114,11 +115,6 @@ const DemoLoading = () => {
 // 简化的视觉类型徽章
 const VisualTypeBadge = ({ type }: { type: "2D" | "3D" }) => {
   return <span className="px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-800">{type}</span>;
-};
-
-// 简化的主题语言切换器
-const LanguageThemeSwitcher = () => {
-  return <div>{/* 主题和语言切换器将在后续实现 */}</div>;
 };
 
 export function DemosPage() {
@@ -277,7 +273,7 @@ export function DemosPage() {
                 </Link>
               </>
             )}
-            <LanguageThemeSwitcher />
+            <AuthThemeSwitcher compact />
           </div>
         }
       />

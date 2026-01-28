@@ -116,23 +116,33 @@ export function CoursesPage() {
                       >
                         {/* Cover Image */}
                         <div className="relative h-40 overflow-hidden">
-                          <div
-                            className="absolute inset-0"
-                            style={{
-                              background: `linear-gradient(135deg, ${course.color}40 0%, ${course.color}10 100%)`,
-                            }}
-                          />
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div
-                              className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                              style={{ backgroundColor: `${course.color}30` }}
-                            >
-                              <BookOpen
-                                className="w-8 h-8"
-                                style={{ color: course.color }}
+                          {course.coverImage ? (
+                            <img
+                              src={course.coverImage}
+                              alt={course.title[i18n.language]}
+                              className="absolute inset-0 w-full h-full object-cover"
+                            />
+                          ) : (
+                            <>
+                              <div
+                                className="absolute inset-0"
+                                style={{
+                                  background: `linear-gradient(135deg, ${course.color}40 0%, ${course.color}10 100%)`,
+                                }}
                               />
-                            </div>
-                          </div>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div
+                                  className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                                  style={{ backgroundColor: `${course.color}30` }}
+                                >
+                                  <BookOpen
+                                    className="w-8 h-8"
+                                    style={{ color: course.color }}
+                                  />
+                                </div>
+                              </div>
+                            </>
+                          )}
                         </div>
 
                         {/* Content */}

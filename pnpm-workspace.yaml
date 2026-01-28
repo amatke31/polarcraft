@@ -1,2 +1,7 @@
+packages:
+  - server
+  - .
+
 onlyBuiltDependencies:
+  - bcrypt
   - esbuild

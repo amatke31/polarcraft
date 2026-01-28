@@ -60,6 +60,7 @@ export const COURSE_DATA: CourseData[] = [
     title: { "zh-CN": "冰洲石和布儒斯特实验介绍" },
     description: { "zh-CN": "介绍冰洲石和布儒斯特实验的基本原理和实验过程。" },
     color: "#C9A227",
+    coverImage: "/courses/unit1/第一单元——冰洲石和布儒斯特实验介绍.jpg",
     lastUpdated: "2025-01-15",
     media: [
       {

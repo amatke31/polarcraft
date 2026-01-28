@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react"; // React 组件懒加载和 Suspense
 import { BrowserRouter, Routes, Route } from "react-router-dom"; // React Router 组件，删去navigate重定向模块，后续可能使用
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary"; // 错误边界组件
+import { AuthProvider } from "@/contexts/AuthContext"; // 认证上下文
 // Shared Components - 共享组件
 import { Footer } from "@/components/shared/Footer"; // 页脚组件
 
@@ -44,6 +45,10 @@ const LabPage = lazy(() => import("@/pages/LabPage"));
 // About Page - 关于页面
 const AboutPage = lazy(() => import("@/pages/AboutPage"));
 
+// Auth Pages - 认证页面
+const LoginPage = lazy(() => import("@/pages/LoginPage"));
+const RegisterPage = lazy(() => import("@/pages/RegisterPage"));
+
 function PageLoader() {
   return (
     <>
@@ -67,81 +72,93 @@ function PageLoader() {
 export function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* Home - 首页 */}
-            <Route
-              path="/"
-              element={<HomePage />}
-            />
+      <AuthProvider>
+        <BrowserRouter>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Home - 首页 */}
+              <Route
+                path="/"
+                element={<HomePage />}
+              />
 
-            {/* 6 Core Modules - 六大核心模块（一级页面）首页六个模块直接链接到这些页面 */}
+              {/* 6 Core Modules - 六大核心模块（一级页面）首页六个模块直接链接到这些页面 */}
 
-            {/* Module 1: 课程历史 */}
-            <Route
-              path="/courses"
-              element={<CoursesPage />}
-            />
+              {/* Module 1: 课程历史 */}
+              <Route
+                path="/courses"
+                element={<CoursesPage />}
+              />
 
-            {/* Module 2: 光学器件 */}
-            <Route
-              path="/devices"
-              element={<DevicesPage />}
-            />
+              {/* Module 2: 光学器件 */}
+              <Route
+                path="/devices"
+                element={<DevicesPage />}
+              />
 
-            {/* Module 3: 理论模拟 */}
-            <Route
-              path="/demos"
-              element={<DemosPage />}
-            />
-            <Route
-              path="/demos/:demoId"
-              element={<DemosPage />}
-            />
+              {/* Module 3: 理论模拟 */}
+              <Route
+                path="/demos"
+                element={<DemosPage />}
+              />
+              <Route
+                path="/demos/:demoId"
+                element={<DemosPage />}
+              />
 
-            {/* Module 4: 游戏挑战 */}
-            <Route
-              path="/games"
-              element={<GamesPage />}
-            />
-            <Route
-              path="/games/escape"
-              element={<EscapePage />}
-            />
-            <Route
-              path="/games/minecraft"
-              element={<MinecraftPage />}
-            />
+              {/* Module 4: 游戏挑战 */}
+              <Route
+                path="/games"
+                element={<GamesPage />}
+              />
+              <Route
+                path="/games/escape"
+                element={<EscapePage />}
+              />
+              <Route
+                path="/games/minecraft"
+                element={<MinecraftPage />}
+              />
 
-            {/* Module 5: 成果展示 */}
-            <Route
-              path="/gallery"
-              element={<GalleryPage />}
-            />
-            <Route
-              path="/gallery/:tabId"
-              element={<GalleryPage />}
-            />
-            <Route
-              path="/gallery/work/:workId"
-              element={<WorkDetailPage />}
-            />
+              {/* Module 5: 成果展示 */}
+              <Route
+                path="/gallery"
+                element={<GalleryPage />}
+              />
+              <Route
+                path="/gallery/:tabId"
+                element={<GalleryPage />}
+              />
+              <Route
+                path="/gallery/work/:workId"
+                element={<WorkDetailPage />}
+              />
 
-            {/* Module 6: 虚拟课题 */}
-            <Route
-              path="/lab"
-              element={<LabPage />}
-            />
+              {/* Module 6: 虚拟课题 */}
+              <Route
+                path="/lab"
+                element={<LabPage />}
+              />
 
-            <Route
-              path="/about"
-              element={<AboutPage />}
-            />
-          </Routes>
-        </Suspense>
-        <Footer />
-      </BrowserRouter>
+              <Route
+                path="/about"
+                element={<AboutPage />}
+              />
+
+              {/* Auth Pages - 认证页面 */}
+              <Route
+                path="/login"
+                element={<LoginPage />}
+              />
+              <Route
+                path="/register"
+                element={<RegisterPage />}
+              />
+            </Routes>
+          </Suspense>
+          <Footer />
+        </BrowserRouter>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

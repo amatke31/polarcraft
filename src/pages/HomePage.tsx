@@ -22,6 +22,8 @@ import {
   LabModuleIcon,
 } from "@/components/icons";
 
+import { AuthThemeSwitcher } from "@/components/ui/AuthThemeSwitcher";
+
 // Icon component type for animated module icons
 type AnimatedIconComponent = React.ComponentType<{
   className?: string;
@@ -459,9 +461,9 @@ export function HomePage() {
       /> */}
 
       {/* Settings */}
-      {/* <div className="fixed top-4 right-4 z-50">
-        <LanguageThemeSwitcher />
-      </div> */}
+      <div className="fixed top-4 right-4 z-50">
+        <AuthThemeSwitcher />
+      </div>
 
       {/* Hero Section */}
       <header className="flex flex-col items-center justify-center pt-12 pb-8 px-4 text-center">
