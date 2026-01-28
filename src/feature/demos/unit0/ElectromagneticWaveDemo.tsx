@@ -467,15 +467,15 @@ export function ElectromagneticWaveDemo() {
                       </text>
                     </g>
 
-                    <foreignObject x="580" y="18" width="120" height="24">
+                    <foreignObject x="550" y="18" width="150" height="24">
                       <div {...({ xmlns: "http://www.w3.org/1999/xhtml", style: { fontSize: "11px", color: "#6b7280", display: "flex", alignItems: "center" } } as any)}>
                         {MathText({ text: "$c \\approx 2.998 \\times 10^8 \\text{ m/s}$" })}
                       </div>
                     </foreignObject>
                     <rect
-                      x="600"
-                      y="40"
-                      width="60"
+                      x="580"
+                      y="50"
+                      width="70"
                       height="20"
                       rx="4"
                       fill={waveColor}
