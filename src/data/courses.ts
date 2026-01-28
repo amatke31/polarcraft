@@ -21,8 +21,6 @@ export interface MediaResource {
   url: string;
   /** 媒体标题 */
   title: LabelI18n;
-  /** 媒体描述 */
-  description: LabelI18n;
   /** 持续时间（秒，用于视频） */
   duration?: number;
 }
@@ -51,9 +49,6 @@ export interface CourseData {
 // ============================================================
 
 export const COURSE_DATA: CourseData[] = [
-  // ========================================
-  // Course 1
-  // ========================================
   {
     id: "course1",
     unitId: "course1",
@@ -67,8 +62,59 @@ export const COURSE_DATA: CourseData[] = [
         id: "course1-1-pdf",
         type: "pdf",
         url: "/courses/unit1/第一单元——冰洲石和布儒斯特实验介绍.pdf",
-        title: { "zh-CN": "冰洲石和布儒斯特实验介绍" },
-        description: { "zh-CN": "冰洲石和布儒斯特实验介绍" },
+        title: { "zh-CN": "冰洲石和布儒斯特实验介绍PDF" },
+      },
+      {
+        id: "course1-1-ppt",
+        type: "pptx",
+        url: "/courses/unit1/第一单元——冰洲石和布儒斯特实验介绍.pptx",
+        title: { "zh-CN": "冰洲石和布儒斯特实验介绍PPT" },
+      },
+    ],
+  },
+  {
+    id: "course2",
+    unitId: "course2",
+    title: { "zh-CN": "色偏振及旋光实验介绍" },
+    description: { "zh-CN": "介绍色偏振及旋光实验的基本原理和实验过程。" },
+    color: "#C9A227",
+    coverImage: "/courses/unit2/第二单元——色偏振及旋光实验介绍.jpg",
+    lastUpdated: "2025-01-15",
+    media: [
+      {
+        id: "course2-1-pdf",
+        type: "pdf",
+        url: "/courses/unit2/第二单元——色偏振及旋光实验介绍.pdf",
+        title: { "zh-CN": "第二单元——色偏振及旋光实验介绍PDF" },
+      },
+      {
+        id: "course2-1-ppt",
+        type: "pptx",
+        url: "/courses/unit2/第二单元——色偏振及旋光实验介绍.pptx",
+        title: { "zh-CN": "第二单元——色偏振及旋光实验介绍PPT" },
+      },
+    ],
+  },
+  {
+    id: "course3",
+    unitId: "course3",
+    title: { "zh-CN": "散射实验介绍" },
+    description: { "zh-CN": "介绍散射实验的基本原理和实验过程。" },
+    color: "#C9A227",
+    coverImage: "/courses/unit3/第三单元——散射实验介绍.jpg",
+    lastUpdated: "2025-01-15",
+    media: [
+      {
+        id: "course3-1-pdf",
+        type: "pdf",
+        url: "/courses/unit3/第三单元——散射实验介绍.pdf",
+        title: { "zh-CN": "第三单元——散射实验介绍PDF" },
+      },
+      {
+        id: "course3-1-ppt",
+        type: "pptx",
+        url: "/courses/unit3/第三单元——散射实验介绍.pptx",
+        title: { "zh-CN": "第三单元——散射实验介绍PPT" },
       },
       {
         id: "course1-1-ppt",
