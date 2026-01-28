@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react"; // React 组件懒加载和 Suspense
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // React Router 组件，删去navigate重定向模块，后续可能使用
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom"; // React Router 组件，删去navigate重定向模块，后续可能使用
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary"; // 错误边界组件
 import { AuthProvider } from "@/contexts/AuthContext"; // 认证上下文
 // Shared Components - 共享组件
@@ -39,7 +39,22 @@ const WorkDetailPage = lazy(() => import("@/components/gallery/detail").then(m =
 
 // Module 6: 虚拟课题
 // 开放研究 × 课题实践
-const LabPage = lazy(() => import("@/pages/LabPage"));
+// Note: /lab route now uses ResearchProjectList directly
+
+// Research System Routes / 虚拟课题组系统路由
+const ResearchProjectList = lazy(() => import("@/feature/research/components/project/ProjectList").then(m => ({ default: m.ProjectList })));
+const ResearchProjectPage = lazy(() => import("@/feature/research/pages/ResearchProjectPage").then(m => ({ default: m.ResearchProjectPage })));
+const ResearchCanvas = lazy(() => import("@/feature/research/components/canvas/ResearchCanvas").then(m => ({ default: m.ResearchCanvas })));
+
+// Wrapper component for ResearchCanvas to extract route params
+// ResearchCanvas 包装组件用于提取路由参数
+function ResearchCanvasWrapper() {
+  const { projectId, canvasId } = useParams();
+  if (!projectId || !canvasId) {
+    return <div>Invalid URL: missing projectId or canvasId</div>;
+  }
+  return <ResearchCanvas projectId={projectId} canvasId={canvasId} />;
+}
 // ============================================================
 
 // About Page - 关于页面
@@ -135,9 +150,22 @@ export function App() {
               />
 
               {/* Module 6: 虚拟课题 */}
+              {/* Research System / 虚拟课题组系统 */}
               <Route
                 path="/lab"
-                element={<LabPage />}
+                element={<ResearchProjectList />}
+              />
+              <Route
+                path="/lab/projects"
+                element={<ResearchProjectList />}
+              />
+              <Route
+                path="/lab/projects/:projectId"
+                element={<ResearchProjectPage />}
+              />
+              <Route
+                path="/lab/projects/:projectId/canvases/:canvasId"
+                element={<ResearchCanvasWrapper />}
               />
 
               <Route

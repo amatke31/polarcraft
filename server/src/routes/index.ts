@@ -9,6 +9,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import authRoutes from './auth.routes.js';
 import userRoutes from './user.routes.js';
+import researchRoutes from './research.routes.js';
 import { setupResponseHelpers } from '../utils/response.util.js';
 import { csrfToken } from '../middleware/csrf.middleware.js';
 
@@ -42,5 +43,6 @@ router.get('/health', (req: Request, res: Response) => {
 // API 路由
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
+router.use('/research', researchRoutes);
 
 export default router;

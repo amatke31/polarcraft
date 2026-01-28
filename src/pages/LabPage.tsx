@@ -9,12 +9,13 @@
  */
 
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/utils/classNames";
 import { PersistentHeader } from "@/components/shared";
 import { WorksGrid } from "@/components/gallery";
 import { getPrivateWorks } from "@/data/gallery";
-import { FlaskConical, Lock, MessageSquare } from "lucide-react";
+import { FlaskConical, Lock, MessageSquare, ArrowRight } from "lucide-react";
 
 export function ExperimentsPage() {
   const { t } = useTranslation();
@@ -165,14 +166,55 @@ export function ExperimentsPage() {
             from="lab"
             showCta={works.length === 0}
             cta={{
-              title: t("lab.cta.title"),
-              description: t("lab.cta.description"),
-              buttonText: t("lab.cta.button"),
+              title: "虚拟课题组系统",
+              description: "使用知识图谱管理您的研究项目，创建问题节点、设计实验、连接文献并得出结论",
+              buttonText: "进入研究系统",
               onButtonClick: () => {
-                console.log("创建新课题");
+                window.location.href = "/lab/projects";
               },
             }}
           />
+        </div>
+
+        {/* Research System Link Card */}
+        <div className="mt-8">
+          <Link
+            to="/lab/projects"
+            className={cn(
+              "block p-6 rounded-xl border-2 transition-all hover:shadow-lg",
+              theme === "dark"
+                ? "bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-purple-700/50 hover:border-purple-500"
+                : "bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 hover:border-purple-400"
+            )}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3
+                  className={cn(
+                    "text-xl font-bold mb-2 flex items-center gap-2",
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  )}
+                >
+                  <FlaskConical className="w-6 h-6 text-purple-400" />
+                  虚拟课题组系统
+                </h3>
+                <p
+                  className={cn(
+                    "text-sm max-w-md",
+                    theme === "dark" ? "text-gray-300" : "text-gray-600"
+                  )}
+                >
+                  使用知识图谱可视化工具，构建您的研究网络。创建问题节点、设计实验、连接文献并得出结论。
+                </p>
+              </div>
+              <ArrowRight
+                className={cn(
+                  "w-8 h-8 transition-transform group-hover:translate-x-1",
+                  theme === "dark" ? "text-purple-400" : "text-purple-600"
+                )}
+              />
+            </div>
+          </Link>
         </div>
       </main>
     </div>
