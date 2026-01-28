@@ -717,6 +717,14 @@
             "polarizationTypes": {
               "title": "偏振类型与表示",
               "description": "线偏振、圆偏振、椭圆偏振详解"
+            },
+            "birefringenceIcelandSpar": {
+              "title": "冰洲石双折射",
+              "description": "探索冰洲石中的双折射现象"
+            },
+            "brewsterAngle": {
+              "title": "布儒斯特角",
+              "description": "理解布儒斯特角及其应用"
             }
           }
         },
@@ -724,9 +732,9 @@
           "title": "偏振态",
           "description": "旋光和色偏振现象",
           "demos": {
-            "polarizationState": {
-              "title": "偏振态与波合成",
-              "description": "光波合成产生不同偏振态：线偏振、圆偏振、椭圆偏振"
+            "colorState": {
+              "title": "量糖计与旋光色散",
+              "description": "观察糖溶液中不同波长光的旋转差异，理解旋光色散现象"
             }
           }
         },

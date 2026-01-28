@@ -20,7 +20,6 @@ import {
   InfoCard,
   Formula,
 } from "../DemoControls";
-import { WhyButton } from "../DifficultyStrategy";
 import MathText from "@/components/shared/MathText";
 
 type ViewMode = "wave" | "spectrum";
@@ -593,16 +592,6 @@ export function ElectromagneticWaveDemo() {
               </ControlPanel>
             </div>
 
-            {/* Why button */}
-            <WhyButton className="mt-4">
-              <div className="space-y-2 text-sm">
-                <p>光是一种电磁波，它由电场（E）和磁场（B）相互垂直振荡产生。</p>
-                <p>
-                  就像海浪在水面上波动，光波也在空间中传播，只是振动的是电场和磁场而不是水分子。
-                </p>
-              </div>
-            </WhyButton>
-
             {/* Formula */}
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoCard
@@ -1001,14 +990,6 @@ export function ElectromagneticWaveDemo() {
                 </motion.button>
               </ControlPanel>
             </div>
-
-            {/* Why button */}
-            <WhyButton className="mt-4">
-              <div className="space-y-2 text-sm">
-                <p>电磁波谱就像一把无限长的"光尺子"——我们看到的彩虹只是其中很小的一段！</p>
-                <p>从广播塔发出的无线电波到医院X光机发出的射线，都是电磁波家族的成员。</p>
-              </div>
-            </WhyButton>
 
             {/* Knowledge cards */}
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -1,12 +1,6 @@
-// export { PolarizationIntroDemo } from './PolarizationIntroDemo'
-// export { PolarizationTypesDemo } from './PolarizationTypesDemo'
-// export { ElectromagneticSpectrumDemo } from './ElectromagneticSpectrumDemo'
-// export { ThreePolarizersDemo } from './ThreePolarizersDemo'
-
-// Note: MalusLawGraphDemo functionality has been integrated into unit1/MalusLawDemo
-// Keeping export for backward compatibility but marked as deprecated
-// export { MalusLawGraphDemo } from './MalusLawGraphDemo'
-
-// Unified demos (new merged versions)
+// unit0 demos
 export { ElectromagneticWaveDemo } from "./ElectromagneticWaveDemo";
 export { PolarizationTypesDemo } from "./PolarizationTypesDemo";
+export { BrewsterAngleDemo } from "./BrewsterAngleDemo";
+// import { BirefringenceIcelandSparDemo } from "./BirefringenceIcelandSparDemo";
+

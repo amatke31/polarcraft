@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { SliderControl, ControlPanel, ValueDisplay, Formula, InfoCard } from "../DemoControls";
 import MathText from "@/components/shared/MathText";
 
-// 3D波动传播视图 - 伪3D等轴测投影Canvas
+// 3D波动传播示意图 - 2D投影Canvas
 function WavePropagation3DCanvas({
   phaseDiff,
   ampX,
@@ -597,7 +597,9 @@ export function PolarizationTypesDemo() {
                   : "purple"
             }
           />
-          <Formula>$E = E_x \cos(\omega t) \mathbf e_x + E_y \cos(\omega t + \delta) \mathbf e_y$</Formula>
+          <Formula>
+            $E = E_x \cos(\omega t) \mathbf e_x + E_y \cos(\omega t + \delta) \mathbf e_y$
+          </Formula>
         </ControlPanel>
 
         {/* 物理原理 */}

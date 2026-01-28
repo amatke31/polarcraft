@@ -2,10 +2,10 @@
 // 6 Core Modules - 六大核心模块（一级页面）
 // ============================================================
 
-/*
+
 // Module 1: 光的编年史 (Chronicles of Light)
 export { CoursesPage } from './CoursesPage'
-
+/*
 // Module 2: 光学设计室 (Optical Design Studio)
 export { DevicesPage } from './DevicesPage'
 */

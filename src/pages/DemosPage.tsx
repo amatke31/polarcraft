@@ -35,32 +35,22 @@ import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 // 数学文本渲染组件导入
 //import MathText from "@/components/shared/MathText";
 
-// Optical Basics demos
-//import { PolarizationIntroDemo } from '@/feature/demos/unit0/PolarizationIntroDemo'
-//import { InteractiveOpticalBenchDemo } from '@/feature/demos/unit0/InteractiveOpticalBenchDemo'
-
+// Unit 0  Optical Basics demos
 import { PolarizationTypesDemo } from "@/feature/demos/unit0/PolarizationTypesDemo";
 import { ElectromagneticWaveDemo } from "@/feature/demos/unit0/ElectromagneticWaveDemo";
+// import { BriefringenceIcelandSparDemo } from "@/feature/demos/unit0/BirefringenceIcelandSparDemo";
+import { BrewsterAngleDemo } from "@/feature/demos/unit0/BrewsterAngleDemo";
+import { ColorStateDemo } from "@/feature/demos/unit1/ColorStateDemo";
 
 // Unit 1 Demo components
-
-
-// 课程难度层级类型
-export type DifficultyLevel = "foundation" | "application" | "research";
-
-// 演示组件属性接口提供难度层级等可选属性
-interface DemoComponentProps {
-  //difficultyLevel?: DifficultyLevel
-}
 
 interface DemoItem {
   id: string;
   titleKey: string;
   unit: number; // 0 = basics
-  component: React.ComponentType<DemoComponentProps>;
+  component: React.ComponentType;
   descriptionKey: string;
   visualType: "2D" | "3D";
-  //difficulty: DifficultyLevel // 可选难度层级
 }
 
 // 演示列表：定义所有可用的演示项
@@ -84,8 +74,29 @@ const DEMOS: DemoItem[] = [
     descriptionKey: "demos.theorySimulation.units.unit0.demos.polarizationTypes.description",
     visualType: "2D",
   },
+  // 布鲁斯特角演示
+  {
+    id: "brewster-angle",
+    titleKey: "demos.theorySimulation.units.unit0.demos.brewsterAngle.title",
+    unit: 0,
+    component: BrewsterAngleDemo,
+    descriptionKey: "demos.theorySimulation.units.unit0.demos.brewsterAngle.description",
+    visualType: "2D",
+
+  },
+  // 透射与反射演示
+
   // 单元1 - 各向异性介质中的偏振演化
   //
+  {
+    id: "color-state",
+    titleKey: "demos.theorySimulation.units.unit1.demos.colorState.title",
+    unit: 1,
+    component: ColorStateDemo,
+    descriptionKey: "demos.theorySimulation.units.unit1.demos.colorState.description",
+    visualType: "2D",
+  },
+
 
   // 单元2 - 光散射与部分偏振形成机制
   //
@@ -96,6 +107,7 @@ const DEMOS: DemoItem[] = [
 ];
 
 // 单元配置：定义所有理论模拟单元
+
 const UNITS = [
   // 单元0: 光学基础
   {
