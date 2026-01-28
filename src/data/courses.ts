@@ -87,12 +87,6 @@ export const COURSE_DATA: CourseData[] = [
         url: "/courses/unit2/第二单元——色偏振及旋光实验介绍.pdf",
         title: { "zh-CN": "第二单元——色偏振及旋光实验介绍PDF" },
       },
-      {
-        id: "course2-1-ppt",
-        type: "pptx",
-        url: "/courses/unit2/第二单元——色偏振及旋光实验介绍.pptx",
-        title: { "zh-CN": "第二单元——色偏振及旋光实验介绍PPT" },
-      },
     ],
   },
   {
@@ -115,20 +109,6 @@ export const COURSE_DATA: CourseData[] = [
         type: "pptx",
         url: "/courses/unit3/第三单元——散射实验介绍.pptx",
         title: { "zh-CN": "第三单元——散射实验介绍PPT" },
-      },
-      {
-        id: "course1-1-ppt",
-        type: "pptx",
-        url: "/courses/unit1/第一单元——冰洲石和布儒斯特实验介绍.pptx",
-        title: { "zh-CN": "冰洲石和布儒斯特实验介绍" },
-        description: { "zh-CN": "冰洲石和布儒斯特实验介绍" },
-      },
-      {
-        id: "course1-2-ppt",
-        type: "pptx",
-        url: "/courses/unit1/偏振光2.pptx",
-        title: { "zh-CN": "偏振光2" },
-        description: { "zh-CN": "偏振光2" },
       },
     ],
   },
