@@ -5,6 +5,7 @@
  * 展示当线偏振光通过糖溶液时，不同波长的光旋转速度不同，
  * 在管内不同位置呈现不同颜色，产生色彩渐变效果。
  */
+
 import { useState, useRef, useEffect, useMemo } from "react";
 // import { useCallback } from "react"; // 预留：用于事件处理优化
 // import { motion } from "framer-motion"; // 预留：用于动画效果
