@@ -9,6 +9,8 @@
  *
  * 3D组件来自: @/feature/demos/components/Birefringence3D | 3D components from: @/feature/demos/components/Birefringence3D
  * 物理计算来自: @/lib/physics/GeoOptics | Physics calculations from: @/lib/physics/GeoOptics
+ * 
+ * 优化方向：Add Jones calculus (lib/math) for polarization state visualization (future feature)
  */
 
 import { useState, useRef, useMemo } from "react";
@@ -41,7 +43,7 @@ import {
   OpticalAxisIndicator,
   PolarizationIndicators,
   AngleArc,
-  DoubleTextSample,
+  // DoubleTextSample, // Disabled: hides the light
   SceneGrid,
   SceneLabels,
 } from "../components/Birefringence3D";
@@ -56,7 +58,7 @@ interface BiRefringenceCanvasProps {
   crystalRotation: number;
   showORay: boolean;
   showERay: boolean;
-  showText: boolean;
+  // showText: boolean; // Disabled: hides the light
   animate: boolean;
   onResetCamera: () => void;
 }
@@ -66,7 +68,7 @@ function BiRefringenceCanvas({
   crystalRotation,
   showORay,
   showERay,
-  showText,
+  // showText, // Disabled: hides the light
   animate,
   onResetCamera,
 }: BiRefringenceCanvasProps) {
@@ -118,8 +120,8 @@ function BiRefringenceCanvas({
         {/* 晶体 | Crystal */}
         <CalciteCrystal rotation={[0, (crystalRotation * Math.PI) / 180, 0]} />
 
-        {/* 双像文字样本 | Double text sample */}
-        <DoubleTextSample show={showText} params={params} />
+        {/* 双像文字样本 | Double text sample - Disabled: hides the light */}
+        {/* <DoubleTextSample show={false} params={params} /> */}
 
         {/* 光线 | Light rays */}
         <IncidentRay params={params} animate={animate} />
@@ -170,7 +172,8 @@ export function BiRefringenceIcelandSparDemo() {
   const [crystalRotation, setCrystalRotation] = useState(0);
   const [showORay, setShowORay] = useState(true);
   const [showERay, setShowERay] = useState(true);
-  const [showText, setShowText] = useState(true);
+  // Double text permanently disabled since the toggle was removed (hides the light)
+  // const showText = false;
   const [animate, setAnimate] = useState(true);
 
   // 预留状态（未来功能）| Reserved state (future features)
@@ -237,7 +240,7 @@ export function BiRefringenceIcelandSparDemo() {
               crystalRotation={crystalRotation}
               showORay={showORay}
               showERay={showERay}
-              showText={showText}
+              // showText={showText} // Disabled: hides the light
               animate={animate}
               onResetCamera={handleResetCamera}
             />
@@ -438,7 +441,6 @@ export function BiRefringenceIcelandSparDemo() {
         <ControlPanel title="显示选项">
           <Toggle label="显示o光" checked={showORay} onChange={setShowORay} />
           <Toggle label="显示e光" checked={showERay} onChange={setShowERay} />
-          <Toggle label="显示双像文字" checked={showText} onChange={setShowText} />
           <Toggle label="动画" checked={animate} onChange={setAnimate} />
           <div className={`mt-4 text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"} space-y-1`}>
             <p>

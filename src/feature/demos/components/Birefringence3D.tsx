@@ -95,7 +95,7 @@ export function CalciteCrystal({
 }
 
 /**
- * 石英晶体 | Quartz Crystal
+ * 石英晶体（预留） | Quartz Crystal
  * 石英的双折射率较小 | Quartz has lower birefringence
  *
  * @param props.rotation - 晶体旋转角度 [x, y, z]（弧度）| Crystal rotation angles [x, y, z] in radians
@@ -196,7 +196,7 @@ export function IncidentRay({
     () => calculateBirefringenceRayPaths(params, 3),
     [params]
   );
-
+// 入射光脉冲动画 | Incident ray pulse animation
   useFrame((state) => {
     if (animate && lineRef.current) {
       const material = lineRef.current.material as THREE.LineBasicMaterial;
@@ -407,8 +407,8 @@ export function AngleArc({
   const points = useMemo(() => {
     const segments = 32;
     const pts: THREE.Vector3[] = [];
-    const startAngle = -Math.PI / 2 - (angle * Math.PI) / 180;
-    const endAngle = -Math.PI / 2;
+    const startAngle = Math.PI / 2 + (angle * Math.PI) / 180;
+    const endAngle = Math.PI / 2;
 
     for (let i = 0; i <= segments; i++) {
       const t = i / segments;

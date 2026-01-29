@@ -176,7 +176,6 @@ export function calculateEffectiveNe(n_o: number, n_e: number, theta: number): n
 export function calculateWalkOffAngle(params: BirefringenceParams): number {
   const {
     incidentAngle,
-    crystalRotation,
     n_o = BIREFRINGENT_MATERIALS.calcite.n_o,
     n_e = BIREFRINGENT_MATERIALS.calcite.n_e,
   } = params;
@@ -187,10 +186,12 @@ export function calculateWalkOffAngle(params: BirefringenceParams): number {
   const sinTheta_o = Math.sin(theta_i) / n_o;
   const theta_o = Math.asin(Math.min(1, Math.max(-1, sinTheta_o)));
 
-  // e光有效折射率随晶体取向变化 | E-ray effective refractive index varies with crystal orientation
-  // 与光轴的夹角影响有效n_e | The angle from optical axis affects the effective n_e
-  const orientationAngle = (crystalRotation * Math.PI) / 180;
-  const effective_n_e = calculateEffectiveNe(n_o, n_e, orientationAngle);
+  // 计算波矢量与光学轴的夹角 | Calculate angle between wave vector and optical axis
+  // 光学轴沿法线（Y轴）方向 | Optical axis is along normal (Y-axis)
+  const thetaFromOpticalAxis = theta_o;
+
+  // e光有效折射率 | E-ray effective refractive index
+  const effective_n_e = calculateEffectiveNe(n_o, n_e, thetaFromOpticalAxis);
 
   const sinTheta_e = Math.sin(theta_i) / effective_n_e;
   const theta_e = Math.asin(Math.min(1, Math.max(-1, sinTheta_e)));
@@ -219,7 +220,7 @@ export function calculateBirefringenceRayPaths(
 } {
   const {
     incidentAngle,
-    crystalRotation,
+    crystalRotation: _crystalRotation, // Unused: optical axis is vertical, rotation around Y doesn't change physics
     n_o = BIREFRINGENT_MATERIALS.calcite.n_o,
     n_e = BIREFRINGENT_MATERIALS.calcite.n_e,
   } = params;
@@ -244,19 +245,46 @@ export function calculateBirefringenceRayPaths(
   );
 
   // e光路径（根据晶体取向偏转）| E-ray path (deviates based on crystal orientation)
-  const orientationAngle = (crystalRotation * Math.PI) / 180;
-  const effective_n_e = calculateEffectiveNe(n_o, n_e, orientationAngle);
+  // 注意：光学轴在场景中是垂直的（Y轴），晶体绕Y轴旋转
+  // 因此 optical axis 与传播方向的夹角主要由 incidentAngle 决定，而不是 crystalRotation
+  // Note: Optical axis is vertical (Y-axis) in the scene, crystal rotates around Y
+  // So the angle between optical axis and propagation direction depends mainly on incidentAngle, not crystalRotation
+
+  // 计算波矢量与光学轴的夹角 | Calculate angle between wave vector and optical axis
+  // 光学轴沿Y轴（法线方向），入射光与法线夹角为theta_i
+  // Optical axis is along Y (normal direction), incident angle from normal is theta_i
+  // 考虑折射后，o-ray的角度为theta_o | After refraction, o-ray angle is theta_o
+  // 对于负单轴晶体（方解石），当光线接近垂直入射时，θ ≈ theta_o
+  // For negative uniaxial crystal (calcite), at near-normal incidence, θ ≈ theta_o
+
+  // 使用o-ray的折射角作为波矢量与光学轴的夹角
+  // Use o-ray refraction angle as the angle between wave vector and optical axis
+  // 添加晶体旋转对角度的影响（如果光学轴不在法线方向）
+  // Add effect of crystal rotation (if optical axis is not along normal)
+  // 这里简化处理：假设光学轴沿法线（Y轴），晶体绕Y轴旋转不影响光学轴方向
+  // Simplified: optical axis along normal (Y), rotation around Y doesn't change optical axis direction
+  const thetaFromOpticalAxis = theta_o;
+
+  const effective_n_e = calculateEffectiveNe(n_o, n_e, thetaFromOpticalAxis);
 
   const sinTheta_e = Math.sin(theta_i) / effective_n_e;
   const theta_e = Math.asin(Math.min(1, Math.max(-1, sinTheta_e)));
 
   // e光有横向走离分量 | E-ray has lateral walk-off component
-  // 走离方向取决于晶体取向 | The walk-off direction depends on crystal orientation
-  const walkOffMagnitude = 0.3 * Math.sin(orientationAngle);
+  // 走离角取决于传播方向与光学轴的夹角 | Walk-off angle depends on angle between propagation and optical axis
+  // 对于方解石，最大走离约6° | For calcite, max walk-off is about 6°
+  // 简化计算：使用固定的走离比例用于可视化
+  // Simplified: use fixed walk-off ratio for visualization
+  // 方解石的走离角约为 arctan((n_o² - n_e²) / (2 * n_o * n_e)) ≈ 6°
+  // Calcite walk-off angle ≈ arctan((n_o² - n_e²) / (2 * n_o * n_e)) ≈ 6°
+  const maxWalkOffAngle = 6 * Math.PI / 180; // 6度 in radians
+  const walkOffFactor = Math.sin(2 * thetaFromOpticalAxis); // 最大在45° | Max at 45°
+  const walkOffMagnitude = rayLength * Math.tan(maxWalkOffAngle) * walkOffFactor;
+
   const eRayEnd = new THREE.Vector3(
     rayLength * Math.sin(theta_e) + walkOffMagnitude,
     -rayLength * Math.cos(theta_e),
-    walkOffMagnitude * 0.5
+    walkOffMagnitude * 0.3  // 稍微添加Z方向偏移用于3D效果 | Add small Z offset for 3D effect
   );
 
   const walkOffAngle = Math.abs(((theta_e - theta_o) * 180) / Math.PI);
