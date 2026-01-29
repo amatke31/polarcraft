@@ -1,21 +1,25 @@
 # Math Library Testing and Enhancement Plan
 
 ## Overview
+
 Add comprehensive tests, fix mathematical issues, and improve numerical stability for `src/lib/math/` library (Complex, Matrix2x2, Vector3).
 
 ## Critical Files
 
 ### Source Files (to be modified)
+
 - `src/lib/math/Complex.ts` - Complex number class
 - `src/lib/math/Matrix2x2.ts` - 2x2 complex matrix class
 - `src/lib/math/Vector3.ts` - 3D vector class
 
 ### Test Files (to be created)
+
 - `src/lib/math/Complex.test.ts` - Complex number tests
 - `src/lib/math/Matrix2x2.test.ts` - Matrix2x2 tests
 - `src/lib/math/Vector3.test.ts` - Vector3 tests
 
 ### Configuration (optional update)
+
 - `vitest.config.ts` - Update coverage pattern to include `src/lib/**/*.ts`
 
 ---
@@ -23,7 +27,9 @@ Add comprehensive tests, fix mathematical issues, and improve numerical stabilit
 ## Phase 1: Create Comprehensive Tests
 
 ### 1.1 Complex.test.ts
+
 Test categories:
+
 - **Construction**: `new Complex()`, `fromPolar()`, static factories
 - **Properties**: `magnitude`, `magnitudeSquared`, `phase`
 - **Arithmetic**: `add()`, `sub()`, `mul()`, `div()`, `scale()`, `conjugate()`, `negate()`
@@ -33,7 +39,9 @@ Test categories:
 - **Mathematical correctness**: verify against known identities
 
 ### 1.2 Matrix2x2.test.ts
+
 Test categories:
+
 - **Construction**: `fromReal()`, `diagonal()`, `hermitian()`, static factories
 - **Properties**: `trace()`, `determinant()`, `frobeniusNorm()`
 - **Arithmetic**: `add()`, `sub()`, `mul()`, `scale()`, `scaleComplex()`
@@ -43,7 +51,9 @@ Test categories:
 - **Edge cases**: singular matrices, near-singular matrices
 
 ### 1.3 Vector3.test.ts
+
 Test categories:
+
 - **Construction**: `fromArray()`, `fromSpherical()`, static factories
 - **Properties**: `length`, `lengthSquared`
 - **Arithmetic**: `add()`, `sub()`, `scale()`, `negate()`, `dot()`, `cross()`
@@ -60,6 +70,7 @@ Test categories:
 ### 2.1 Complex.ts Fixes
 
 #### Issue 1: `div()` zero division handling (lines 91-102)
+
 **Add comprehensive comment preserving original code:**
 
 ```typescript
@@ -83,6 +94,7 @@ div(other: Complex): Complex {
 ```
 
 #### Issue 2: `powComplex()` edge case (lines 186-193)
+
 **Add edge case handling with comments:**
 
 ```typescript
@@ -107,6 +119,7 @@ powComplex(exponent: Complex): Complex {
 ```
 
 #### Issue 3: `pow()` phase normalization (lines 169-180)
+
 **Add phase normalization comment:**
 
 ```typescript
@@ -132,6 +145,7 @@ pow(n: number): Complex {
 ### 2.2 Matrix2x2.ts Enhancements
 
 #### Add condition number check for `inverse()` (lines 222-234)
+
 **Add numerical stability comment before inverse:**
 
 ```typescript
@@ -161,6 +175,7 @@ inverse(): Matrix2x2 | null {
 ### 2.3 Vector3.ts Fixes
 
 #### Issue 1: `normalize()` zero vector documentation (lines 130-136)
+
 **Add comprehensive comment:**
 
 ```typescript
@@ -182,6 +197,7 @@ normalize(): Vector3 {
 ```
 
 #### Issue 2: `angleTo()` zero vector handling (lines 204-212)
+
 **Add documentation comment:**
 
 ```typescript
@@ -304,18 +320,22 @@ coverage: {
 ## Verification
 
 ### Run Tests
+
 ```bash
+
 npm test              # Watch mode
 npm run test:run      # Single run
 npm run test:coverage # With coverage report
 ```
 
 ### Expected Coverage Goals
+
 - Complex.ts: >95% coverage
 - Matrix2x2.ts: >95% coverage
 - Vector3.ts: >95% coverage
 
 ### Manual Verification Checklist
+
 - [ ] All tests pass
 - [ ] Edge cases properly handled (zero, infinity, NaN)
 - [ ] Numerical stability verified with extreme values
