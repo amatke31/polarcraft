@@ -526,11 +526,6 @@ export function CourseViewer({ course, onBack, theme }: CourseViewerProps) {
     return media.title[i18n.language];
   };
 
-  // 获取媒体描述
-  const getMediaDescription = (media: MediaResource) => {
-    return media.description[i18n.language];
-  };
-
   // 切换全屏
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -606,7 +601,7 @@ export function CourseViewer({ course, onBack, theme }: CourseViewerProps) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4">
       {/* Header */}
       <div className="mb-6">
         <button
@@ -712,7 +707,7 @@ export function CourseViewer({ course, onBack, theme }: CourseViewerProps) {
                     {getMediaTitle(currentMedia)}
                   </h3>
                   <p className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`}>
-                    {getMediaDescription(currentMedia)}
+                    {currentMedia.type.toUpperCase()}
                   </p>
                 </div>
                 {currentMedia.duration && (

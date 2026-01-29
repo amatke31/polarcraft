@@ -1087,7 +1087,7 @@
           "慢慢将其中一副旋转90°——光线完全消失！",
           "尝试中间角度（30°、45°、60°）观察渐变效果"
         ],
-        "observation": "旋转45°时，光强减少到50%——正如马吕斯定律预测的那样（$\\cos^2 45^\\\u00b0 = 0.5$）"
+        "observation": "旋转45°时，光强减少到50%——正如马吕斯定律预测的那样（$\\cos^2 45^\\° = 0.5$）"
       }
     },
     "birefringence": {
@@ -3991,5 +3991,109 @@
         "contentZh": "地质学家使用偏光显微镜鉴定矿物——每种晶体都有独特图案"
       }
     ]
+  },
+  "research": {
+    "title": "虚拟课题组系统",
+    "description": "使用知识图谱管理研究项目",
+    "projects": {
+      "title": "我的研究项目",
+      "description": "管理和创建虚拟课题组项目",
+      "create": "新建项目",
+      "empty": "还没有研究项目",
+      "emptyHint": "创建您的第一个虚拟课题组项目，开始探索偏振光学的奥秘",
+      "createButton": "创建项目"
+    },
+    "project": {
+      "title": "示例研究项目",
+      "canvases": "研究画布",
+      "createCanvas": "新建画布",
+      "demoCanvas": "示例画布",
+      "demoCanvasDescription": "这是一个示例研究画布，用于演示虚拟课题组系统的功能",
+      "nodesAndEdges": "{{nodeCount}} 个节点 · {{edgeCount}} 个关系",
+      "gettingStarted": {
+        "title": "开始使用",
+        "step1": {
+          "title": "创建画布",
+          "description": "为您的研究创建一个新的画布"
+        },
+        "step2": {
+          "title": "添加节点",
+          "description": "添加问题、实验、文献等节点"
+        },
+        "step3": {
+          "title": "建立联系",
+          "description": "用有向边连接节点，构建知识网络"
+        }
+      }
+    },
+    "canvas": {
+      "title": "研究画布",
+      "info": "项目: {{projectId}} | 画布: {{canvasId}}",
+      "stats": "节点: {{nodeCount}} | 关系: {{edgeCount}}",
+      "toolbar": {
+        "addProblem": "+ 问题",
+        "addExperiment": "+ 实验",
+        "addLiterature": "+ 文献",
+        "addData": "+ 数据",
+        "addConclusion": "+ 结论"
+      },
+      "nodeDetails": {
+        "title": "节点属性",
+        "hint": "选择一个节点查看详情"
+      }
+    },
+    "nodes": {
+      "problem": {
+        "title": "问题",
+        "label": "问题",
+        "description": "研究问题的描述"
+      },
+      "experiment": {
+        "title": "实验",
+        "label": "实验",
+        "description": "实验设计和实施"
+      },
+      "literature": {
+        "title": "文献",
+        "label": "文献",
+        "description": "相关文献和参考资料"
+      },
+      "data": {
+        "title": "数据",
+        "label": "数据",
+        "description": "实验数据和观测结果"
+      },
+      "conclusion": {
+        "title": "结论",
+        "label": "结论",
+        "description": "研究结论和发现"
+      }
+    },
+    "edges": {
+      "derivesTo": {
+        "label": "推导出",
+        "description": "从假设推导出实验设计"
+      },
+      "verifies": {
+        "label": "验证",
+        "description": "数据验证假设"
+      },
+      "refutes": {
+        "label": "反驳",
+        "description": "数据反驳假设"
+      },
+      "cites": {
+        "label": "引用",
+        "description": "结论引用文献"
+      },
+      "basedOn": {
+        "label": "基于",
+        "description": "问题基于背景文献"
+      },
+      "relatedTo": {
+        "label": "关联",
+        "description": "通用关联关系"
+      }
+    }
   }
 }
