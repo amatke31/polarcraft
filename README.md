@@ -144,10 +144,9 @@ polarcraft/
 src/
 |--__test__/           # 测试配置
 |--assets/             # 静态资源（字体、图标等）
-|--components/         # 可复用组件
-|   |--game/          # 游戏相关组件
+|--components/         # 通用可复用组件
 |   |--icons/         # 自定义 SVG 图标
-|   |--shared/        # 共享 UI 组件
+|   |--shared/        # 跨模块共享的 UI 组件
 |   `--ui/            # 基础 UI 组件
 |--contexts/           # React Context
 |   |--AuthContext.tsx    # 认证状态管理
@@ -158,8 +157,11 @@ src/
 |   |--chronicles-*.ts      # 历史事件数据
 |   |--timeline-events.ts   # 时间线数据
 |   `--scientist-network.ts # 科学家网络数据
-|--feature/            # 功能模块（模块化的页面组件）
+|--feature/            # 功能模块（按业务模块组织）
 |   |--course/        # 课程学习模块
+|   |   |--chronicles/   # 光学史时间线组件
+|   |   |--CourseViewer.tsx  # 课程查看器
+|   |   `--PdfViewer.tsx     # PDF查看器
 |   |--demos/         # 理论模拟模块
 |   |   |--components/ # 演示控件和UI
 |   |   `--unit0-3/    # 各单元演示实现
@@ -168,10 +170,12 @@ src/
 |   |   |--card/      # 作品卡片
 |   |   |--detail/    # 作品详情页
 |   |   |--media/     # 媒体画廊
-|   |   `--record/    # 成就记录
+|   |   |--record/    # 成就记录
+|   |   `--WorksGrid.tsx
 |   |--games/         # 游戏挑战模块
 |   |   |--EscapePage.tsx    # 密室逃脱
 |   |   `--MinecraftPage.tsx # 体素游戏
+|   |--lab/           # 虚拟实验室模块
 |   `--research/      # 虚拟课题组模块
 |       |--components/
 |       |   |--canvas/    # 研究画布（React Flow）
@@ -202,7 +206,7 @@ src/
 |   |--auth.service.ts  # 认证工具
 |   |--logger.ts        # 日志工具
 |   `--storage.ts       # 本地存储
-|--pages/              # 主页面组件
+|--pages/              # 主页面组件（路由层）
 |   |--HomePage.tsx       # 首页（六个模块入口）
 |   |--CoursesPage.tsx    # 模块一：课程历史
 |   |--DevicesPage.tsx    # 模块二：光学器件
