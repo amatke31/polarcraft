@@ -150,6 +150,15 @@ src/
 |--assets/             # 静态资源（字体、图标等）
 |--components/         # 通用可复用组件
 |   |--icons/         # 自定义 SVG 图标
+|   |   |--modules/         # 模块图标
+|   |   |   |--animated/    # 动画模块图标
+|   |   |   `--...          # 各种功能图标（20+）
+|   |   |--CombinedLogo.tsx         # 组合 Logo
+|   |   |--HomeModuleIcons.tsx      # 首页模块图标
+|   |   |--ModuleIcons.tsx          # 模块图标集合
+|   |   |--NodeIcons.tsx            # 节点图标
+|   |   |--OpenWisdomLabLogo.tsx    # 猫头鹰实验室 Logo
+|   |   `--PolarCraftLogo.tsx       # PolarCraft Logo
 |   |--shared/        # 跨模块共享的 UI 组件
 |   |   |--Footer.tsx              # 页脚组件
 |   |   |--MathRenderer.tsx        # 数学公式渲染器
@@ -159,6 +168,13 @@ src/
 |   |   |--SecureVideoPlayer.tsx   # 安全视频播放器
 |   |   `--SEO.tsx                 # SEO 优化组件
 |   `--ui/            # 基础 UI 组件
+|       |--AuthDialog.tsx          # 认证对话框
+|       |--AuthThemeSwitcher.tsx   # 认证主题切换器
+|       |--dialog.tsx              # 对话框组件
+|       |--ErrorBoundary.tsx       # 错误边界
+|       |--FileUpload.tsx          # 文件上传
+|       |--InboxDropdown.tsx       # 收件箱下拉菜单
+|       `--UserDropdown.tsx        # 用户下拉菜单
 |--contexts/           # React Context
 |   |--AuthContext.tsx     # 认证状态管理
 |   |--SystemContext.tsx   # 系统状态管理
@@ -177,7 +193,9 @@ src/
 |   `--researchExampleProjects.ts  # 研究示例项目
 |--feature/            # 功能模块（按业务模块组织）
 |   |--course/        # 课程学习模块
-|   |   |--chronicles/   # 光学史时间线组件
+|   |   |--chronicles/       # 光学史时间线组件
+|   |   |   |--experiment-resources/  # 实验资源组件
+|   |   |   `--...            # 其他时间线相关组件（15+）
 |   |   |--CourseViewer.tsx  # 课程查看器
 |   |   `--PdfViewer.tsx     # PDF查看器
 |   |--demos/         # 理论模拟模块
@@ -215,6 +233,10 @@ src/
 |   |--lab/           # 虚拟实验室模块（待完善）
 |   |--profile/       # 用户资料模块
 |   |   `--components/  # 资料相关组件
+|   |       |--EducationFormDialog.tsx    # 教育经历对话框
+|   |       |--EducationTimeline.tsx      # 教育时间线
+|   |       |--PasswordChangeDialog.tsx   # 密码修改对话框
+|   |       `--ProfileEditDialog.tsx      # 资料编辑对话框
 |   `--research/      # 虚拟课题组模块
 |       |--components/
 |       |   |--canvas/    # 研究画布（React Flow）
@@ -250,6 +272,8 @@ src/
 |   |   |--Saccharimetry.ts        # 旋光计算
 |   |   |--OpticsConstants.ts      # 光学常数
 |   |   `--unified/                # 统一物理接口
+|   |       |--CoherencyMatrix.ts  # 相干矩阵
+|   |       `--index.ts
 |   |--api.ts                      # API 客户端
 |   |--auth.service.ts             # 认证工具
 |   |--profile.service.ts          # 用户资料服务
