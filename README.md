@@ -147,16 +147,30 @@ src/
 |--components/         # 通用可复用组件
 |   |--icons/         # 自定义 SVG 图标
 |   |--shared/        # 跨模块共享的 UI 组件
+|   |   |--Footer.tsx              # 页脚组件
+|   |   |--MathRenderer.tsx        # 数学公式渲染器
+|   |   |--MathText.tsx            # 数学文本组件
+|   |   |--PersistentHeader.tsx    # 持久化头部
+|   |   |--SearchFilter.tsx        # 搜索过滤器
+|   |   |--SecureVideoPlayer.tsx   # 安全视频播放器
+|   |   `--SEO.tsx                 # SEO 优化组件
 |   `--ui/            # 基础 UI 组件
 |--contexts/           # React Context
-|   |--AuthContext.tsx    # 认证状态管理
-|   `--ThemeContext.tsx   # 主题切换
+|   |--AuthContext.tsx     # 认证状态管理
+|   |--SystemContext.tsx   # 系统状态管理
+|   `--ThemeContext.tsx    # 主题切换
 |--data/               # 静态数据文件
-|   |--courses.ts           # 课程结构数据
-|   |--gallery.ts           # 画廊作品数据
-|   |--chronicles-*.ts      # 历史事件数据
-|   |--timeline-events.ts   # 时间线数据
-|   `--scientist-network.ts # 科学家网络数据
+|   |--courses.ts                  # 课程结构数据
+|   |--gallery.ts                  # 画廊作品数据
+|   |--scientist-network.ts        # 科学家网络数据
+|   |--timeline-events.ts          # 时间线数据
+|   |--chronicles-constants.ts     # 编年史常量数据
+|   |--concept-network.ts          # 概念网络数据
+|   |--course-event-mapping.ts     # 课程事件映射
+|   |--cultural-creations.ts       # 文化创意数据
+|   |--psrt-curriculum.ts          # 课程大纲数据
+|   |--resource-gallery.ts         # 资源画廊数据
+|   `--researchExampleProjects.ts  # 研究示例项目
 |--feature/            # 功能模块（按业务模块组织）
 |   |--course/        # 课程学习模块
 |   |   |--chronicles/   # 光学史时间线组件
@@ -164,18 +178,39 @@ src/
 |   |   `--PdfViewer.tsx     # PDF查看器
 |   |--demos/         # 理论模拟模块
 |   |   |--components/ # 演示控件和UI
-|   |   `--unit0-3/    # 各单元演示实现
+|   |   |--DemoControls.tsx # 演示控制面板
+|   |   |--unit0/     # 第0单元演示实现
+|   |   |   |--BrewsterAngleDemo.tsx       # 布鲁斯特角演示
+|   |   |   |--ElectromagneticWaveDemo.tsx # 电磁波演示
+|   |   |   `--PolarizationTypesDemo.tsx   # 偏振类型演示
+|   |   |--unit1/     # 第1单元演示实现
+|   |   |   `--ColorStateDemo.tsx          # 色偏振演示
+|   |   |--unit2/     # 第2单元演示实现
+|   |   `--unit3/     # 第3单元演示实现
 |   |--devices/       # 光学器件模块
 |   |--gallery/       # 成果展示模块
 |   |   |--card/      # 作品卡片
 |   |   |--detail/    # 作品详情页
 |   |   |--media/     # 媒体画廊
 |   |   |--record/    # 成就记录
-|   |   `--WorksGrid.tsx
+|   |   |--WorksGrid.tsx       # 作品网格
+|   |   `--CulturalShowcase.tsx # 文化创意展示
 |   |--games/         # 游戏挑战模块
 |   |   |--EscapePage.tsx    # 密室逃脱
-|   |   `--MinecraftPage.tsx # 体素游戏
-|   |--lab/           # 虚拟实验室模块
+|   |   `--Minecraft/        # 体素游戏模块
+|   |       |--block-helpers/      # 方块辅助函数
+|   |       |--block-renderers/    # 方块渲染器
+|   |       |--GameCanvas.tsx      # 游戏画布
+|   |       |--LightBeams.tsx      # 光束效果
+|   |       |--MinecraftPage.tsx   # 体素游戏主页
+|   |       |--Scene.tsx           # 场景管理
+|   |       |--SelectionBox.tsx    # 选择框
+|   |       |--block-registry.ts   # 方块注册表
+|   |       |--Blocks.tsx          # 方块定义
+|   |       `--index.ts            # 模块导出
+|   |--lab/           # 虚拟实验室模块（待完善）
+|   |--profile/       # 用户资料模块
+|   |   `--components/  # 资料相关组件
 |   `--research/      # 虚拟课题组模块
 |       |--components/
 |       |   |--canvas/    # 研究画布（React Flow）
@@ -185,50 +220,72 @@ src/
 |       |   |--project/   # 项目管理
 |       |   `--shared/    # Markdown编辑器
 |       |--stores/        # 画布状态管理
-|       `--pages/         # 研究页面
+|       |   `--canvasStore.ts   # 研究画布状态
+|       |--pages/         # 研究页面
+|       `--types/         # TypeScript 类型定义
 |--hooks/              # 自定义 React Hooks
-|   |--useHapticAudio.ts
-|   |--useIsMobile.ts
-|   `--usePolarizationSimulation.ts
+|   |--useHapticAudio.ts           # 触觉音频 Hook
+|   |--useIsMobile.ts              # 移动端检测 Hook
+|   `--usePolarizationSimulation.ts # 偏振模拟 Hook
 |--i18n/               # 国际化配置
 |--lib/                # 核心工具库
 |   |--math/          # 数学库
-|   |   |--Complex.ts      # 复数运算（已测试）
-|   |   |--Matrix2x2.ts    # 2x2矩阵（已测试）
-|   |   `--Vector3.ts      # 3D向量（已测试）
+|   |   |--Complex.ts              # 复数运算（已测试）
+|   |   |--Complex.test.ts         # 复数单元测试
+|   |   |--Matrix2x2.ts            # 2x2矩阵（已测试）
+|   |   |--Matrix2x2.test.ts       # 矩阵单元测试
+|   |   |--Vector3.ts              # 3D向量（已测试）
+|   |   |--Vector3.test.ts         # 向量单元测试
+|   |   |--index.ts                # 数学库导出
+|   |   `--TESTING_ENHANCEMENT_PLAN.md # 测试计划
 |   |--physics/       # 物理计算库
-|   |   |--GeoOptics.ts      # 几何光学
-|   |   |--JonesCalculus.ts  # Jones矢阵
-|   |   |--Saccharimetry.ts  # 旋光计算
-|   |   |--WaveOptics.ts     # 波动光学
-|   |   `--unified/          # 统一物理接口
-|   |--api.ts           # API 客户端
-|   |--auth.service.ts  # 认证工具
-|   |--logger.ts        # 日志工具
-|   `--storage.ts       # 本地存储
+|   |   |--GeometricOptics.ts      # 几何光学
+|   |   |--JonesCalculus.ts        # Jones矢阵计算
+|   |   |--LightPhysics.ts         # 光学物理（主模块）
+|   |   |--WaveOptics.ts           # 波动光学
+|   |   |--Saccharimetry.ts        # 旋光计算
+|   |   |--OpticsConstants.ts      # 光学常数
+|   |   `--unified/                # 统一物理接口
+|   |--api.ts                      # API 客户端
+|   |--auth.service.ts             # 认证工具
+|   |--profile.service.ts          # 用户资料服务
+|   |--research.service.ts         # 研究相关服务
+|   |--logger.ts                   # 日志工具
+|   |--storage.ts                  # 本地存储
+|   |--password.util.ts            # 密码工具函数
+|   |--types.ts                    # 共享类型定义
+|   |--World.ts                    # 3D 世界管理
+|   `--README.md                   # 工具库文档
 |--pages/              # 主页面组件（路由层）
+|   |--index.ts          # 页面导出
 |   |--HomePage.tsx       # 首页（六个模块入口）
 |   |--CoursesPage.tsx    # 模块一：课程历史
 |   |--DevicesPage.tsx    # 模块二：光学器件
 |   |--DemosPage.tsx      # 模块三：理论模拟
 |   |--GamesPage.tsx      # 模块四：游戏挑战
 |   |--GalleryPage.tsx    # 模块五：成果展示
-|   |--LabPage.tsx        # 模块六：虚拟课题组
-|   |--AboutPage.tsx
-|   |--LoginPage.tsx
-|   `--RegisterPage.tsx
+|   |--LabPage.tsx        # 模块六：虚拟实验室
+|   |--ProfilePage.tsx    # 用户资料页
+|   |--AboutPage.tsx      # 关于页面
+|   |--LoginPage.tsx      # 登录页面
+|   `--RegisterPage.tsx   # 注册页面
 |--stores/             # Zustand 状态管理
-|   `--game/          # 游戏状态存储
+|   |--authDialogStore.ts  # 认证对话框状态
+|   |--profileStore.ts     # 用户资料状态
+|   `--game/              # 游戏状态存储
+|       |--gameAction.ts  # 游戏动作
+|       `--gameStore.ts   # 游戏状态
 |--test/               # 测试文件
 |--types/              # TypeScript 类型定义
 |   |--i18n.d.ts
 |   `--research.ts    # 研究画布类型
 |--utils/              # 工具函数
+|   `--classNames.ts  # 类名工具
 |--App.tsx             # 应用入口（路由配置）
-|--APP.css
+|--App.css             # 应用样式
 |--index.css           # 全局样式
 |--main.tsx            # React 入口
-`--vite-env.d.ts
+`--vite-env.d.ts       # Vite 环境类型
 ```
 
 ### 后端目录 (server/)
@@ -237,13 +294,28 @@ src/
 server/
 |--src/
 |   |--config/          # 配置文件
+|   |   `--index.ts     # 数据库和服务配置
 |   |--controllers/     # 路由控制器
+|   |   |--auth.controller.ts        # 认证控制器
+|   |   |--user.controller.ts        # 用户控制器
+|   |   |--profile.controller.ts     # 资料控制器
+|   |   `--research.controller.ts    # 研究控制器
 |   |--database/        # 数据库设置和迁移
 |   |--middleware/      # Express 中间件
 |   |--models/          # 数据模型
 |   |--routes/          # API 路由
+|   |   |--auth.routes.ts           # 认证路由
+|   |   |--user.routes.ts           # 用户路由
+|   |   |--profile.routes.ts        # 资料路由
+|   |   |--research.routes.ts       # 研究路由
+|   |   `--index.ts                 # 路由汇总
 |   |--services/        # 业务逻辑
-|   |--types/           # TypeScript 类型
+|   |   |--auth.service.ts          # 认证服务
+|   |   |--user.service.ts          # 用户服务
+|   |   |--token.service.ts         # 令牌服务（JWT）
+|   |   |--email.service.ts         # 邮件服务
+|   |   `--captcha.service.ts       # 验证码服务
+|   |--types/           # TypeScript 类型定义
 |   |--utils/           # 工具函数
 |   `--index.ts         # 服务器入口
 |--package.json
@@ -254,13 +326,21 @@ server/
 
 ```txt
 public/
-|--courses/            # 课程资源
-|   |--unit0/         # 按单元组织的PPT、PDF、视频
-|   |--unit1/
-|   |--unit2/
-|   |--unit3/
-|   `--unit4/
-|--gallery/            # 学员作品
-|--images/             # 通用图片
-`--videos/             # 视频文件
+|--courses/                # 课程资源
+|   |--unit1/             # 单元1：偏振光的基本概念
+|   |--unit2/             # 单元2：光的偏振
+|   |--unit3/             # 单元3：偏振光的应用
+|   `--unit4/             # 单元4：高级应用
+|--gallery/                # 学员作品展示
+|   `--bubble/            # 气泡相关作品
+|--images/                 # 通用图片资源
+|   |--brewster/          # 布鲁斯特角相关图片
+|   |--calcite/           # 方解石相关图片
+|   |--chromatic-polarization/  # 色散偏振图片
+|   |--optical-rotation/  # 旋光现象图片
+|   |--scattering/        # 散射相关图片
+|   |--combined-logo.png        # 彩色组合 Logo
+|   `--combined-logo-white.png  # 白色组合 Logo
+`--videos/                 # 视频文件
+    `--chromatic-polarization/  # 色散偏振视频
 ```
