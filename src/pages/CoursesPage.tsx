@@ -7,20 +7,21 @@
  * - Right track: Polarization-specific history (偏振光专属旅程)
  */
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn } from "@/utils/classNames";
 // import { Tabs, Badge, PersistentHeader } from "@/components/shared";
 import { Tabs, PersistentHeader } from "@/components/shared";
-import { Clock, BookOpen, Sun, Sparkles, Camera, Film } from "lucide-react";
+import { Clock, BookOpen, Sun, Sparkles, Film, Loader2, Layers } from "lucide-react";
 
 // Data imports
 import { TIMELINE_EVENTS } from "@/data/timeline-events";
 import { CATEGORY_LABELS } from "@/data/chronicles-constants";
 import { PSRT_CURRICULUM, getSectionsForEvent } from "@/data/psrt-curriculum";
-import { COURSE_DATA } from "@/data/courses";
+import { useUnitStore } from "@/stores/unitStore";
 
 // Component imports
 import {
@@ -30,7 +31,6 @@ import {
   DEMO_ITEMS,
   StoryModal,
 } from "@/feature/course/chronicles";
-import { CourseViewer } from "@/feature/course/CourseViewer";
 
 // Visible tabs - reordered: resources (default), timeline, slides, psrt
 const TABS = [
@@ -45,9 +45,9 @@ const TABS = [
 export function CoursesPage() {
   const { theme } = useTheme();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const { isMobile, isTablet } = useIsMobile();
   const [activeTab, setActiveTab] = useState("slides");
-  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>("");
   const [trackFilter, setTrackFilter] = useState<"all" | "optics" | "polarization">("all");
@@ -56,7 +56,21 @@ export function CoursesPage() {
   const [highlightedSections, setHighlightedSections] = useState<Set<string>>(new Set()); // 事件点击高亮的课程章节 (reserved for future use)
   const [selectedDemos, setSelectedDemos] = useState<string[]>([]); // 演示筛选状态
 
+  // Unit store
+  const { units, isLoading: unitsLoading, fetchUnits } = useUnitStore();
+
+  // Fetch units on mount
+  useEffect(() => {
+    fetchUnits();
+  }, [fetchUnits]);
+
   const isZh = true;
+
+  // Helper to get localized label
+  const getLabel = (label: { "zh-CN"?: string; "en-US"?: string }) => {
+    const lang = i18n.language as "zh-CN" | "en-US";
+    return label[lang] || label["zh-CN"] || "";
+  };
 
   // Suppress unused variable warning (highlightedSections is set but not yet used after removing CourseNavigator)
   void highlightedSections;
@@ -261,99 +275,115 @@ export function CoursesPage() {
 
         {activeTab === "slides" && (
           <>
-            {selectedCourse ? (
-              <CourseViewer
-                course={COURSE_DATA.find((c) => c.id === selectedCourse)!}
-                onBack={() => setSelectedCourse(null)}
-                theme={theme}
-              />
+            {/* Unit cards grid */}
+            {unitsLoading ? (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-cyan-500" />
+              </div>
+            ) : units.length === 0 ? (
+              <div className="text-center py-20">
+                <Layers className={cn(
+                  "w-12 h-12 mx-auto mb-4",
+                  theme === "dark" ? "text-gray-600" : "text-gray-400"
+                )} />
+                <p className={cn(
+                  "text-lg",
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                )}>
+                  {isZh ? "暂无单元" : "No units available"}
+                </p>
+              </div>
             ) : (
-              <>
-                {/* Course cards grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {COURSE_DATA.map((course) => {
-                    return (
-                      <div
-                        key={course.id}
-                        onClick={() => setSelectedCourse(course.id)}
-                        className={cn(
-                          "group rounded-2xl transition-all duration-300 overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-xl",
-                          theme === "dark"
-                            ? "bg-slate-800/50 border-2 border-slate-700 hover:border-slate-500"
-                            : "bg-white shadow-sm hover:shadow-lg",
-                        )}
-                      >
-                        {/* Cover Image */}
-                        <div className="relative h-40 overflow-hidden">
-                          {course.coverImage ? (
-                            <img
-                              src={course.coverImage}
-                              alt={course.title[i18n.language]}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                          ) : (
-                            <>
-                              <div
-                                className="absolute inset-0"
-                                style={{
-                                  background: `linear-gradient(135deg, ${course.color}40 0%, ${course.color}10 100%)`,
-                                }}
-                              />
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div
-                                  className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                                  style={{ backgroundColor: `${course.color}30` }}
-                                >
-                                  <BookOpen
-                                    className="w-8 h-8"
-                                    style={{ color: course.color }}
-                                  />
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-5">
-                          {/* Title */}
-                          <h3
-                            className={cn(
-                              "text-lg font-bold mb-2 line-clamp-2",
-                              theme === "dark" ? "text-white" : "text-gray-900",
-                            )}
-                          >
-                            {course.title[i18n.language]}
-                          </h3>
-
-                          {/* Description */}
-                          <p
-                            className={cn(
-                              "text-sm mb-4 line-clamp-2",
-                              theme === "dark" ? "text-gray-400" : "text-gray-600",
-                            )}
-                          >
-                            {course.description[i18n.language]}
-                          </p>
-
-                          {/* Stats */}
-                          <div className="flex items-center gap-4 text-xs">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {units.map((unit) => (
+                  <div
+                    key={unit.id}
+                    onClick={() => navigate(`/units/${unit.id}`)}
+                    className={cn(
+                      "group rounded-2xl transition-all duration-300 overflow-hidden cursor-pointer hover:-translate-y-1 hover:shadow-xl",
+                      theme === "dark"
+                        ? "bg-slate-800/50 border-2 border-slate-700 hover:border-slate-500"
+                        : "bg-white shadow-sm hover:shadow-lg",
+                    )}
+                  >
+                    {/* Cover Image */}
+                    <div className="relative h-40 overflow-hidden">
+                      {unit.coverImage ? (
+                        <img
+                          src={unit.coverImage}
+                          alt={getLabel(unit.title)}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        <>
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              background: `linear-gradient(135deg, ${unit.color}40 0%, ${unit.color}10 100%)`,
+                            }}
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
                             <div
-                              className="flex items-center gap-1.5"
-                              style={{ color: course.color }}
+                              className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                              style={{ backgroundColor: `${unit.color}30` }}
                             >
-                              <Camera className="w-3.5 h-3.5" />
-                              <span>
-                                {course.media.length} {i18n.t("page.courses.media")}
-                              </span>
+                              <Layers
+                                className="w-8 h-8"
+                                style={{ color: unit.color }}
+                              />
                             </div>
                           </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5">
+                      {/* Title */}
+                      <h3
+                        className={cn(
+                          "text-lg font-bold mb-2 line-clamp-2",
+                          theme === "dark" ? "text-white" : "text-gray-900",
+                        )}
+                      >
+                        {getLabel(unit.title)}
+                      </h3>
+
+                      {/* Description */}
+                      <p
+                        className={cn(
+                          "text-sm mb-4 line-clamp-2",
+                          theme === "dark" ? "text-gray-400" : "text-gray-600",
+                        )}
+                      >
+                        {getLabel(unit.description)}
+                      </p>
+
+                      {/* Stats */}
+                      <div className="flex items-center gap-4 text-xs">
+                        {unit.mainSlide && (
+                          <div
+                            className="flex items-center gap-1.5"
+                            style={{ color: unit.color }}
+                          >
+                            <Film className="w-3.5 h-3.5" />
+                            <span>{isZh ? "主课件" : "Slides"}</span>
+                          </div>
+                        )}
+                        <div
+                          className="flex items-center gap-1.5"
+                          style={{ color: unit.color }}
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>
+                            {unit.courseCount || 0} {isZh ? "课程" : "Courses"}
+                          </span>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </>
         )}

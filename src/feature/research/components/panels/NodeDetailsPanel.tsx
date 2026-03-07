@@ -24,12 +24,14 @@ import type {
   NoteNodeData,
   BaseNodeData,
 } from '../../types/node-data.types';
+import { getNodeField } from '../../types/node-data.types';
 import type { LabelI18n } from '@/types/i18n';
 
 interface NodeDetailsPanelProps {
   theme?: 'dark' | 'light';
   onUpdateNode?: (nodeId: string, updates: Partial<Node<ResearchNode>>) => void;
   onRemoveNode?: (nodeId: string) => void;
+  readOnly?: boolean;
 }
 
 // Form data type that's more flexible for editing
@@ -54,20 +56,7 @@ interface FormData {
   pinned?: boolean;
 }
 
-/**
- * Helper to safely get a field from node data
- */
-function getNodeField<T extends keyof BaseNodeData>(
-  data: BaseNodeData,
-  field: T
-): BaseNodeData[T] | undefined {
-  if (field in data) {
-    return data[field];
-  }
-  return undefined;
-}
-
-export function NodeDetailsPanel({ theme = 'dark', onUpdateNode, onRemoveNode }: NodeDetailsPanelProps) {
+export function NodeDetailsPanel({ theme = 'dark', onUpdateNode, onRemoveNode, readOnly = false }: NodeDetailsPanelProps) {
   const selectedNode = useCanvasStore(selectSelectedNode) as Node<ResearchNode> | null;
   const storeUpdateNode = useCanvasStore((state) => state.updateNode);
   const storeRemoveNode = useCanvasStore((state) => state.removeNode);
@@ -746,7 +735,8 @@ export function NodeDetailsPanel({ theme = 'dark', onUpdateNode, onRemoveNode }:
         </div>
       </div>
 
-      {/* Footer Actions */}
+      {/* Footer Actions - 只读模式隐藏 */}
+      {!readOnly && (
       <div className="p-4 border-t border-slate-700 flex gap-2">
         {editing ? (
           <>
@@ -816,6 +806,7 @@ export function NodeDetailsPanel({ theme = 'dark', onUpdateNode, onRemoveNode }:
           </>
         )}
       </div>
+      )}
     </div>
   );
 }

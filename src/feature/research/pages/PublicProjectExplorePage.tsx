@@ -1,9 +1,9 @@
 /**
  * Public Project Explore Page
- * 公开项目浏览页面
+ * 公开课题浏览页面
  *
  * Displays public projects that users can apply to join
- * 显示用户可以申请加入的公开项目
+ * 显示用户可以申请加入的公开课题
  */
 
 import { useState, useEffect } from "react";
@@ -59,7 +59,7 @@ export function PublicProjectExplorePage() {
         setProjects(data);
       } catch (err) {
         console.error("Failed to fetch public projects:", err);
-        setError(err instanceof Error ? err.message : "加载项目失败");
+        setError(err instanceof Error ? err.message : "加载课题失败");
       } finally {
         setIsLoading(false);
       }
@@ -104,7 +104,7 @@ export function PublicProjectExplorePage() {
     >
       <PersistentHeader
         moduleKey="labGroup"
-        moduleNameKey="发现项目"
+        moduleNameKey="发现课题"
         variant="glass"
         className={cn("sticky top-0 z-40", theme === "dark" ? "bg-slate-900/80" : "bg-white/80")}
         rightContent={
@@ -117,7 +117,7 @@ export function PublicProjectExplorePage() {
                 : "hover:bg-gray-200 text-gray-600 hover:text-gray-900"
             )}
           >
-            我的项目
+            我的课题
           </Link>
         }
       />
@@ -143,7 +143,7 @@ export function PublicProjectExplorePage() {
                   theme === "dark" ? "text-white" : "text-gray-900"
                 )}
               >
-                发现项目
+                发现课题
               </h1>
               <p className={cn("text-sm", theme === "dark" ? "text-gray-400" : "text-gray-600")}>
                 浏览并申请加入公开的虚拟课题组
@@ -164,7 +164,7 @@ export function PublicProjectExplorePage() {
             />
             <input
               type="text"
-              placeholder="搜索项目..."
+              placeholder="搜索课题..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
@@ -226,7 +226,7 @@ export function PublicProjectExplorePage() {
                   theme === "dark" ? "text-amber-300" : "text-amber-700"
                 )}
               >
-                登录后可以申请加入项目
+                登录后可以申请加入课题
               </p>
             </div>
             <button
@@ -259,7 +259,7 @@ export function PublicProjectExplorePage() {
                 theme === "dark" ? "text-gray-400" : "text-gray-600"
               )}
             >
-              加载项目中...
+              加载课题中...
             </p>
           </div>
         )}
@@ -291,32 +291,12 @@ export function PublicProjectExplorePage() {
                     : "bg-white border-gray-200 hover:border-teal-400"
                 )}
               >
-                {/* Thumbnail or Placeholder */}
-                <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-teal-500/20 to-cyan-500/20">
-                  {project.thumbnail ? (
-                    <img
-                      src={project.thumbnail}
-                      alt={project.name_zh}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <FlaskConical
-                        className={cn(
-                          "w-12 h-12",
-                          theme === "dark" ? "text-slate-600" : "text-gray-300"
-                        )}
-                      />
-                    </div>
-                  )}
-                </div>
-
                 {/* Content */}
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-2">
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-3">
                     <h3
                       className={cn(
-                        "font-semibold line-clamp-2 group-hover:text-teal-400 transition-colors",
+                        "text-xl font-bold line-clamp-2 group-hover:text-teal-400 transition-colors",
                         theme === "dark" ? "text-white" : "text-gray-900"
                       )}
                     >
@@ -338,7 +318,7 @@ export function PublicProjectExplorePage() {
 
                   <p
                     className={cn(
-                      "text-sm line-clamp-3 mb-4",
+                      "text-base line-clamp-3 mb-4",
                       theme === "dark" ? "text-gray-400" : "text-gray-600"
                     )}
                   >
@@ -357,6 +337,19 @@ export function PublicProjectExplorePage() {
                     >
                       <span className="font-medium">要求：</span>
                       {project.recruitment_requirements}
+                    </div>
+                  )}
+
+                  {/* Owner */}
+                  {project.owner_username && (
+                    <div
+                      className={cn(
+                        "flex items-center gap-1 text-sm mb-3",
+                        theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      )}
+                    >
+                      <span>组长：</span>
+                      <span className="font-medium">{project.owner_username}</span>
                     </div>
                   )}
 
@@ -387,32 +380,41 @@ export function PublicProjectExplorePage() {
                     </div>
                   </div>
 
-                  {/* Action Button */}
-                  {project.is_member ? (
+                  {/* Action Buttons - 并排显示两个按钮 */}
+                  <div className="flex gap-2">
+                    {/* 打开课题按钮 - 始终显示 */}
                     <Link
                       to={`/lab/projects/${project.id}`}
+                      state={{ readOnly: !project.is_member }}
                       className={cn(
-                        "w-full px-4 py-2 rounded-lg font-medium transition-colors text-center block",
-                        theme === "dark"
-                          ? "bg-purple-600 hover:bg-purple-500 text-white"
-                          : "bg-purple-500 hover:bg-purple-600 text-white"
+                        "flex-1 px-4 py-2 rounded-lg font-medium transition-colors text-center block",
+                        project.is_member
+                          ? theme === "dark"
+                            ? "bg-purple-600 hover:bg-purple-500 text-white"
+                            : "bg-purple-500 hover:bg-purple-600 text-white"
+                          : theme === "dark"
+                            ? "bg-slate-700 hover:bg-slate-600 text-gray-300 border border-slate-600"
+                            : "bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300"
                       )}
                     >
-                      进入项目
+                      {project.is_member ? "进入课题" : "打开课题"}
                     </Link>
-                  ) : (
-                    <button
-                      onClick={() => handleApplyClick(project)}
-                      className={cn(
-                        "w-full px-4 py-2 rounded-lg font-medium transition-colors",
-                        theme === "dark"
-                          ? "bg-teal-600 hover:bg-teal-500 text-white"
-                          : "bg-teal-500 hover:bg-teal-600 text-white"
-                      )}
-                    >
-                      {project.require_approval ? "申请加入" : "立即加入"}
-                    </button>
-                  )}
+
+                    {/* 申请加入按钮 - 仅非成员显示 */}
+                    {!project.is_member && (
+                      <button
+                        onClick={() => handleApplyClick(project)}
+                        className={cn(
+                          "flex-1 px-4 py-2 rounded-lg font-medium transition-colors",
+                          theme === "dark"
+                            ? "bg-teal-600 hover:bg-teal-500 text-white"
+                            : "bg-teal-500 hover:bg-teal-600 text-white"
+                        )}
+                      >
+                        {project.require_approval ? "申请加入" : "立即加入"}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -443,7 +445,7 @@ export function PublicProjectExplorePage() {
                 theme === "dark" ? "text-white" : "text-gray-900"
               )}
             >
-              没有找到项目
+              没有找到课题
             </h3>
             <p
               className={cn(
@@ -453,7 +455,7 @@ export function PublicProjectExplorePage() {
             >
               {searchQuery || recruitingOnly
                 ? "尝试调整筛选条件"
-                : "目前没有公开的项目，请稍后再来看看"}
+                : "目前没有公开的课题，请稍后再来看看"}
             </p>
           </div>
         )}
