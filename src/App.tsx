@@ -38,7 +38,7 @@ const DemosPage = lazy(() => import("@/pages/DemosPage"));
 // Module 4: 游戏挑战
 // 解谜逃脱 × 我的世界
 const GamesPage = lazy(() => import("@/pages/GamesPage"));
-const EscapePage = lazy(() => import("@/feature/games/EscapePage"));
+const EscapePage = lazy(() => import("@/feature/games/Escape/EscapePage"));
 const MinecraftPage = lazy(() => import("@/feature/games/Minecraft/MinecraftPage"));
 
 // Module 5: 成果展示
