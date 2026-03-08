@@ -22,12 +22,14 @@ PolarCraft 是一款由零一学院开发的，基于偏振光物理的教育类
 
 - 按照  README\.md中的，尝试安装依赖并运行开发服务器。
 - 浏览各个页面，看看是否有明显的错误。
+- 或者选择查看[项目架构](#文件架构)来了解项目的整体结构和模块划分。
 
 ### 第二步：阅读核心代码
 
 - 从入口文件开始，了解应用的启动过程。
 - 阅读核心类型定义和核心逻辑。
 - 阅读状态管理（stores）和主要页面组件。
+> 或者选择参考[模板指南](./docs/TEMPLATE_GUIDE.md)和[快速指引](./docs/QUICK_REFERENCE.md)来阅读代码，了解每个部分的功能和作用。
 
 ### 第三步：尝试修复简单问题
 
@@ -116,6 +118,14 @@ npm run build        # 为生产环境构建
 
 ## 文件架构
 
+- [根目录](#根目录)
+- [前端源码目录 (src/)](#前端源码目录-src)
+- [后端目录 (server/)](#后端目录-server)
+- [静态资源目录 (public/)](#静态资源目录-public)
+
+<details open>
+<summary>根目录</summary>
+
 ### 根目录
 
 ```txt
@@ -141,6 +151,10 @@ polarcraft/
 |--vite.config.ts
 `--vitest.config.ts
 ```
+</details>
+
+<details open>
+<summary>前端源码目录 (src/)</summary>
 
 ### 前端源码目录 (src/)
 
@@ -316,6 +330,11 @@ src/
 `--vite-env.d.ts       # Vite 环境类型
 ```
 
+</details>
+
+<details open>
+<summary>后端目录 (server/)</summary>
+
 ### 后端目录 (server/)
 
 ```txt
@@ -350,6 +369,11 @@ server/
 `--tsconfig.json
 ```
 
+</details>
+
+<details open>
+<summary>静态资源目录 (public/)</summary>
+
 ### 静态资源目录 (public/)
 
 ```txt
@@ -372,3 +396,4 @@ public/
 `--videos/                 # 视频文件
     `--chromatic-polarization/  # 色散偏振视频
 ```
+</details>
